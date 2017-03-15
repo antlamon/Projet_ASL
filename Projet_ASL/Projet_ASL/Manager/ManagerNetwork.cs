@@ -46,7 +46,7 @@ namespace Projet_ASL
             NetIncomingMessage inc;
             while (true)
             {
-                if (DateTime.Now.Subtract(time).Seconds > 10)
+                if (DateTime.Now.Subtract(time).Seconds > 5)
                 {
                     return false; 
                 }

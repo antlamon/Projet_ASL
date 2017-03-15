@@ -19,7 +19,7 @@ namespace Projet_ASL.Server.Commands
             var data = inc.ReadByte();
             if (data == (byte)PacketType.Login)
             {
-                Console.WriteLine("..connection accpeted.");
+                Console.WriteLine("..connection accepted.");
                 player = CreatePlayer(inc,players);
                 inc.SenderConnection.Approve();
                 var outmsg = server.CreateMessage();

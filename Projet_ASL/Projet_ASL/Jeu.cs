@@ -38,7 +38,6 @@ namespace Projet_ASL
 
         DialogueMenu MenuAccueil { get; set; }
 
-        private Color _color; //For test
         private Texture2D _texture; //For test
         private SpriteFont _font; //For test
 
@@ -52,7 +51,6 @@ namespace Projet_ASL
             PériphériqueGraphique.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
             IsMouseVisible = true;
-            _color = Color.CornflowerBlue;
         }
 
         /// <summary>
@@ -183,22 +181,14 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(_color);
-
-            GestionSprites.Begin();
+            GraphicsDevice.Clear(Color.Black);
             if (_managerNetwork.Active)
             {
                 foreach (var player in _managerNetwork.Players)
                 {
-                    GestionSprites.Draw(_texture, new Rectangle(player.XPosition, player.YPosition, 100, 50), Color.BlueViolet);
-                    if (player.Username != _managerNetwork.Username)
-                    {
-                        GestionSprites.DrawString(_font, string.Format("<{0}>", player.Username), new Vector2(player.XPosition + 20, player.YPosition + 20), Color.Pink);
-                    }
+
                 }
             }
-            GestionSprites.End();
-
             base.Draw(gameTime);
         }
     }
