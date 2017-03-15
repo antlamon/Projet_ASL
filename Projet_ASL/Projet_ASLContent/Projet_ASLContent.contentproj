@@ -54,17 +54,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Modeles\ArcherB.fbx">
+    <Compile Include="Models\ArcherB.fbx">
       <Name>ArcherB</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Modeles\GuerrierB.fbx">
+    <Compile Include="Models\GuerrierB.fbx">
       <Name>GuerrierB</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Modeles\Mage.fbx">
+    <Compile Include="Models\Mage.fbx">
       <Name>Mage</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
