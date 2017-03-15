@@ -10,7 +10,7 @@ namespace Projet_ASL
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (Jeu game = new Jeu())
             {
                 game.Run();
             }

@@ -4,19 +4,14 @@
 //
 // Youtube channel - https://www.youtube.com/user/Maloooon
 //------------------------------------------------------
-using System;
 using System.Collections.Generic;
 using Projet_ASL.Library;
 using Lidgren.Network;
 
-namespace Projet_ASL.Server
+namespace Projet_ASL.Server.Commands
 {
-    class Program
+    interface ICommand
     {
-        static void Main(string[] args)
-        {
-            var server = new Server(); 
-            server.Run();
-        }
+        void Run(NetServer server, NetIncomingMessage inc, Player player, List<Player> players);
     }
 }
