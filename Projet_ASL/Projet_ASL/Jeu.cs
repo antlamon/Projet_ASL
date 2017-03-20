@@ -40,6 +40,7 @@ namespace Projet_ASL
 
         private Texture2D _texture; //For test
         private SpriteFont _font; //For test
+        private Mage pion2; //for test
 
         public Jeu()
             : base()
@@ -73,8 +74,9 @@ namespace Projet_ASL
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, Vector3.Up, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogue);
 
-            if (_managerNetwork.Start())
-            {
+            //if (_managerNetwork.Start())
+            //{
+                _managerNetwork.Start();
                 CréationDuPanierDeServices();
 
                 Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
@@ -83,14 +85,14 @@ namespace Projet_ASL
                 Components.Add(GestionInput);
                 Components.Add(CaméraJeu);
                 Components.Add(MenuAccueil);
-            }
-            else
-            {
-                CréationDuPanierDeServices();
-                TexteCentré texte = new TexteCentré(this, "nope", "Arial20", Window.ClientBounds, Color.Red, 0.2f);
-                texte.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
-                Components.Add(texte);
-            }
+            //}
+            //else
+            //{
+            //    CréationDuPanierDeServices();
+            //    TexteCentré texte = new TexteCentré(this, "nope", "Arial20", Window.ClientBounds, Color.Red, 0.2f);
+            //    texte.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            //    Components.Add(texte);
+            //}
 
             base.Initialize();
         }
@@ -163,8 +165,12 @@ namespace Projet_ASL
         private void DémarrerPhaseDeJeu()
         {
             Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, Vector3.Zero, "bob", 0, 0, 0, 0, 1);
+            pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(0, 0, 5), "ok", 0, 0, 0, 0, 1);
+            pion2.Visible = false;
             pion.DrawOrder = (int)OrdreDraw.MILIEU;
+            pion2.DrawOrder = (int)OrdreDraw.MILIEU;
             Components.Add(pion);
+            Components.Add(pion2);
         }
 
         private void GérerClavier()
@@ -184,9 +190,9 @@ namespace Projet_ASL
             GraphicsDevice.Clear(Color.Black);
             if (_managerNetwork.Active)
             {
-                foreach (var player in _managerNetwork.Players)
+                if (_managerNetwork.Players.Count > 1)
                 {
-
+                    pion2.Visible = true;
                 }
             }
             base.Draw(gameTime);
