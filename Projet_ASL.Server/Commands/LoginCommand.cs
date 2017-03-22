@@ -20,7 +20,7 @@ namespace Projet_ASL.Server.Commands
             if (data == (byte)PacketType.Login)
             {
                 Console.WriteLine("..connection accepted.");
-                player = CreatePlayer(inc,players);
+                player = CreatePlayer(inc, players);
                 inc.SenderConnection.Approve();
                 var outmsg = server.CreateMessage();
                 outmsg.Write((byte)PacketType.Login);
@@ -32,7 +32,7 @@ namespace Projet_ASL.Server.Commands
                 }
                 server.SendMessage(outmsg, inc.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
                 var command = new PlayerPositionCommand();
-                command.Run(server,inc,player,players);
+                command.Run(server, inc, player, players);
             }
             else
             {

@@ -46,22 +46,25 @@ namespace Projet_ASL
             NetIncomingMessage inc;
             while (true)
             {
-                if (DateTime.Now.Subtract(time).Seconds > 5)
-                {
-                    return false; 
-                }
+                //if (DateTime.Now.Subtract(time).Seconds > 5)
+                //{
+                //    return false; 
+                //}
 
                 if((inc = _client.ReadMessage()) == null) continue;
 
                 switch (inc.MessageType)
                 {
                     case NetIncomingMessageType.Data:
+                        SendMesage("c'est du Data");
                         var data = inc.ReadByte();
                         if (data == (byte) PacketType.Login)
                         {
+                            SendMesage("Data = Login");
                             Active = inc.ReadBoolean();
                             if (Active)
                             {
+                                SendMesage("NetworkActif");
                                 ReceiveAllPlayers(inc);
                                 return true;
                             }
@@ -128,6 +131,14 @@ namespace Projet_ASL
             outmessage.Write((byte)key);
             outmessage.Write(Username);
             _client.SendMessage(outmessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendMesage(string message)
+        {
+            NetOutgoingMessage outMessage = _client.CreateMessage();
+            outMessage.Write((byte)PacketType.Message);
+            outMessage.Write(message);
+            _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
         }
     }
 }

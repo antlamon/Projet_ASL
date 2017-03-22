@@ -22,6 +22,8 @@ namespace Projet_ASL.Server
                     return new AllPlayersCommand();
                 case PacketType.Input:
                     return new InputCommand();
+                case PacketType.Message:
+                    return new MessageCommand();
                 default:
                     throw new ArgumentOutOfRangeException("packetType");
             }

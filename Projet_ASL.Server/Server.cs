@@ -19,7 +19,7 @@ namespace Projet_ASL.Server
     {
         private List<Player> _players;
         private NetPeerConfiguration _config;
-        private NetServer _server; 
+        private NetServer _server;
 
         public Server()
         {
@@ -41,10 +41,10 @@ namespace Projet_ASL.Server
                 {
                     case NetIncomingMessageType.ConnectionApproval:
                         var login = new LoginCommand();
-                        login.Run(_server,inc, null,_players);
+                        login.Run(_server, inc, null, _players);
                         break;
                     case NetIncomingMessageType.Data:
-                        Data(inc); 
+                        Data(inc);
                         break;
                 }
             }
@@ -52,9 +52,9 @@ namespace Projet_ASL.Server
 
         private void Data(NetIncomingMessage inc)
         {
-            var packetType = (PacketType) inc.ReadByte();
-            var command = PacketFactory.GetCommand(packetType); 
-            command.Run(_server,inc, null,_players);
+            var packetType = (PacketType)inc.ReadByte();
+            var command = PacketFactory.GetCommand(packetType);
+            command.Run(_server, inc, null, _players);
         }
     }
 }

@@ -51,6 +51,7 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\InputCommand.cs" />
     <Compile Include="Commands\LoginCommand.cs" />
+    <Compile Include="Commands\MessageCommand.cs" />
     <Compile Include="Commands\PlayerPositionCommand.cs" />
     <Compile Include="Managers\ManagerCollision.cs" />
     <Compile Include="PacketFactory.cs" />

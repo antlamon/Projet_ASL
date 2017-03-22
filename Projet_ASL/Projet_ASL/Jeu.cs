@@ -41,6 +41,7 @@ namespace Projet_ASL
         private Texture2D _texture; //For test
         private SpriteFont _font; //For test
         private Mage pion2; //for test
+        private Color couleur;
 
         public Jeu()
             : base()
@@ -62,6 +63,15 @@ namespace Projet_ASL
         /// </summary>
         protected override void Initialize()
         {
+            if (_managerNetwork.Start())
+            {
+                couleur = Color.Black;
+            }
+            else
+            {
+                couleur = Color.Red;
+            }
+
             //Vector3 positionObjet1 = new Vector3(-2, 0, 0);
             //Vector3 positionObjet2 = new Vector3(0, 1.5f, 0);
             //Vector3 positionObjet3 = new Vector3(0, 0, 0);
@@ -74,25 +84,15 @@ namespace Projet_ASL
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, Vector3.Up, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogue);
 
-            //if (_managerNetwork.Start())
-            //{
-                _managerNetwork.Start();
-                CréationDuPanierDeServices();
+            _managerNetwork.Start();
+            CréationDuPanierDeServices();
 
-                Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
-                Components.Add(new Afficheur3D(this));
-                Components.Add(new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS));
-                Components.Add(GestionInput);
-                Components.Add(CaméraJeu);
-                Components.Add(MenuAccueil);
-            //}
-            //else
-            //{
-            //    CréationDuPanierDeServices();
-            //    TexteCentré texte = new TexteCentré(this, "nope", "Arial20", Window.ClientBounds, Color.Red, 0.2f);
-            //    texte.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
-            //    Components.Add(texte);
-            //}
+            Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
+            Components.Add(new Afficheur3D(this));
+            Components.Add(new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS));
+            Components.Add(GestionInput);
+            Components.Add(CaméraJeu);
+            Components.Add(MenuAccueil);
 
             base.Initialize();
         }
@@ -131,11 +131,8 @@ namespace Projet_ASL
         {
             GérerClavier();
             GérerTransition();
-            if (ÉtatJeu == États.CONNEXION || ÉtatJeu == États.JEU)
-            {
-                _managerNetwork.Update();
-                _managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
-            }
+            _managerNetwork.Update();
+            _managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
 
             base.Update(gameTime);
         }
@@ -165,12 +162,14 @@ namespace Projet_ASL
         private void DémarrerPhaseDeJeu()
         {
             Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, Vector3.Zero, "bob", 0, 0, 0, 0, 1);
-            pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(0, 0, 5), "ok", 0, 0, 0, 0, 1);
-            pion2.Visible = false;
             pion.DrawOrder = (int)OrdreDraw.MILIEU;
-            pion2.DrawOrder = (int)OrdreDraw.MILIEU;
             Components.Add(pion);
-            Components.Add(pion2);
+            if (_managerNetwork.Players.Count > 1)
+            {
+                pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(0, 0, 5), "ok", 0, 0, 0, 0, 1);
+                pion2.DrawOrder = (int)OrdreDraw.MILIEU;
+                Components.Add(pion2);
+            }
         }
 
         private void GérerClavier()
@@ -187,15 +186,12 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(couleur);
             if (_managerNetwork.Active)
             {
-                if (_managerNetwork.Players.Count > 1)
-                {
-                    pion2.Visible = true;
-                }
+                base.Draw(gameTime);
             }
-            base.Draw(gameTime);
+            //base.Draw(gameTime);
         }
     }
 }

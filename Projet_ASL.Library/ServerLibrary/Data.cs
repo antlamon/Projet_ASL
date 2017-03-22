@@ -11,6 +11,7 @@ namespace Projet_ASL.Library
         Login,
         PlayerPosition,
         AllPlayers,
-        Input
+        Input,
+        Message
     }
 }
