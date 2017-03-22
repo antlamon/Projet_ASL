@@ -36,7 +36,7 @@ namespace Projet_ASL
             var outmsg = _client.CreateMessage();
             outmsg.Write((byte)PacketType.Login);
             outmsg.Write(Username);
-            _client.Connect("localhost", 5013, outmsg);
+            _client.Connect("172.17.106.116", 5013, outmsg);
             return EsablishInfo(); 
         }
 

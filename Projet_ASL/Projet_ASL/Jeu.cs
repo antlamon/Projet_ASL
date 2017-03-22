@@ -154,6 +154,7 @@ namespace Projet_ASL
                     }
                     break;
                 case États.JEU:
+                    pion2.Visible = _managerNetwork.Players.Count > 1;
                     break;
             }
         }
@@ -163,12 +164,11 @@ namespace Projet_ASL
             Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, Vector3.Zero, "bob", 0, 0, 0, 0, 1);
             pion.DrawOrder = (int)OrdreDraw.MILIEU;
             Components.Add(pion);
-            if (_managerNetwork.Players.Count > 1)
-            {
+
                 pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(0, 0, 5), "ok", 0, 0, 0, 0, 1);
                 pion2.DrawOrder = (int)OrdreDraw.MILIEU;
+            pion2.Visible = false;
                 Components.Add(pion2);
-            }
         }
 
         private void GérerClavier()
