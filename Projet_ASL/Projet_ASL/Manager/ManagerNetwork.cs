@@ -46,12 +46,12 @@ namespace Projet_ASL
             NetIncomingMessage inc;
             while (true)
             {
-                //if (DateTime.Now.Subtract(time).Seconds > 5)
-                //{
-                //    return false; 
-                //}
+                if (DateTime.Now.Subtract(time).Seconds > 10)
+                {
+                    return false;
+                }
 
-                if((inc = _client.ReadMessage()) == null) continue;
+                if ((inc = _client.ReadMessage()) == null) continue;
 
                 switch (inc.MessageType)
                 {

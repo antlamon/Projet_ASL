@@ -84,7 +84,6 @@ namespace Projet_ASL
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, Vector3.Up, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogue);
 
-            _managerNetwork.Start();
             CréationDuPanierDeServices();
 
             Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
@@ -189,9 +188,9 @@ namespace Projet_ASL
             GraphicsDevice.Clear(couleur);
             if (_managerNetwork.Active)
             {
-                base.Draw(gameTime);
+                //base.Draw(gameTime);
             }
-            //base.Draw(gameTime);
+            base.Draw(gameTime);
         }
     }
 }
