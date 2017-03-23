@@ -36,7 +36,7 @@ namespace Projet_ASL
             var outmsg = _client.CreateMessage();
             outmsg.Write((byte)PacketType.Login);
             outmsg.Write(Username);
-            _client.Connect("172.17.106.116", 5013, outmsg);
+            _client.Connect("localHost", 5013, outmsg);
             return EsablishInfo(); 
         }
 
@@ -46,7 +46,7 @@ namespace Projet_ASL
             NetIncomingMessage inc;
             while (true)
             {
-                if (DateTime.Now.Subtract(time).Seconds > 10)
+                if (DateTime.Now.Subtract(time).Seconds > 4)
                 {
                     return false;
                 }
