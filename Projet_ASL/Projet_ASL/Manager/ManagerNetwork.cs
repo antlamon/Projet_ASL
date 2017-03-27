@@ -56,15 +56,12 @@ namespace Projet_ASL
                 switch (inc.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        SendMesage("c'est du Data");
                         var data = inc.ReadByte();
                         if (data == (byte) PacketType.Login)
                         {
-                            SendMesage("Data = Login");
                             Active = inc.ReadBoolean();
                             if (Active)
                             {
-                                SendMesage("NetworkActif");
                                 ReceiveAllPlayers(inc);
                                 return true;
                             }

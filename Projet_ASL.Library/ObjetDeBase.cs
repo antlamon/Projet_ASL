@@ -48,20 +48,15 @@ namespace Projet_ASL
 
         public override void Draw(GameTime gameTime)
         {
-            RasterizerState jeurasterizerstate = new RasterizerState();
-            jeurasterizerstate.CullMode = CullMode.CullCounterClockwiseFace;
-            GraphicsDevice.RasterizerState = jeurasterizerstate;
-
             foreach (ModelMesh maille in Modèle.Meshes)
             {
                 Matrix mondeLocal = TransformationsModèle[maille.ParentBone.Index] * GetMonde();
-                foreach (ModelMeshPart portionDeMaillage in maille.MeshParts)
+                foreach (BasicEffect effect in maille.Effects)
                 {
-                    BasicEffect effet = (BasicEffect)portionDeMaillage.Effect;
-                    effet.EnableDefaultLighting();
-                    effet.Projection = CaméraJeu.Projection;
-                    effet.View = CaméraJeu.Vue;
-                    effet.World = mondeLocal;
+                    effect.EnableDefaultLighting();
+                    effect.Projection = CaméraJeu.Projection;
+                    effect.View = CaméraJeu.Vue;
+                    effect.World = mondeLocal;
                 }
                 maille.Draw();
             }

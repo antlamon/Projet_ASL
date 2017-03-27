@@ -72,6 +72,7 @@
     <Compile Include="IDestructible.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="ObjetDeBase.cs" />
+    <Compile Include="ObjetDeDémo.cs" />
     <Compile Include="PrimitiveDeBase.cs" />
     <Compile Include="PrimitiveDeBaseAnimée.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

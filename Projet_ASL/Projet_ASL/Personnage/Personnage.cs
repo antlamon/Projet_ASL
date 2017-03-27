@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Projet_ASL
 {
-    abstract class Personnage : ObjetDeBase
+    abstract class Personnage : ObjetDeDémo
     {
         int ptsDeVie;
         public string Nom { get; protected set; }
@@ -40,7 +40,7 @@ namespace Projet_ASL
         public Armure Armure { get; private set; }
 
         protected Personnage(Game jeu, String nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, string nom, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
-            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale)
+            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, 1f/60f)
         {
             Nom = nom;
             Dextérité = dextérité;

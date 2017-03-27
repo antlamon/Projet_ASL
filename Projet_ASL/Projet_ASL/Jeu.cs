@@ -84,10 +84,11 @@ namespace Projet_ASL
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, Vector3.Up, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogue);
 
+            Components.Add(new Afficheur3D(this));
+
             CréationDuPanierDeServices();
 
             Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
-            Components.Add(new Afficheur3D(this));
             Components.Add(new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS));
             Components.Add(GestionInput);
             Components.Add(CaméraJeu);
@@ -161,11 +162,11 @@ namespace Projet_ASL
 
         private void DémarrerPhaseDeJeu()
         {
-            Guerrier pion = new Guerrier(this, "Guerrier", 0.03f, Vector3.Zero, Vector3.Zero, "bob", 0, 0, 0, 0, 1);
+            Guerrier pion = new Guerrier(this, "ship", 0.03f, Vector3.Zero, Vector3.Zero, "bob", 0, 0, 0, 0, 1);
             pion.DrawOrder = (int)OrdreDraw.MILIEU;
             Components.Add(pion);
 
-            pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(0, 0, 5), "ok", 0, 0, 0, 0, 1);
+            pion2 = new Mage(this, "ship", 0.03f, Vector3.Zero, new Vector3(0, 0, 5), "ok", 0, 0, 0, 0, 1);
             pion2.DrawOrder = (int)OrdreDraw.MILIEU;
             pion2.Visible = false;
             Components.Add(pion2);
