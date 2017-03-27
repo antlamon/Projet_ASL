@@ -102,7 +102,7 @@ namespace Projet_ASL
             GestionnaireDeTextures = new RessourcesManager<Texture2D>(this, "Textures");
             GestionnaireDeModèles = new RessourcesManager<Model>(this, "Models");
             //GestionnaireDeShaders = new RessourcesManager<Effect>(this, "Effects");
-            GestionInput = new InputManager(this);
+            GestionInput = new InputManager(this, CaméraJeu);
             GestionSprites = new SpriteBatch(GraphicsDevice);
 
             Services.AddService(typeof(RessourcesManager<SpriteFont>), GestionnaireDeFonts);
@@ -161,14 +161,14 @@ namespace Projet_ASL
 
         private void DémarrerPhaseDeJeu()
         {
-            Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, Vector3.Zero, "bob", 0, 0, 0, 0, 1);
+            Guerrier pion = new Guerrier(this, "Guerrier", 0.03f, Vector3.Zero, Vector3.Zero, "bob", 0, 0, 0, 0, 1);
             pion.DrawOrder = (int)OrdreDraw.MILIEU;
             Components.Add(pion);
 
-                pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(0, 0, 5), "ok", 0, 0, 0, 0, 1);
-                pion2.DrawOrder = (int)OrdreDraw.MILIEU;
+            pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(0, 0, 5), "ok", 0, 0, 0, 0, 1);
+            pion2.DrawOrder = (int)OrdreDraw.MILIEU;
             pion2.Visible = false;
-                Components.Add(pion2);
+            Components.Add(pion2);
         }
 
         private void GérerClavier()
