@@ -84,14 +84,13 @@ namespace Projet_ASL
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, Vector3.Up, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogue);
 
-            Components.Add(new Afficheur3D(this));
-
             CréationDuPanierDeServices();
 
             Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
             Components.Add(new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS));
             Components.Add(GestionInput);
             Components.Add(CaméraJeu);
+            Components.Add(new Afficheur3D(this));
             Components.Add(MenuAccueil);
 
             base.Initialize();
@@ -187,10 +186,6 @@ namespace Projet_ASL
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(couleur);
-            if (_managerNetwork.Active)
-            {
-                //base.Draw(gameTime);
-            }
             base.Draw(gameTime);
         }
     }

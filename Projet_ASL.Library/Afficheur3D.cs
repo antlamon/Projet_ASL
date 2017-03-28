@@ -33,12 +33,11 @@ namespace Projet_ASL
 
         public override void Initialize()
         {
-            estAffichéEnWireframe = false;
             JeuDepthBufferState = new DepthStencilState();
             JeuDepthBufferState.DepthBufferEnable = true;
             JeuRasterizerState = new RasterizerState();
             JeuRasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
-            JeuBlendState = BlendState.NonPremultiplied;
+            JeuBlendState = BlendState.Opaque;
             base.Initialize();
         }
 

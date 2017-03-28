@@ -30,11 +30,11 @@ namespace Projet_ASL
 
         public override void Initialize()
         {
+            base.Initialize();
             Monde = Matrix.Identity;
             Monde *= Matrix.CreateScale(Échelle);
             Monde *= Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z);
             Monde *= Matrix.CreateTranslation(Position);
-            base.Initialize();
         }
         protected override void LoadContent()
         {
@@ -43,7 +43,6 @@ namespace Projet_ASL
             Modèle = GestionnaireDeModèles.Find(NomModèle);
             TransformationsModèle = new Matrix[Modèle.Bones.Count];
             Modèle.CopyAbsoluteBoneTransformsTo(TransformationsModèle);
-            base.LoadContent();
         }
 
         public override void Draw(GameTime gameTime)
@@ -51,16 +50,16 @@ namespace Projet_ASL
             foreach (ModelMesh maille in Modèle.Meshes)
             {
                 Matrix mondeLocal = TransformationsModèle[maille.ParentBone.Index] * GetMonde();
-                foreach (BasicEffect effect in maille.Effects)
+                foreach (ModelMeshPart portionDeMaillage in maille.MeshParts)
                 {
-                    effect.EnableDefaultLighting();
-                    effect.Projection = CaméraJeu.Projection;
-                    effect.View = CaméraJeu.Vue;
-                    effect.World = mondeLocal;
+                    BasicEffect effet = (BasicEffect)portionDeMaillage.Effect;
+                    effet.EnableDefaultLighting();
+                    effet.Projection = CaméraJeu.Projection;
+                    effet.View = CaméraJeu.Vue;
+                    effet.World = mondeLocal;
                 }
                 maille.Draw();
             }
-            base.Draw(gameTime);
         }
 
         public virtual Matrix GetMonde()

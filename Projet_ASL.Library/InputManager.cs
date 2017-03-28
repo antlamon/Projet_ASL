@@ -100,6 +100,16 @@ namespace Projet_ASL
             return new Point(NouvelÉtatSouris.X, NouvelÉtatSouris.Y);
         }
 
+        public int GetAncienScrollWheelValue()
+        {
+            return AncienÉtatSouris.ScrollWheelValue;
+        }
+
+        public int GetNouveauScrollWheelValue()
+        {
+            return NouvelÉtatSouris.ScrollWheelValue;
+        }
+
         public Vector3 GetPositionSourisPlan()
         {
             Vector3 nearScreenPoint = new Vector3(NouvelÉtatSouris.X, NouvelÉtatSouris.Y, 0);

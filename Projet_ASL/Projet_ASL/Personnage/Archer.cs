@@ -18,28 +18,28 @@ namespace Projet_ASL
             return Dextérité;
         }
 
-        public void PluieDeFlèches(Tuile cible)
-        {
-            List<Personnage> cibles = new List<Personnage>();
-            List<Tuile> tuilesCibles = new List<Tuile>();
-            //Vector2 ciblePosition = cible.Position;
+        //public void PluieDeFlèches(Tuile cible)
+        //{
+        //    List<Personnage> cibles = new List<Personnage>();
+        //    List<Tuile> tuilesCibles = new List<Tuile>();
+        //    //Vector2 ciblePosition = cible.Position;
 
-            foreach(Tuile t in Tuiles)
-            {
-                if (t.Position == new Vector2(cible.Position.X + 1, cible.Position.Y + 1))  { tuilesCibles.Add(t); }
-                if (t.Position == new Vector2(cible.Position.X + 1, cible.Position.Y))      { tuilesCibles.Add(t); }
-                if (t.Position == new Vector2(cible.Position.X, cible.Position.Y + 1))      { tuilesCibles.Add(t); }
-                if (t.Position == new Vector2(cible.Position.X - 1, cible.Position.Y - 1))  { tuilesCibles.Add(t); }
-                if (t.Position == new Vector2(cible.Position.X - 1, cible.Position.Y))      { tuilesCibles.Add(t); }
-                if (t.Position == new Vector2(cible.Position.X, cible.Position.Y - 1))      { tuilesCibles.Add(t); }
-                if (t.Position == new Vector2(cible.Position.X + 1, cible.Position.Y - 1))  { tuilesCibles.Add(t); }
-                if (t.Position == new Vector2(cible.Position.X - 1, cible.Position.Y + 1))  { tuilesCibles.Add(t); }
-            }
+        //    foreach(Tuile t in Tuiles)
+        //    {
+        //        if (t.Position == new Vector2(cible.Position.X + 1, cible.Position.Y + 1))  { tuilesCibles.Add(t); }
+        //        if (t.Position == new Vector2(cible.Position.X + 1, cible.Position.Y))      { tuilesCibles.Add(t); }
+        //        if (t.Position == new Vector2(cible.Position.X, cible.Position.Y + 1))      { tuilesCibles.Add(t); }
+        //        if (t.Position == new Vector2(cible.Position.X - 1, cible.Position.Y - 1))  { tuilesCibles.Add(t); }
+        //        if (t.Position == new Vector2(cible.Position.X - 1, cible.Position.Y))      { tuilesCibles.Add(t); }
+        //        if (t.Position == new Vector2(cible.Position.X, cible.Position.Y - 1))      { tuilesCibles.Add(t); }
+        //        if (t.Position == new Vector2(cible.Position.X + 1, cible.Position.Y - 1))  { tuilesCibles.Add(t); }
+        //        if (t.Position == new Vector2(cible.Position.X - 1, cible.Position.Y + 1))  { tuilesCibles.Add(t); }
+        //    }
             
-            foreach()
-            {
-                if (t.)
-            }
-        }
+        //    foreach()
+        //    {
+        //        if (t.)
+        //    }
+        //}
     }
 }
