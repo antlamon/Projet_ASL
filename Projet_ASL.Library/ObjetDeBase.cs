@@ -6,8 +6,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Projet_ASL
 {
-    public class ObjetDeBase : Microsoft.Xna.Framework.DrawableGameComponent
+    public class ObjetDeBase : Microsoft.Xna.Framework.DrawableGameComponent, ICollisionable
     {
+        public BoundingSphere SphèreDeCollision { get; set; }
         string NomModèle { get; set; }
         RessourcesManager<Model> GestionnaireDeModèles { get; set; }
         Caméra CaméraJeu { get; set; }
@@ -30,12 +31,25 @@ namespace Projet_ASL
 
         public override void Initialize()
         {
+            CréerSphèreDeCollision();
             base.Initialize();
             Monde = Matrix.Identity;
             Monde *= Matrix.CreateScale(Échelle);
             Monde *= Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z);
             Monde *= Matrix.CreateTranslation(Position);
         }
+
+        void CréerSphèreDeCollision()
+        {
+            SphèreDeCollision = new BoundingSphere(new Vector3(Position.X,0,Position.Z), 1);
+        }
+
+        public bool EstEnCollision(object objet)
+        {
+            ObjetDeDémo personnage = objet as ObjetDeDémo;
+            return SphèreDeCollision.Intersects(personnage.SphèreDeCollision);
+        }
+
         protected override void LoadContent()
         {
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;

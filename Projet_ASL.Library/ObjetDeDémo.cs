@@ -54,10 +54,13 @@ namespace Projet_ASL
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             AncienneÉchelle = ÉchelleDémo;
             GérerClavier();
+
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 TempsÉcouléDepuisMAJ = 0;
                 GérerRotationDémo();
+                GérerPositionObjet();
+                SphèreDeCollision = new BoundingSphere(new Vector3(Position.X,0,Position.Z), 1);
             }
         }
 
