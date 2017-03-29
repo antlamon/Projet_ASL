@@ -90,7 +90,7 @@ namespace Projet_ASL
         {
             float TempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += TempsÉcoulé;
-            GestionEstEnZoom();
+            GererZoom();
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 if (GestionInput.EstEnfoncée(Keys.LeftShift) || GestionInput.EstEnfoncée(Keys.RightShift))
@@ -98,9 +98,8 @@ namespace Projet_ASL
                     GérerAccélération();
                     GérerDéplacement();
                     GérerRotation();
-                    ZoomScroll();
-                    CréerPointDeVue();
                 }
+                CréerPointDeVue();
                 TempsÉcouléDepuisMAJ = 0;
             }
             base.Update(gameTime);
@@ -164,12 +163,13 @@ namespace Projet_ASL
             CréerPointDeVue();
         }
 
-        private void GestionEstEnZoom()
+        private void GererZoom()
         {
             if (GestionInput.EstNouvelleTouche(Keys.Z))
             {
                 EstEnZoom = !EstEnZoom;
             }
+            ZoomScroll();
         }
         private void ZoomScroll()
         {
