@@ -33,8 +33,8 @@ namespace Projet_ASL
         Caméra CaméraJeu { get; set; }
         InputManager GestionInput { get; set; }
         États ÉtatJeu { get; set; }
-        private ManagerNetwork _managerNetwork;
-        private ManagerInput _managerInput;
+        ManagerNetwork _managerNetwork;
+        ManagerInput _managerInput;
 
         DialogueMenu MenuAccueil { get; set; }
 
@@ -78,19 +78,21 @@ namespace Projet_ASL
             //Vector3 positionObjet4 = new Vector3(0, -1.5f, 0);
             //Vector3 positionObjet5 = new Vector3(2, 0, 0);
             //Vector3 positionLumière = new Vector3(0, 0f, 3f);
-            Vector3 positionCaméra = new Vector3(0, 0, 5);
+            Vector3 positionCaméra = new Vector3(0, 20, 5);
             Vector3 cibleCaméra = new Vector3(0, 0, 0);
             Vector2 dimensionDialogue = new Vector2(Window.ClientBounds.Width / 3, Window.ClientBounds.Height);
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, Vector3.Up, INTERVALLE_MAJ_STANDARD);
-            MenuAccueil = new DialogueMenu(this, dimensionDialogue);
+            MenuAccueil = new DialogueMenu(this, dimensionDialogue, _managerNetwork);
 
             CréationDuPanierDeServices();
-
+            
             Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
             Components.Add(new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS));
+
+            Components.Add(new Afficheur3D(this)); //Ne pas mettre de sprite apres ca
             Components.Add(GestionInput);
             Components.Add(CaméraJeu);
-            Components.Add(new Afficheur3D(this));
+
             Components.Add(MenuAccueil);
 
             base.Initialize();
@@ -161,14 +163,18 @@ namespace Projet_ASL
 
         private void DémarrerPhaseDeJeu()
         {
-            Guerrier pion = new Guerrier(this, "ship", 0.03f, Vector3.Zero, Vector3.Zero, "bob", 0, 0, 0, 0, 1);
+            Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(-5,0,-4), "bob", 0, 0, 0, 0, 1);
             pion.DrawOrder = (int)OrdreDraw.MILIEU;
             Components.Add(pion);
 
-            pion2 = new Mage(this, "ship", 0.03f, Vector3.Zero, new Vector3(0, 0, 5), "ok", 0, 0, 0, 0, 1);
+            pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(-5, 0, 0), "ok", 0, 0, 0, 0, 1);
             pion2.DrawOrder = (int)OrdreDraw.MILIEU;
             pion2.Visible = false;
             Components.Add(pion2);
+
+            Archer pion3 = new Archer(this, "ArcherB", 0.03f, Vector3.Zero, new Vector3(-5,0,4), "Dunkey", 0, 0, 0, 0, 1);
+            pion3.DrawOrder = (int)OrdreDraw.MILIEU;
+            Components.Add(pion3);
         }
 
         private void GérerClavier()

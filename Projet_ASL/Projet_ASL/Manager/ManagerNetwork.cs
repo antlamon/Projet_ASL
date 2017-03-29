@@ -13,7 +13,7 @@ using Projet_ASL.Library;
 
 namespace Projet_ASL
 {
-    class ManagerNetwork
+    public class ManagerNetwork
     {
         private NetClient _client;
         public List<Player> Players { get; set; }
@@ -136,6 +136,15 @@ namespace Projet_ASL
             outMessage.Write((byte)PacketType.Message);
             outMessage.Write(message);
             _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendLogout()
+        {
+            NetOutgoingMessage outMessage = _client.CreateMessage();
+            outMessage.Write((byte)PacketType.Logout);
+            outMessage.Write(Username);
+            _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
+            _client.Disconnect("Thank you, come again");
         }
     }
 }

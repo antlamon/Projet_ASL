@@ -24,6 +24,8 @@ namespace Projet_ASL.Server
                     return new InputCommand();
                 case PacketType.Message:
                     return new MessageCommand();
+                case PacketType.Logout:
+                    return new LogoutCommand();
                 default:
                     throw new ArgumentOutOfRangeException("packetType");
             }

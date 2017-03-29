@@ -17,8 +17,9 @@ namespace Projet_ASL
         public bool ÉtatInventaire { get; set; }
         public BoutonDeCommande BtnQuitter { get; private set; }
         SpriteFont Police { get; set; }
+        ManagerNetwork _managerNetwork { get; set; }
 
-        public DialogueMenu(Game jeu, Vector2 dimensionDialogue)
+        public DialogueMenu(Game jeu, Vector2 dimensionDialogue, ManagerNetwork managerNetwork)
            : base(jeu)
         {
             DimensionDialogue = dimensionDialogue;
@@ -26,6 +27,7 @@ namespace Projet_ASL
                                                  (int)DimensionDialogue.X, (int)DimensionDialogue.Y);
             ÉtatJouer = false;
             ÉtatInventaire = false;
+            _managerNetwork = managerNetwork;
         }
 
         public override void Initialize()
@@ -65,6 +67,7 @@ namespace Projet_ASL
 
         private void Quitter()
         {
+            _managerNetwork.SendLogout();
             Game.Exit();
         }
 

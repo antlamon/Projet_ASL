@@ -26,7 +26,6 @@ namespace Projet_ASL.Server
             _players = new List<Player>();
             _config = new NetPeerConfiguration("networkGame") { Port = 5013 };
             _config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
-            _config.DisableMessageType(NetIncomingMessageType.DebugMessage);
             _server = new NetServer(_config);
         }
 
