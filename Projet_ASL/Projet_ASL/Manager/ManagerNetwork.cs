@@ -89,12 +89,20 @@ namespace Projet_ASL
                     case PacketType.AllPlayers:
                         ReceiveAllPlayers(inc);
                         break;
+                    case PacketType.Logout:
+                        RemoveDisconnectedPlayer(inc);
+                            break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
         }
 
+        private void RemoveDisconnectedPlayer(NetIncomingMessage inc)
+        {
+            string username = inc.ReadString();
+            Players.Remove(Players.Find(p => p.Username == username));
+        }
 
         private void ReceiveAllPlayers(NetIncomingMessage inc)
         {

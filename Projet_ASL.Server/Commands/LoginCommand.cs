@@ -31,8 +31,8 @@ namespace Projet_ASL.Server.Commands
                     outmsg.WriteAllProperties(players[n]);
                 }
                 server.SendMessage(outmsg, inc.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
-                //var command = new PlayerPositionCommand();
-                //command.Run(server, inc, player, players);
+                var command = new PlayerPositionCommand();
+                command.Run(server, inc, player, players);
             }
             else
             {

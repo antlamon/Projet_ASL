@@ -59,7 +59,7 @@ namespace Projet_ASL
             {
                 TempsÉcouléDepuisMAJ = 0;
                 GérerRotationDémo();
-                GérerPositionObjet();
+                //GérerPositionObjet();
                 SphèreDeCollision = new BoundingSphere(new Vector3(Position.X,0,Position.Z), 1);
             }
         }

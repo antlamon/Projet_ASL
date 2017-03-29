@@ -25,11 +25,11 @@ namespace Projet_ASL
             List<Personnage> cibles = new List<Personnage>();
             BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_PLUIE_DE_FLÈCHES);
             
-            foreach(Personnage p in Personnages)
-            {
-                if(portée.Intersects(p.SphèreDeCollision))
-                { cibles.Add(p); }
-            }
+            //foreach(Personnage p in Personnages)
+            //{
+            //    if(portée.Intersects(p.SphèreDeCollision))
+            //    { cibles.Add(p); }
+            //}
             foreach(Personnage cible in cibles)
             {
                 cible.ModifierVitalité((int)(DÉGAT_PLUIE_DE_FLÈCHES * Attaquer()));
