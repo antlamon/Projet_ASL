@@ -90,7 +90,7 @@ namespace Projet_ASL
         {
             float TempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += TempsÉcoulé;
-            GestionZoom();
+            GestionEstEnZoom();
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 if (GestionInput.EstEnfoncée(Keys.LeftShift) || GestionInput.EstEnfoncée(Keys.RightShift))
@@ -98,6 +98,7 @@ namespace Projet_ASL
                     GérerAccélération();
                     GérerDéplacement();
                     GérerRotation();
+                    ZoomScroll();
                     CréerPointDeVue();
                 }
                 TempsÉcouléDepuisMAJ = 0;
@@ -163,15 +164,18 @@ namespace Projet_ASL
             CréerPointDeVue();
         }
 
-        private void GestionZoom()
+        private void GestionEstEnZoom()
         {
             if (GestionInput.EstNouvelleTouche(Keys.Z))
             {
                 EstEnZoom = !EstEnZoom;
             }
+        }
+        private void ZoomScroll()
+        {
             if (GestionInput.GetNouveauScrollWheelValue() != GestionInput.GetAncienScrollWheelValue())
             {
-                if(GestionInput.GetNouveauScrollWheelValue() < GestionInput.GetAncienScrollWheelValue())
+                if (GestionInput.GetNouveauScrollWheelValue() < GestionInput.GetAncienScrollWheelValue())
                 {
                     Position -= VitesseTranslation * Direction;
                 }
