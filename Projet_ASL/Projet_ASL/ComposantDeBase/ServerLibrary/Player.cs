@@ -13,7 +13,6 @@ namespace Projet_ASL
     public class Player
     {
         public string Username { get; set; }
-
         public int XPosition { get; set; }
         public int YPosition { get; set; }
 

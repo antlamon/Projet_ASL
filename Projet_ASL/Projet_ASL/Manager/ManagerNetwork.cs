@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Lidgren.Network;
 using Microsoft.Xna.Framework.Input;
-using Projet_ASL.Library;
 
 namespace Projet_ASL
 {

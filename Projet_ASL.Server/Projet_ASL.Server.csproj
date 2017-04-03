@@ -84,9 +84,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Projet_ASL.Library\Projet_ASL.Library.csproj">
-      <Project>{2265461f-8740-4a72-8956-e07eeff60055}</Project>
-      <Name>Projet_ASL.Library</Name>
+    <ProjectReference Include="..\Projet_ASL\Projet_ASL\Projet_ASL.csproj">
+      <Project>{783dfc34-b2db-425c-97c2-9fc5bc07f03e}</Project>
+      <Name>Projet_ASL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

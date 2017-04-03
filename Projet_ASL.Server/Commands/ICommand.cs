@@ -5,7 +5,7 @@
 // Youtube channel - https://www.youtube.com/user/Maloooon
 //------------------------------------------------------
 using System.Collections.Generic;
-using Projet_ASL.Library;
+using Projet_ASL;
 using Lidgren.Network;
 
 namespace Projet_ASL.Server.Commands

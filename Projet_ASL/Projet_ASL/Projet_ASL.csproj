@@ -75,6 +75,27 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComposantDeBase\Afficheur3D.cs" />
+    <Compile Include="ComposantDeBase\AfficheurFPS.cs" />
+    <Compile Include="ComposantDeBase\ArrièrePlan.cs" />
+    <Compile Include="ComposantDeBase\ArrièrePlanDéroulant.cs" />
+    <Compile Include="ComposantDeBase\ArrièrePlanSpatial.cs" />
+    <Compile Include="ComposantDeBase\BoutonDeCommande.cs" />
+    <Compile Include="ComposantDeBase\Caméra.cs" />
+    <Compile Include="ComposantDeBase\CaméraFixe.cs" />
+    <Compile Include="ComposantDeBase\CaméraSubjective.cs" />
+    <Compile Include="ComposantDeBase\ICollisionable.cs" />
+    <Compile Include="ComposantDeBase\IDestructible.cs" />
+    <Compile Include="ComposantDeBase\InputManager.cs" />
+    <Compile Include="ComposantDeBase\ObjetDeBase.cs" />
+    <Compile Include="ComposantDeBase\ObjetDeDémo.cs" />
+    <Compile Include="ComposantDeBase\PrimitiveDeBase.cs" />
+    <Compile Include="ComposantDeBase\PrimitiveDeBaseAnimée.cs" />
+    <Compile Include="ComposantDeBase\RessourceDeBase.cs" />
+    <Compile Include="ComposantDeBase\RessourcesManager.cs" />
+    <Compile Include="ComposantDeBase\ServerLibrary\Data.cs" />
+    <Compile Include="ComposantDeBase\ServerLibrary\Player.cs" />
+    <Compile Include="ComposantDeBase\TexteCentré.cs" />
     <Compile Include="DialogueMenu.cs" />
     <Compile Include="Items\Arme.cs" />
     <Compile Include="Items\Armure.cs" />
@@ -100,10 +121,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Projet_ASL.Library\Projet_ASL.Library.csproj">
-      <Project>{2265461f-8740-4a72-8956-e07eeff60055}</Project>
-      <Name>Projet_ASL.Library</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Projet_ASLContent\Projet_ASLContent.contentproj">
       <Name>Projet_ASLContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
