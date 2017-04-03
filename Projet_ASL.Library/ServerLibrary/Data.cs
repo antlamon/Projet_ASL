@@ -4,7 +4,7 @@
 //
 // Youtube channel - https://www.youtube.com/user/Maloooon
 //------------------------------------------------------
-namespace Projet_ASL.Library
+namespace Projet_ASL
 {
     public enum PacketType
     {

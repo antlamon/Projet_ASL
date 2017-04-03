@@ -58,6 +58,7 @@
       <HintPath>..\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -70,11 +71,12 @@
     <Compile Include="Commands\AllPlayersCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\InputCommand.cs" />
+    <Compile Include="Commands\InputVectorCommand.cs" />
     <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="Commands\LogoutCommand.cs" />
     <Compile Include="Commands\MessageCommand.cs" />
     <Compile Include="Commands\PlayerPositionCommand.cs" />
-    <Compile Include="Managers\ManagerCollision.cs" />
+    <Compile Include="Managers\ManagerCollisionDéplacement.cs" />
     <Compile Include="PacketFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,9 +86,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Projet_ASL.Library\Projet_ASL.Library.csproj">
-      <Project>{2265461f-8740-4a72-8956-e07eeff60055}</Project>
-      <Name>Projet_ASL.Library</Name>
+    <ProjectReference Include="..\Projet_ASL\Projet_ASL\Projet_ASL.csproj">
+      <Project>{783dfc34-b2db-425c-97c2-9fc5bc07f03e}</Project>
+      <Name>Projet_ASL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

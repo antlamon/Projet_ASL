@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Projet_ASL
 {
-    abstract class Personnage : ObjetDeDémo
+    public abstract class Personnage : ObjetDeDémo
     {
         int ptsDeVie;
         public string Nom { get; protected set; }

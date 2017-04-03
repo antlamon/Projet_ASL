@@ -4,24 +4,25 @@
 //
 // Youtube channel - https://www.youtube.com/user/Maloooon
 //------------------------------------------------------
-
+using System.Collections.Generic;
 using System.Xml;
+using Microsoft.Xna.Framework;
 
 
 namespace Projet_ASL
 {
     public class Player
     {
+        const int NB_PERSONNAGE = 4;
         public string Username { get; set; }
-
+        public List<Personnage> Personnages { get; set; }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
 
-        public Player(string username, int xPosition, int yPosition)
+        public Player(string username)
         {
             Username = username;
-            XPosition = xPosition;
-            YPosition = yPosition;
+            Personnages = new List<Personnage>(NB_PERSONNAGE);
         }
 
         public Player() { }

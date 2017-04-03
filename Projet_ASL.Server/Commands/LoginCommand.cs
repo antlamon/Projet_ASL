@@ -6,7 +6,7 @@
 //------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using Projet_ASL.Library;
+using Projet_ASL;
 using Lidgren.Network;
 
 namespace Projet_ASL.Server.Commands
@@ -43,12 +43,7 @@ namespace Projet_ASL.Server.Commands
         private Player CreatePlayer(NetIncomingMessage inc, List<Player> players)
         {
             var random = new Random();
-            var player = new Player
-            {
-                Username = inc.ReadString(),
-                XPosition = random.Next(0, 750),
-                YPosition = random.Next(0, 420)
-            };
+            var player = new Player(inc.ReadString());
             players.Add(player);
             return player;
         }

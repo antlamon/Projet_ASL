@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Projet_ASL
 {
-    class Arme : Item
+    public class Arme : Item
     {
         int Dextérité { get; set; }
         int Force { get; set; }
