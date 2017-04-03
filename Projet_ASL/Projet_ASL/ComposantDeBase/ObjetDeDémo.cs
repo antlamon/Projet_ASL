@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Projet_ASL
@@ -59,9 +60,13 @@ namespace Projet_ASL
             {
                 TempsÉcouléDepuisMAJ = 0;
                 GérerRotationDémo();
-                //GérerPositionObjet();
                 SphèreDeCollision = new BoundingSphere(new Vector3(Position.X,0,Position.Z), 1);
             }
+        }
+
+        public void GérerPositionObjet(Vector3 nouvellePosition)
+        {
+            Position = nouvellePosition;
         }
 
         private void GérerClavier()

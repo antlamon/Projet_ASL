@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lidgren.Network;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Projet_ASL
@@ -119,8 +120,13 @@ namespace Projet_ASL
             if (Players.Any(p => p.Username == player.Username))
             {
                 var oldPlayer = Players.FirstOrDefault(p => p.Username == player.Username);
-                oldPlayer.XPosition = player.XPosition;
-                oldPlayer.YPosition = player.YPosition;
+                for (int i = 0; i < player.Personnages.Count; ++i)
+                {
+                    if(player.Personnages[i].Position != oldPlayer.Personnages[i].Position)
+                    {
+                        oldPlayer.Personnages[i].GérerPositionObjet(player.Personnages[i].Position);
+                    }
+                }
             }
             else
             {
@@ -135,6 +141,18 @@ namespace Projet_ASL
             outmessage.Write((byte)key);
             outmessage.Write(Username);
             _client.SendMessage(outmessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendNewPosition(Vector3 position, int numéroJoueur)
+        {
+            var outMessage = _client.CreateMessage();
+            outMessage.Write((byte)PacketType.InputVector);
+            outMessage.Write(position.X);
+            outMessage.Write(position.Z);
+            outMessage.Write(Username);
+            outMessage.Write(numéroJoueur);
+            _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
+
         }
 
         public void SendMesage(string message)

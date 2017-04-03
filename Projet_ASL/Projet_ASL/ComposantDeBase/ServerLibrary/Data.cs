@@ -12,6 +12,7 @@ namespace Projet_ASL
         PlayerPosition,
         AllPlayers,
         Input,
+        InputVector,
         Message,
         Logout
     }

@@ -58,6 +58,7 @@
       <HintPath>..\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -70,11 +71,12 @@
     <Compile Include="Commands\AllPlayersCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\InputCommand.cs" />
+    <Compile Include="Commands\InputVectorCommand.cs" />
     <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="Commands\LogoutCommand.cs" />
     <Compile Include="Commands\MessageCommand.cs" />
     <Compile Include="Commands\PlayerPositionCommand.cs" />
-    <Compile Include="Managers\ManagerCollision.cs" />
+    <Compile Include="Managers\ManagerCollisionDéplacement.cs" />
     <Compile Include="PacketFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
