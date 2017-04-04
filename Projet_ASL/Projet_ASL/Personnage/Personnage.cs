@@ -104,5 +104,28 @@ namespace Projet_ASL
         }
 
         public abstract void EnleverDebuffs();
+
+        public void Clarité(Personnage cible)
+        {
+            cible.EnleverDebuffs();
+        }
+
+        public void BouclierDivin(Personnage cible)
+        {
+            cible._BouclierDivin = true;
+        }
+
+        public void FreezeDontMove(Personnage cible)
+        {
+            cible._Frozen = true;
+        }
+
+        public void Brasier(List<Personnage> cibles)
+        {
+            foreach(Personnage cible in cibles)
+            {
+                cible._EnFeu = true;
+            }
+        }
     }
 }

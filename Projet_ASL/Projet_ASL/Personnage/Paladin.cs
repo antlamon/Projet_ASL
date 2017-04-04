@@ -17,5 +17,12 @@ namespace Projet_ASL
         {
             return Force;
         }
+
+        public override void EnleverDebuffs()
+        {
+            _EnFeu = false;
+            _Frozen = false;
+            _BouclierDivin = false;
+        }
     }
 }
