@@ -11,6 +11,7 @@ namespace Projet_ASL
         const int RAYON_PLUIE_DE_FLÈCHES = 10;
         const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
         const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
+        
         public Archer(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, string nom, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, nom, force, dextérité, intelligence, sagesse, ptsDeVie)
         {
@@ -55,6 +56,13 @@ namespace Projet_ASL
             dégats = (int)(DÉGATS_FLÈCHE_PERCANTE * Attaquer());
 
             return cibles;
+        }
+
+        public override void EnleverDebuffs()
+        {
+            _EnFeu = false;
+            _Frozen = false;
+            _BouclierDivin = false;
         }
     }
 }

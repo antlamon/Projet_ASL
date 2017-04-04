@@ -16,7 +16,7 @@ namespace Projet_ASL
 
         bool satanMode;
 
-        public bool SatanMode
+        public bool _SatanMode
         {
             get { return satanMode; }
             private set
@@ -74,6 +74,14 @@ namespace Projet_ASL
         {
             vieVolée = -(int)(RATIO_VOL_DE_VIE * Attaquer());
             return Attaquer();
+        }
+
+        public override void EnleverDebuffs()
+        {
+            _EnFeu = false;
+            _Frozen = false;
+            _BouclierDivin = false;
+            _SatanMode = false;
         }
     }
 }

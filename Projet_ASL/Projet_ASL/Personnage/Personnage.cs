@@ -38,6 +38,24 @@ namespace Projet_ASL
         public int Niveau { get; private set; }
         public Arme Arme { get; private set; }
         public Armure Armure { get; private set; }
+        bool frozen;
+        bool enFeu;
+        bool bouclierDivin;
+        public bool _Frozen
+        {
+            get { return frozen; }
+            protected set { frozen = value; }
+        }
+        public bool _EnFeu
+        {
+            get { return enFeu; }
+            protected set { enFeu = value; }
+        }
+        public bool _BouclierDivin
+        {
+            get { return bouclierDivin; }
+            protected set { bouclierDivin = value; }
+        }
 
         protected Personnage(Game jeu, String nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, string nom, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, 1f/60f)
@@ -84,5 +102,7 @@ namespace Projet_ASL
             }
             PtsDeVie -= modificationVitalité;
         }
+
+        public abstract void EnleverDebuffs();
     }
 }

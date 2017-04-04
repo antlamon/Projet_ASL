@@ -175,6 +175,11 @@ namespace Projet_ASL
             Archer pion3 = new Archer(this, "ArcherB", 0.03f, Vector3.Zero, new Vector3(-5,0,4), "Dunkey", 0, 0, 0, 0, 1);
             pion3.DrawOrder = (int)OrdreDraw.MILIEU;
             Components.Add(pion3);
+
+            // Il faudrait implémenter un compteur de tours pour compter les tours des debuffs, ex. Folie, Freeze...
+            // Je pense que l'idéal serait de créer une classe qui le ferait comme ça on pourrait créer une instance
+            // chaque fois qu'un des sorts qui appliquent un debuff est lancé... J'avais pensé au départ à un booléen 
+            // pour chaque sort mais il est possible que le même sort soit lancé plus d'une fois a différents personnages
         }
 
         private void GérerClavier()
