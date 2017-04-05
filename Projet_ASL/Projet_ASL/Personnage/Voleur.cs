@@ -17,5 +17,11 @@ namespace Projet_ASL
         {
             return Dextérité;
         }
+        public override void EnleverDebuffs()
+        {
+            _EnFeu = false;
+            _Frozen = false;
+            _BouclierDivin = false;
+        }
     }
 }

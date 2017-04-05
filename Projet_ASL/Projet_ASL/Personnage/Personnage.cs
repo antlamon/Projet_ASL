@@ -127,5 +127,9 @@ namespace Projet_ASL
                 cible._EnFeu = true;
             }
         }
+        public void ChangerVitalité(int nouvelleVitalité)
+        {
+            PtsDeVie = nouvelleVitalité;
+        }
     }
 }

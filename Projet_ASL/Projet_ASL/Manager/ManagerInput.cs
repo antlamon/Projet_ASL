@@ -22,11 +22,11 @@ namespace Projet_ASL
 
         public void Update(double gameTime)
         {
-            var state = Keyboard.GetState(); 
-            CheckKeyState(Keys.Down,state);
-            CheckKeyState(Keys.Up, state);
-            CheckKeyState(Keys.Left, state);
-            CheckKeyState(Keys.Right, state);
+            //var state = Keyboard.GetState(); 
+            //CheckKeyState(Keys.Down,state);
+            //CheckKeyState(Keys.Up, state);
+            //CheckKeyState(Keys.Left, state);
+            //CheckKeyState(Keys.Right, state);
         }
 
         private void CheckKeyState(Keys key, KeyboardState state)

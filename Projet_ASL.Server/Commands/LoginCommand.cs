@@ -13,6 +13,8 @@ namespace Projet_ASL.Server.Commands
 {
     class LoginCommand : ICommand
     {
+        const int POSITION_X_DEPART = 70;
+        const int POSITION_Y_DEPART = -15;
         public void Run(NetServer server, NetIncomingMessage inc, Player player, List<Player> players)
         {
             Console.WriteLine("New connection...");
@@ -42,10 +44,19 @@ namespace Projet_ASL.Server.Commands
 
         private Player CreatePlayer(NetIncomingMessage inc, List<Player> players)
         {
-            var random = new Random();
-            var player = new Player(inc.ReadString());
+            var player = new Player();
+            inc.ReadAllProperties(player);
+            CreatePosition(player, players);
             players.Add(player);
             return player;
+        }
+
+        private void CreatePosition(Player player, List<Player> players)
+        {
+            for(int i = 0; i < player.Personnages.Count; ++i)
+            {
+                player.Personnages[i].GérerPositionObjet(new Microsoft.Xna.Framework.Vector3(players.Count == 0 ? -POSITION_X_DEPART : POSITION_X_DEPART, 0, POSITION_Y_DEPART + 10 * i));
+            }
         }
 
     }

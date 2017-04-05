@@ -37,18 +37,19 @@ namespace Projet_ASL
         ManagerInput _managerInput;
 
         DialogueMenu MenuAccueil { get; set; }
+        DialogueInventaire MenuInventaire { get; set; }
 
         private Texture2D _texture; //For test
         private SpriteFont _font; //For test
-        private Mage pion2; //for test
-        private Color couleur;
+        //private Mage pion2; //for test
+        //private Color couleur;
 
         public Jeu()
             : base()
         {
             PériphériqueGraphique = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            _managerNetwork = new ManagerNetwork();
+            _managerNetwork = new ManagerNetwork(this);
             _managerInput = new ManagerInput(_managerNetwork);
             PériphériqueGraphique.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
@@ -63,14 +64,14 @@ namespace Projet_ASL
         /// </summary>
         protected override void Initialize()
         {
-            if (_managerNetwork.Start())
-            {
-                couleur = Color.Black;
-            }
-            else
-            {
-                couleur = Color.Red;
-            }
+            //if (_managerNetwork.Start())
+            //{
+            //    couleur = Color.Black;
+            //}
+            //else
+            //{
+            //    couleur = Color.Red;
+            //}
 
             //Vector3 positionObjet1 = new Vector3(-2, 0, 0);
             //Vector3 positionObjet2 = new Vector3(0, 1.5f, 0);
@@ -80,9 +81,11 @@ namespace Projet_ASL
             //Vector3 positionLumière = new Vector3(0, 0f, 3f);
             Vector3 positionCaméra = new Vector3(0, 20, 5);
             Vector3 cibleCaméra = new Vector3(0, 0, 0);
-            Vector2 dimensionDialogue = new Vector2(Window.ClientBounds.Width / 3, Window.ClientBounds.Height);
+            Vector2 dimensionDialogueMenu = new Vector2(Window.ClientBounds.Width / 3, Window.ClientBounds.Height);
+            Vector2 dimensionDialogueInventaire = new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height / 2);
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, Vector3.Up, INTERVALLE_MAJ_STANDARD);
-            MenuAccueil = new DialogueMenu(this, dimensionDialogue, _managerNetwork);
+            MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
+            MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
 
             CréationDuPanierDeServices();
             
@@ -94,6 +97,7 @@ namespace Projet_ASL
             Components.Add(CaméraJeu);
 
             Components.Add(MenuAccueil);
+            Components.Add(MenuInventaire);
 
             base.Initialize();
         }
@@ -131,50 +135,65 @@ namespace Projet_ASL
         protected override void Update(GameTime gameTime)
         {
             GérerClavier();
-            GérerTransition();
-            _managerNetwork.Update();
-            _managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
+            GérerTransition(gameTime);
 
             base.Update(gameTime);
         }
 
-        private void GérerTransition()
+        private void GérerTransition(GameTime gameTime)
         {
             switch (ÉtatJeu)
             {
                 case États.MENU:
+                    MenuAccueil.BtnJouer.Enabled = MenuInventaire._player.Personnages.Count == 4;
                     if (MenuAccueil.ÉtatJouer)
                     {
-                        ÉtatJeu = États.JEU;
-                        DémarrerPhaseDeJeu();
+                        ÉtatJeu = États.CONNEXION;
                         MenuAccueil.VoirBouttonMenu(false);
                     }
                     if (MenuAccueil.ÉtatInventaire)
                     {
                         ÉtatJeu = États.INVENTAIRE;
                         MenuAccueil.VoirBouttonMenu(false);
+                        MenuInventaire.VoirBoutonInventaire(true);
                     }
                     break;
+                case États.CONNEXION:
+                    _managerNetwork.Start(MenuInventaire._player);
+                    ÉtatJeu = États.JEU;
+                    DémarrerPhaseDeJeu();
+                    break;
                 case États.JEU:
-                    pion2.Visible = _managerNetwork.Players.Count > 1;
+                    _managerNetwork.Update();
+                    _managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
+                    //pion2.Visible = _managerNetwork.Players.Count > 1;
+                    break;
+                case États.INVENTAIRE:
+                    if (MenuInventaire.ÉtatMenu)
+                    {
+                        ÉtatJeu = États.MENU;
+                        MenuInventaire.VoirBoutonInventaire(false);
+                        MenuAccueil.VoirBouttonMenu(true);
+                    }
+
                     break;
             }
         }
 
         private void DémarrerPhaseDeJeu()
         {
-            Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(-5,0,-4), "bob", 0, 0, 0, 0, 1);
-            pion.DrawOrder = (int)OrdreDraw.MILIEU;
-            Components.Add(pion);
+            //Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(-5,0,-4), "Guerrier", 0, 0, 0, 0, 1);
+            //pion.DrawOrder = (int)OrdreDraw.MILIEU;
+            //Components.Add(pion);
 
-            pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(-5, 0, 0), "ok", 0, 0, 0, 0, 1);
-            pion2.DrawOrder = (int)OrdreDraw.MILIEU;
-            pion2.Visible = false;
-            Components.Add(pion2);
+            //pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(-5, 0, 0), "Mage", 0, 0, 0, 0, 1);
+            //pion2.DrawOrder = (int)OrdreDraw.MILIEU;
+            //pion2.Visible = false;
+            //Components.Add(pion2);
 
-            Archer pion3 = new Archer(this, "ArcherB", 0.03f, Vector3.Zero, new Vector3(-5,0,4), "Dunkey", 0, 0, 0, 0, 1);
-            pion3.DrawOrder = (int)OrdreDraw.MILIEU;
-            Components.Add(pion3);
+            //Archer pion3 = new Archer(this, "ArcherB", 0.03f, Vector3.Zero, new Vector3(-5,0,4), "Archer", 0, 0, 0, 0, 1);
+            //pion3.DrawOrder = (int)OrdreDraw.MILIEU;
+            //Components.Add(pion3);
 
             // Il faudrait implémenter un compteur de tours pour compter les tours des debuffs, ex. Folie, Freeze...
             // Je pense que l'idéal serait de créer une classe qui le ferait comme ça on pourrait créer une instance
@@ -196,7 +215,7 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(couleur);
+            GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);
         }
     }

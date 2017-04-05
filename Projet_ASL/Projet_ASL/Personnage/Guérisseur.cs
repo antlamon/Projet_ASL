@@ -28,12 +28,13 @@ namespace Projet_ASL
         public Guérisseur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, string nom, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, nom, force, dextérité, intelligence, sagesse, ptsDeVie)
         {
+            _SatanMode = false;
         }
 
         public override int Attaquer()
         {
             int attaque = -Sagesse;
-            if(SatanMode)
+            if(_SatanMode)
             {
                 attaque = (int)(DÉGATS_SATAN_MODE * Sagesse);
             }

@@ -24,7 +24,7 @@ namespace Projet_ASL.Server.Commands
             }
             Personnage pion = player.Personnages[inc.ReadInt32()];
 
-            if (ManagerCollisionDéplacement.CheckCollisionDéplacement(pion.Position,déplacement))
+            if (ManagerDéplacement.CheckDéplacement(pion.Position,déplacement))
             {
                 pion.GérerPositionObjet(déplacement);
 

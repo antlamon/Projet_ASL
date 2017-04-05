@@ -51,16 +51,16 @@ namespace Projet_ASL.Server.Commands
                     break;
             }
 
-            if (!ManagerCollision.CheckCollision(new Rectangle(player.XPosition + x, player.YPosition + y, 100, 50),
-                player.Username, players))
-            {
-                player.XPosition += x;
-                player.YPosition += y;
+            //if (!ManagerCollision.CheckCollision(new Rectangle(player.XPosition + x, player.YPosition + y, 100, 50),
+            //    player.Username, players))
+            //{
+            //    player.XPosition += x;
+            //    player.YPosition += y;
 
 
-                var command = new PlayerPositionCommand();
-                command.Run(server, inc, player, players);
-            }
+            //    var command = new PlayerPositionCommand();
+            //    command.Run(server, inc, player, players);
+            //}
         }
     }
 }

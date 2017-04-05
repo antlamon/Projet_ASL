@@ -96,6 +96,7 @@
     <Compile Include="ComposantDeBase\ServerLibrary\Data.cs" />
     <Compile Include="ComposantDeBase\ServerLibrary\Player.cs" />
     <Compile Include="ComposantDeBase\TexteCentré.cs" />
+    <Compile Include="DialogueInventaire.cs" />
     <Compile Include="DialogueMenu.cs" />
     <Compile Include="Items\Arme.cs" />
     <Compile Include="Items\Armure.cs" />

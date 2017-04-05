@@ -21,21 +21,24 @@ namespace Projet_ASL
         public string Username { get; set; }
 
         public bool Active { get; set; }
+        Game Jeu { get; set; }
 
-        public ManagerNetwork()
+        public ManagerNetwork(Game jeu)
         {
             Players = new List<Player>();
+            Jeu = jeu;
         }
 
-        public bool Start()
+        public bool Start(Player player)
         {
             var random = new Random(); 
             _client = new NetClient(new NetPeerConfiguration("networkGame"));
             _client.Start();
             Username = "name_" + random.Next(0, 100);
+            player.Username = Username;
             var outmsg = _client.CreateMessage();
             outmsg.Write((byte)PacketType.Login);
-            outmsg.Write(Username);
+            outmsg.WriteAllProperties(player);
             _client.Connect("localHost", 5013, outmsg);
             return EsablishInfo(); 
         }
@@ -126,11 +129,19 @@ namespace Projet_ASL
                     {
                         oldPlayer.Personnages[i].GérerPositionObjet(player.Personnages[i].Position);
                     }
+                    if (player.Personnages[i].PtsDeVie != oldPlayer.Personnages[i].PtsDeVie)
+                    {
+                        oldPlayer.Personnages[i].ChangerVitalité(player.Personnages[i].PtsDeVie);
+                    }
                 }
             }
             else
             {
                 Players.Add(player);
+                foreach(Personnage p in player.Personnages)
+                {
+                    Jeu.Components.Add(p);
+                }
             }
         }
 

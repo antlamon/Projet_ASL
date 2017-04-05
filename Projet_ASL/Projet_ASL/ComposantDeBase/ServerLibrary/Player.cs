@@ -25,7 +25,10 @@ namespace Projet_ASL
             Personnages = new List<Personnage>(NB_PERSONNAGE);
         }
 
-        public Player() { }
+        public Player()
+        {
+            Personnages = new List<Personnage>(NB_PERSONNAGE);
+        }
 
     }
 }
