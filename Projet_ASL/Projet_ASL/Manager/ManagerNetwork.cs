@@ -39,8 +39,18 @@ namespace Projet_ASL
             var outmsg = _client.CreateMessage();
             outmsg.Write((byte)PacketType.Login);
             outmsg.WriteAllProperties(player);
+            foreach(Personnage p in player.Personnages)
+            {
+                outmsg.Write(ObtenirType(p));
+                outmsg.WriteAllProperties(p);
+            }
             _client.Connect("localHost", 5013, outmsg);
             return EsablishInfo(); 
+        }
+
+        public string ObtenirType(Personnage p)
+        {
+            return p.GetType().ToString();
         }
 
         private bool EsablishInfo()

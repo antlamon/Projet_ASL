@@ -32,6 +32,8 @@ namespace Projet_ASL
             IntervalleMAJ = intervalleMAJ;
         }
 
+        public ObjetDeDémo() { }
+
         public override void Initialize()
         {
             base.Initialize();

@@ -16,6 +16,7 @@ namespace Projet_ASL
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, nom, force, dextérité, intelligence, sagesse, ptsDeVie)
         {
         }
+        public Mage() { }
 
         public override int Attaquer()
         {

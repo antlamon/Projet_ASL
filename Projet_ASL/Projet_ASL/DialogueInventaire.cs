@@ -97,6 +97,7 @@ namespace Projet_ASL
         private void Archer()
         {
             ClickArcher = !ClickArcher;
+            BtnArcher.ChangerCouleurActive();
             if (ClickArcher)
             {
                 Archer archer = new Archer(Game, "ArcherB", 0.03f, Vector3.Zero, Vector3.Zero, "Archer", 0, 0, 0, 0, 1);
@@ -112,6 +113,7 @@ namespace Projet_ASL
         private void Guerrier()
         {
             ClickGuerrier = !ClickGuerrier;
+            BtnGuerrier.ChangerCouleurActive();
             if (ClickGuerrier)
             {
                 Guerrier guerrier = new Guerrier(Game, "GuerrierB", 0.03f, Vector3.Zero, Vector3.Zero, "Guerrier", 0, 0, 0, 0, 1);
@@ -126,6 +128,7 @@ namespace Projet_ASL
         private void Guérisseur()
         {
             ClickGuérisseur = !ClickGuérisseur;
+            BtnGuérisseur.ChangerCouleurActive();
             if (ClickGuérisseur)
             {
                 Guérisseur guérisseur = new Guérisseur(Game, "ArcherB", 0.03f, Vector3.Zero, Vector3.Zero, "Guérisseur", 0, 0, 0, 0, 1);
@@ -140,6 +143,7 @@ namespace Projet_ASL
         private void Mage()
         {
             ClickMage = !ClickMage;
+            BtnMage.ChangerCouleurActive();
             if (ClickMage)
             {
                 Mage mage = new Mage(Game, "Mage", 0.03f, Vector3.Zero, Vector3.Zero, "Mage", 0, 0, 0, 0, 1);
@@ -154,6 +158,7 @@ namespace Projet_ASL
         private void Paladin()
         {
             ClickPaladin = !ClickPaladin;
+            BtnPaladin.ChangerCouleurActive();
             if (ClickPaladin)
             {
                 Paladin paladin = new Paladin(Game, "ArcherB", 0.03f, Vector3.Zero, Vector3.Zero, "Paladin", 0, 0, 0, 0, 1);
@@ -168,6 +173,7 @@ namespace Projet_ASL
         private void Voleur()
         {
             ClickVoleur = !ClickVoleur;
+            BtnVoleur.ChangerCouleurActive();
             if (ClickVoleur)
             {
                 Voleur voleur = new Voleur(Game, "ArcherB", 0.03f, Vector3.Zero, Vector3.Zero, "Voleur", 0, 0, 0, 0, 1);

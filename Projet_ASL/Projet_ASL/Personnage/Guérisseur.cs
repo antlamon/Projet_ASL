@@ -30,6 +30,7 @@ namespace Projet_ASL
         {
             _SatanMode = false;
         }
+        public Guérisseur() { }
 
         public override int Attaquer()
         {

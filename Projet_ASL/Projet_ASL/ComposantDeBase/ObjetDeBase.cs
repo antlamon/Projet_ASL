@@ -29,6 +29,8 @@ namespace Projet_ASL
             Rotation = rotationInitiale;
         }
 
+        public ObjetDeBase():base(new Game()) { }
+
         public override void Initialize()
         {
             CréerSphèreDeCollision();

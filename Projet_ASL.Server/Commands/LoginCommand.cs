@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Projet_ASL;
 using Lidgren.Network;
 
+
 namespace Projet_ASL.Server.Commands
 {
     class LoginCommand : ICommand
@@ -46,10 +47,19 @@ namespace Projet_ASL.Server.Commands
         {
             var player = new Player();
             inc.ReadAllProperties(player);
+            for (int i = 0; i < player.Personnages.Capacity; ++i)
+            {
+                string typeVoulu = inc.ReadString();
+                Type type = Type.GetType(typeVoulu);
+                var personnage = Activator.CreateInstance(type);
+                inc.ReadAllProperties(personnage);
+                player.Personnages.Add(personnage as Personnage);
+            }
             CreatePosition(player, players);
             players.Add(player);
             return player;
         }
+
 
         private void CreatePosition(Player player, List<Player> players)
         {

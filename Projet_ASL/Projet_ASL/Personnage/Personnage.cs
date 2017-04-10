@@ -131,5 +131,7 @@ namespace Projet_ASL
         {
             PtsDeVie = nouvelleVitalité;
         }
+
+        protected Personnage() { }
     }
 }

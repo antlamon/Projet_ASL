@@ -60,6 +60,13 @@ namespace Projet_ASL
             IntervalleMAJ = intervalleMAJ;
         }
 
+        public void ChangerCouleurActive()
+        {
+            Texture2D tampon = ImageNormale;
+            ImageNormale = ImageEnfoncée;
+            ImageEnfoncée = tampon;
+        }
+
         public override void Initialize()
         {
             TempsÉcouléDepuisMAJ = 0;
