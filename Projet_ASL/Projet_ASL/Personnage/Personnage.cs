@@ -8,6 +8,32 @@ namespace Projet_ASL
 {
     public abstract class Personnage : ObjetDeDémo
     {
+        #region Constantes Sorts
+        #region Constantes Archer
+        const int RAYON_PLUIE_DE_FLÈCHES = 10;
+        const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
+        const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
+        #endregion
+        #region Constantes Guérisseur 
+        const int RAYON_SOIN_DE_ZONE = 10;
+        const float RATIO_SOIN_DE_ZONE = 0.4f;
+        const float RATIO_RESURRECT = 0.5f;
+        const float RATIO_VOL_DE_VIE = 0.4f;
+        #endregion
+        #region Constantes Guerrier
+        const int RAYON_TORNADE_FURIEUSE = 10;
+        const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
+        #endregion
+        #region Constantes Mage
+        const int RAYON_BRASIER = 10;
+        const float DÉGATS_FREEZE_DONT_MOVE = 0.25f;
+        const float DÉGATS_BRASIER = 0.25f;
+        #endregion
+        #region Constantes Paladin
+        #endregion
+        #region Constantes Voleur 
+        #endregion
+        #endregion
         int ptsDeVie;
         public string Nom { get; protected set; }
         public int PtsDeVie
@@ -103,7 +129,138 @@ namespace Projet_ASL
             PtsDeVie -= modificationVitalité;
         }
 
-        public abstract void EnleverDebuffs();
+        #region Sorts 
+
+        #region Archer
+        public List<Personnage> PluieDeFlèches(Vector2 positionClic, out int dégats)
+        {
+            List<Personnage> cibles = new List<Personnage>();
+            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_PLUIE_DE_FLÈCHES);
+            dégats = (int)(DÉGATS_PLUIE_DE_FLÈCHES * Attaquer());
+
+            if (this is Archer)
+            {
+                //foreach(Personnage p in Personnages)
+                //{
+                //    if(portée.Intersects(p.SphèreDeCollision))
+                //    { cibles.Add(p); }
+                //}
+            }
+
+            return cibles;
+        }
+
+        public List<Personnage> FlèchePercante(Vector2 positionClic, out int dégats)
+        {
+            List<Personnage> cibles = new List<Personnage>();
+            Ray portée = new Ray(Position, new Vector3(positionClic.X - Position.X, 0, positionClic.Y - Position.Z));
+            // positionClic est un vecteur2 et Position un vecteur3, ce qui explique Y - Z
+            dégats = (int)(DÉGATS_FLÈCHE_PERCANTE * Attaquer());
+
+            if (this is Archer)
+            {
+                //foreach(Personnage p in Personnages)
+                //{
+                //    if(portée.Intersects(p.SphèreDeCollision) != null) // À vérifier
+                //    { cibles.Add(p); } 
+                //}
+
+                cibles.OrderBy(cible => cible.Position - Position); // À vérifier pour les distances
+                cibles.RemoveRange(2, cibles.Count - 2);
+            }
+
+            return cibles;
+        }
+        #endregion
+        #region Guérisseur
+        public List<Personnage> SoinDeZone(Vector2 positionClic, out int dégats)
+        {
+            List<Personnage> cibles = new List<Personnage>();
+            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_SOIN_DE_ZONE);
+            dégats = (int)(RATIO_SOIN_DE_ZONE * Attaquer());
+
+            if (this is Guérisseur)
+            {
+                //foreach (Personnage p in Personnages)
+                //{
+                //    if (portée.Intersects(p.SphèreDeCollision) && !p.EstMort)
+                //    { cibles.Add(p); }
+                //}
+            }
+
+            return cibles;
+        }
+
+        public int Résurrection(Personnage cible)
+        {
+            int dégats = 0;
+
+            if(this is Guérisseur && cible.EstMort)
+            {
+                dégats = (int)(RATIO_RESURRECT * Attaquer());
+            }
+
+            return dégats;
+        }
+
+        public int VolDeVie(out int vieVolée)
+        {
+            vieVolée = -(int)(RATIO_VOL_DE_VIE * Attaquer());
+            return Attaquer();
+        }
+        #endregion
+        #region Guerrier
+        public List<Personnage> TornadeFurieuse(Vector2 positionClic, out int dégats)
+        {
+            List<Personnage> cibles = new List<Personnage>();
+            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_TORNADE_FURIEUSE);
+            dégats = (int)(DÉGATS_TORNADE_FURIEUSE * Attaquer());
+
+            if (this is Guerrier)
+            {
+                //foreach(Personnage p in Personnages)
+                //{
+                //    if(portée.Intersects(p.SphèreDeCollision))
+                //    { cibles.Add(p); }
+                //}
+            }
+
+            return cibles;
+        }
+        #endregion
+        #region Mage
+        public int FreezeDontMove()
+        {
+            int dégats = (int)(DÉGATS_FREEZE_DONT_MOVE * Attaquer());
+            return dégats;
+        }
+
+        public List<Personnage> Brasier(Vector2 positionClic, out int dégats)
+        {
+            List<Personnage> cibles = new List<Personnage>();
+            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_BRASIER);
+            dégats = (int)(DÉGATS_BRASIER * Attaquer());
+
+            if (this is Mage)
+            {
+                //foreach(Personnage p in Personnages)
+                //{
+                //    if(portée.Intersects(p.SphèreDeCollision))
+                //    { cibles.Add(p); }
+                //}
+            }
+
+            return cibles;
+        }
+        #endregion
+
+        #endregion
+        public virtual void EnleverDebuffs()
+        {
+            _EnFeu = false;
+            _Frozen = false;
+            _BouclierDivin = false;
+        }
 
         public void Clarité(Personnage cible)
         {
@@ -127,6 +284,8 @@ namespace Projet_ASL
                 cible._EnFeu = true;
             }
         }
+        #endregion
+
         public void ChangerVitalité(int nouvelleVitalité)
         {
             PtsDeVie = nouvelleVitalité;
