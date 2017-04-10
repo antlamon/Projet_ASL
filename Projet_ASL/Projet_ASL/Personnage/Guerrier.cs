@@ -28,6 +28,24 @@ namespace Projet_ASL
             return Force;
         }
 
+        public List<Personnage> TornadeFurieuse(Vector2 positionClic, out int dégats)
+        {
+            List<Personnage> cibles = new List<Personnage>();
+            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_TORNADE_FURIEUSE);
+            dégats = (int)(DÉGATS_TORNADE_FURIEUSE * Attaquer());
+
+            if (this is Guerrier)
+            {
+                //foreach(Personnage p in Personnages)
+                //{
+                //    if(portée.Intersects(p.SphèreDeCollision))
+                //    { cibles.Add(p); }
+                //}
+            }
+
+            return cibles;
+        }
+
         public int Folie(out int nbToursFolie)
         {
             _Folie = true;

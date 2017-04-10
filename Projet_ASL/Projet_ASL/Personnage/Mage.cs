@@ -18,5 +18,29 @@ namespace Projet_ASL
         {
             return Intelligence;
         }
+
+        public List<Personnage> Brasier(Vector2 positionClic, out int dégats)
+        {
+            List<Personnage> cibles = new List<Personnage>();
+            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_BRASIER);
+            dégats = (int)(DÉGATS_BRASIER * Attaquer());
+
+            if (this is Mage)
+            {
+                //foreach(Personnage p in Personnages)
+                //{
+                //    if(portée.Intersects(p.SphèreDeCollision))
+                //    { cibles.Add(p); }
+                //}
+            }
+
+            return cibles;
+        }
+
+        public int FreezeDontMove()
+        {
+            int dégats = (int)(DÉGATS_FREEZE_DONT_MOVE * Attaquer());
+            return dégats;
+        }
     }
 }

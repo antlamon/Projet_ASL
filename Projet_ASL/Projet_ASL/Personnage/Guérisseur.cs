@@ -36,6 +36,41 @@ namespace Projet_ASL
             }
             return attaque;
         }
+        public List<Personnage> SoinDeZone(Vector2 positionClic, out int dégats)
+        {
+            List<Personnage> cibles = new List<Personnage>();
+            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_SOIN_DE_ZONE);
+            dégats = (int)(RATIO_SOIN_DE_ZONE * Attaquer());
+
+            if (this is Guérisseur)
+            {
+                //foreach (Personnage p in Personnages)
+                //{
+                //    if (portée.Intersects(p.SphèreDeCollision) && !p.EstMort)
+                //    { cibles.Add(p); }
+                //}
+            }
+
+            return cibles;
+        }
+
+        public int Résurrection(Personnage cible)
+        {
+            int dégats = 0;
+
+            if (this is Guérisseur && cible.EstMort)
+            {
+                dégats = (int)(RATIO_RESURRECT * Attaquer());
+            }
+
+            return dégats;
+        }
+
+        public int VolDeVie(out int vieVolée)
+        {
+            vieVolée = -(int)(RATIO_VOL_DE_VIE * Attaquer());
+            return Attaquer();
+        }
 
         public override void EnleverDebuffs()
         {

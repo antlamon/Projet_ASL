@@ -132,149 +132,36 @@ namespace Projet_ASL
         #region Sorts 
 
         #region Archer
-        public List<Personnage> PluieDeFlèches(Vector2 positionClic, out int dégats)
-        {
-            List<Personnage> cibles = new List<Personnage>();
-            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_PLUIE_DE_FLÈCHES);
-            dégats = (int)(DÉGATS_PLUIE_DE_FLÈCHES * Attaquer());
-
-            if (this is Archer)
-            {
-                //foreach(Personnage p in Personnages)
-                //{
-                //    if(portée.Intersects(p.SphèreDeCollision))
-                //    { cibles.Add(p); }
-                //}
-            }
-
-            return cibles;
-        }
-
-        public List<Personnage> FlèchePercante(Vector2 positionClic, out int dégats)
-        {
-            List<Personnage> cibles = new List<Personnage>();
-            Ray portée = new Ray(Position, new Vector3(positionClic.X - Position.X, 0, positionClic.Y - Position.Z));
-            // positionClic est un vecteur2 et Position un vecteur3, ce qui explique Y - Z
-            dégats = (int)(DÉGATS_FLÈCHE_PERCANTE * Attaquer());
-
-            if (this is Archer)
-            {
-                //foreach(Personnage p in Personnages)
-                //{
-                //    if(portée.Intersects(p.SphèreDeCollision) != null) // À vérifier
-                //    { cibles.Add(p); } 
-                //}
-
-                cibles.OrderBy(cible => cible.Position - Position); // À vérifier pour les distances
-                cibles.RemoveRange(2, cibles.Count - 2);
-            }
-
-            return cibles;
-        }
+        
         #endregion
         #region Guérisseur
-        public List<Personnage> SoinDeZone(Vector2 positionClic, out int dégats)
-        {
-            List<Personnage> cibles = new List<Personnage>();
-            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_SOIN_DE_ZONE);
-            dégats = (int)(RATIO_SOIN_DE_ZONE * Attaquer());
-
-            if (this is Guérisseur)
-            {
-                //foreach (Personnage p in Personnages)
-                //{
-                //    if (portée.Intersects(p.SphèreDeCollision) && !p.EstMort)
-                //    { cibles.Add(p); }
-                //}
-            }
-
-            return cibles;
-        }
-
-        public int Résurrection(Personnage cible)
-        {
-            int dégats = 0;
-
-            if(this is Guérisseur && cible.EstMort)
-            {
-                dégats = (int)(RATIO_RESURRECT * Attaquer());
-            }
-
-            return dégats;
-        }
-
-        public int VolDeVie(out int vieVolée)
-        {
-            vieVolée = -(int)(RATIO_VOL_DE_VIE * Attaquer());
-            return Attaquer();
-        }
         #endregion
         #region Guerrier
-        public List<Personnage> TornadeFurieuse(Vector2 positionClic, out int dégats)
-        {
-            List<Personnage> cibles = new List<Personnage>();
-            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_TORNADE_FURIEUSE);
-            dégats = (int)(DÉGATS_TORNADE_FURIEUSE * Attaquer());
 
-            if (this is Guerrier)
-            {
-                //foreach(Personnage p in Personnages)
-                //{
-                //    if(portée.Intersects(p.SphèreDeCollision))
-                //    { cibles.Add(p); }
-                //}
-            }
-
-            return cibles;
-        }
         #endregion
         #region Mage
-        public int FreezeDontMove()
+        public void Freeze()
         {
-            int dégats = (int)(DÉGATS_FREEZE_DONT_MOVE * Attaquer());
-            return dégats;
+            _Frozen = true;
+        }
+        #endregion
+        #region Paladin
+        public void Clarité(Personnage cible)
+        {
+            EnleverDebuffs();
         }
 
-        public List<Personnage> Brasier(Vector2 positionClic, out int dégats)
+        public void BouclierDivin(Personnage cible)
         {
-            List<Personnage> cibles = new List<Personnage>();
-            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_BRASIER);
-            dégats = (int)(DÉGATS_BRASIER * Attaquer());
-
-            if (this is Mage)
-            {
-                //foreach(Personnage p in Personnages)
-                //{
-                //    if(portée.Intersects(p.SphèreDeCollision))
-                //    { cibles.Add(p); }
-                //}
-            }
-
-            return cibles;
+            _BouclierDivin = true;
         }
         #endregion
 
-        #endregion
         public virtual void EnleverDebuffs()
         {
             _EnFeu = false;
             _Frozen = false;
             _BouclierDivin = false;
-        }
-
-        public void Clarité(Personnage cible)
-        {
-            cible.EnleverDebuffs();
-        }
-
-        public void BouclierDivin(Personnage cible)
-        {
-            cible._BouclierDivin = true;
-        }
-
-        public void FreezeDontMove(Personnage cible)
-        {
-            cible._Frozen = true;
         }
 
         public void Brasier(List<Personnage> cibles)
