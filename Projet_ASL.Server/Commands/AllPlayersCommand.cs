@@ -16,14 +16,21 @@ namespace Projet_ASL.Server.Commands
         public void Run(NetServer server, NetIncomingMessage inc, Player player, List<Player> players)
         {
             Console.WriteLine("Sending full player list");
-            var outmessage = server.CreateMessage();
-            outmessage.Write((byte)PacketType.AllPlayers);
-            outmessage.Write(players.Count);
-            foreach (var p in players)
+            var outmsg = server.CreateMessage();
+            outmsg.Write((byte)PacketType.AllPlayers);
+            outmsg.Write(players.Count);
+            for (int n = 0; n < players.Count; n++)
             {
-                outmessage.WriteAllProperties(p);
+                outmsg.WriteAllProperties(players[n]);
+                foreach (Personnage p in players[n].Personnages)
+                {
+                    outmsg.Write(p.GetType().ToString());
+                    outmsg.Write(p.Position.X);
+                    outmsg.Write(p.Position.Z);
+                    outmsg.Write(p.PtsDeVie);
+                }
             }
-            server.SendToAll(outmessage, NetDeliveryMethod.ReliableOrdered);
+            server.SendToAll(outmsg, NetDeliveryMethod.ReliableOrdered);
         }
     }
 }

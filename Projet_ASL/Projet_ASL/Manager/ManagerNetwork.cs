@@ -23,6 +23,7 @@ namespace Projet_ASL
         public bool Active { get; set; }
         Game Jeu { get; set; }
 
+
         public ManagerNetwork(Game jeu)
         {
             Players = new List<Player>();
@@ -31,7 +32,7 @@ namespace Projet_ASL
 
         public bool Start(Player player)
         {
-            var random = new Random(); 
+            var random = new Random();
             _client = new NetClient(new NetPeerConfiguration("networkGame"));
             _client.Start();
             Username = "name_" + random.Next(0, 100);
@@ -39,13 +40,12 @@ namespace Projet_ASL
             var outmsg = _client.CreateMessage();
             outmsg.Write((byte)PacketType.Login);
             outmsg.WriteAllProperties(player);
-            foreach(Personnage p in player.Personnages)
+            foreach (Personnage p in player.Personnages)
             {
                 outmsg.Write(ObtenirType(p));
-                outmsg.WriteAllProperties(p);
             }
             _client.Connect("localHost", 5013, outmsg);
-            return EsablishInfo(); 
+            return EsablishInfo();
         }
 
         public string ObtenirType(Personnage p)
@@ -70,7 +70,7 @@ namespace Projet_ASL
                 {
                     case NetIncomingMessageType.Data:
                         var data = inc.ReadByte();
-                        if (data == (byte) PacketType.Login)
+                        if (data == (byte)PacketType.Login)
                         {
                             Active = inc.ReadBoolean();
                             if (Active)
@@ -91,20 +91,21 @@ namespace Projet_ASL
             NetIncomingMessage inc;
             while ((inc = _client.ReadMessage()) != null)
             {
-                if(inc.MessageType != NetIncomingMessageType.Data) continue;
+                if (inc.MessageType != NetIncomingMessageType.Data) continue;
                 var packageType = (PacketType)inc.ReadByte();
                 switch (packageType)
                 {
                     case PacketType.PlayerPosition:
                         ReadPlayer(inc);
                         break;
+                    case PacketType.PersonnagePosition:
 
                     case PacketType.AllPlayers:
                         ReceiveAllPlayers(inc);
                         break;
                     case PacketType.Logout:
                         RemoveDisconnectedPlayer(inc);
-                            break;
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -130,12 +131,16 @@ namespace Projet_ASL
         {
             var player = new Player();
             inc.ReadAllProperties(player);
+            for (int i = 0; i < player.Personnages.Capacity; ++i)
+            {
+                player.Personnages.Add(ReadPersonnage(inc));
+            }
             if (Players.Any(p => p.Username == player.Username))
             {
                 var oldPlayer = Players.FirstOrDefault(p => p.Username == player.Username);
                 for (int i = 0; i < player.Personnages.Count; ++i)
                 {
-                    if(player.Personnages[i].Position != oldPlayer.Personnages[i].Position)
+                    if (player.Personnages[i].Position != oldPlayer.Personnages[i].Position)
                     {
                         oldPlayer.Personnages[i].GérerPositionObjet(player.Personnages[i].Position);
                     }
@@ -148,11 +153,50 @@ namespace Projet_ASL
             else
             {
                 Players.Add(player);
-                foreach(Personnage p in player.Personnages)
+                foreach (Personnage p in player.Personnages)
                 {
                     Jeu.Components.Add(p);
                 }
             }
+        }
+
+        private Personnage ReadPersonnage(NetIncomingMessage inc)
+        {
+            string type = inc.ReadString();
+            float posX = inc.ReadFloat();
+            float posZ = inc.ReadFloat();
+            int ptsVie = inc.ReadInt32();
+            return InstancierPersonnage(inc.ReadString(), posX, posZ, ptsVie);
+        }
+
+        private Personnage InstancierPersonnage(string type, float posX, float posZ, int ptsVie)
+        {
+            Personnage p = null;
+            if (type == TypePersonnage.ARCHER)
+            {
+                p = new Archer(Jeu, "ArcherB", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+            }
+            if (type == TypePersonnage.GUÉRISSEUR)
+            {
+                p = new Guérisseur(Jeu, "Guerrier", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+            }
+            if (type == TypePersonnage.GUERRIER)
+            {
+                p = new Guerrier(Jeu, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+            }
+            if (type == TypePersonnage.MAGE)
+            {
+                p = new Mage(Jeu, "Mage", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+            }
+            if (type == TypePersonnage.PALADIN)
+            {
+                p = new Paladin(Jeu, "ArcherR", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+            }
+            if (type == TypePersonnage.VOLEUR)
+            {
+                p = new Voleur(Jeu, "Mage", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+            }
+            return p;
         }
 
         public void SendInput(Keys key)
@@ -164,14 +208,14 @@ namespace Projet_ASL
             _client.SendMessage(outmessage, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendNewPosition(Vector3 position, int numéroJoueur)
+        public void SendNewPosition(Vector3 position, int indexPersonnage)
         {
             var outMessage = _client.CreateMessage();
             outMessage.Write((byte)PacketType.InputVector);
             outMessage.Write(position.X);
             outMessage.Write(position.Z);
             outMessage.Write(Username);
-            outMessage.Write(numéroJoueur);
+            outMessage.Write(indexPersonnage);
             _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
 
         }

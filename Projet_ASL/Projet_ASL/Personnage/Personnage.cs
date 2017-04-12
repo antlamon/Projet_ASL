@@ -10,24 +10,24 @@ namespace Projet_ASL
     {
         #region Constantes Sorts
         #region Constantes Archer
-        const int RAYON_PLUIE_DE_FLÈCHES = 10;
-        const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
-        const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
+        public const int RAYON_PLUIE_DE_FLÈCHES = 10;
+        public const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
+        public const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
         #endregion
         #region Constantes Guérisseur 
-        const int RAYON_SOIN_DE_ZONE = 10;
-        const float RATIO_SOIN_DE_ZONE = 0.4f;
-        const float RATIO_RESURRECT = 0.5f;
-        const float RATIO_VOL_DE_VIE = 0.4f;
+        public const int RAYON_SOIN_DE_ZONE = 10;
+        public const float RATIO_SOIN_DE_ZONE = 0.4f;
+        public const float RATIO_RESURRECT = 0.5f;
+        public const float RATIO_VOL_DE_VIE = 0.4f;
         #endregion
         #region Constantes Guerrier
-        const int RAYON_TORNADE_FURIEUSE = 10;
-        const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
+        public const int RAYON_TORNADE_FURIEUSE = 10;
+        public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
         #endregion
         #region Constantes Mage
-        const int RAYON_BRASIER = 10;
-        const float DÉGATS_FREEZE_DONT_MOVE = 0.25f;
-        const float DÉGATS_BRASIER = 0.25f;
+        public const int RAYON_BRASIER = 10;
+        public const float DÉGATS_FREEZE_DONT_MOVE = 0.25f;
+        public const float DÉGATS_BRASIER = 0.25f;
         #endregion
         #region Constantes Paladin
         #endregion
@@ -35,7 +35,6 @@ namespace Projet_ASL
         #endregion
         #endregion
         int ptsDeVie;
-        public string Nom { get; protected set; }
         public int PtsDeVie
         {
             get { return ptsDeVie; }
@@ -83,10 +82,9 @@ namespace Projet_ASL
             protected set { bouclierDivin = value; }
         }
 
-        protected Personnage(Game jeu, String nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, string nom, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
+        protected Personnage(Game jeu, String nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, 1f/60f)
         {
-            Nom = nom;
             Dextérité = dextérité;
             Force = force;
             Intelligence = intelligence;

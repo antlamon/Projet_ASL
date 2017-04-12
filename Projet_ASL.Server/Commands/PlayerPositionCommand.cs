@@ -18,10 +18,17 @@ namespace Projet_ASL.Server.Commands
             if (player != null)
             {
                 Console.WriteLine("Sending out new player position");
-                var outmessage = server.CreateMessage();
-                outmessage.Write((byte) PacketType.PlayerPosition);
-                outmessage.WriteAllProperties(player);
-                server.SendToAll(outmessage, NetDeliveryMethod.ReliableOrdered);
+                var outmsg = server.CreateMessage();
+                outmsg.Write((byte) PacketType.PlayerPosition);
+                outmsg.WriteAllProperties(player);
+                foreach (Personnage p in player.Personnages)
+                {
+                    outmsg.Write(p.GetType().ToString());
+                    outmsg.Write(p.Position.X);
+                    outmsg.Write(p.Position.Z);
+                    outmsg.Write(p.PtsDeVie);
+                }
+                server.SendToAll(outmsg, NetDeliveryMethod.ReliableOrdered);
             }
         }
     }

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using Projet_ASL;
 using Lidgren.Network;
+using Microsoft.Xna.Framework;
 
 
 namespace Projet_ASL.Server.Commands
@@ -15,7 +16,8 @@ namespace Projet_ASL.Server.Commands
     class LoginCommand : ICommand
     {
         const int POSITION_X_DEPART = 70;
-        const int POSITION_Y_DEPART = -15;
+        const int POSITION_Z_DEPART = -15;
+
         public void Run(NetServer server, NetIncomingMessage inc, Player player, List<Player> players)
         {
             Console.WriteLine("New connection...");
@@ -32,6 +34,13 @@ namespace Projet_ASL.Server.Commands
                 for (int n = 0; n < players.Count; n++)
                 {
                     outmsg.WriteAllProperties(players[n]);
+                    foreach (Personnage p in players[n].Personnages)
+                    {
+                        outmsg.Write(p.GetType().ToString());
+                        outmsg.Write(p.Position.X);
+                        outmsg.Write(p.Position.Z);
+                        outmsg.Write(p.PtsDeVie);
+                    }
                 }
                 server.SendMessage(outmsg, inc.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
                 var command = new PlayerPositionCommand();
@@ -49,10 +58,7 @@ namespace Projet_ASL.Server.Commands
             inc.ReadAllProperties(player);
             for (int i = 0; i < player.Personnages.Capacity; ++i)
             {
-                string typeVoulu = inc.ReadString();
-                Type type = Type.GetType(typeVoulu);
-                var personnage = Activator.CreateInstance(type);
-                inc.ReadAllProperties(personnage);
+                var personnage = InstancierPersonnage(inc.ReadString());
                 player.Personnages.Add(personnage as Personnage);
             }
             CreatePosition(player, players);
@@ -60,12 +66,42 @@ namespace Projet_ASL.Server.Commands
             return player;
         }
 
+        private Personnage InstancierPersonnage(string type)
+        {
+            Personnage personnage = null;
+            if (type == TypePersonnage.ARCHER)
+            {
+                personnage = new Archer(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+            }
+            if (type == TypePersonnage.GUÉRISSEUR)
+            {
+                personnage = new Guérisseur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+            }
+            if (type == TypePersonnage.GUERRIER)
+            {
+                personnage = new Guerrier(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+            }
+            if (type == TypePersonnage.MAGE)
+            {
+                personnage = new Mage(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+            }
+            if (type == TypePersonnage.PALADIN)
+            {
+                personnage = new Paladin(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+            }
+            if (type == TypePersonnage.VOLEUR)
+            {
+                personnage = new Voleur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+            }
+            return personnage;
+        }
+
 
         private void CreatePosition(Player player, List<Player> players)
         {
             for(int i = 0; i < player.Personnages.Count; ++i)
             {
-                player.Personnages[i].GérerPositionObjet(new Microsoft.Xna.Framework.Vector3(players.Count == 0 ? -POSITION_X_DEPART : POSITION_X_DEPART, 0, POSITION_Y_DEPART + 10 * i));
+                player.Personnages[i].GérerPositionObjet(new Vector3(players.Count == 0 ? -POSITION_X_DEPART : POSITION_X_DEPART, 0, POSITION_Z_DEPART + 10 * i));
             }
         }
 

@@ -22,13 +22,14 @@ namespace Projet_ASL.Server.Commands
                 Console.WriteLine("Could not find player with name {0}", name);
                 return;
             }
-            Personnage pion = player.Personnages[inc.ReadInt32()];
+            int index = inc.ReadInt32();
+            Personnage pion = player.Personnages[index];
 
             if (ManagerDéplacement.CheckDéplacement(pion.Position,déplacement))
             {
                 pion.GérerPositionObjet(déplacement);
 
-                var command = new PlayerPositionCommand();
+                var command = new PersonnagePositionCommand();
                 command.Run(server, inc, player, players);
             }
 

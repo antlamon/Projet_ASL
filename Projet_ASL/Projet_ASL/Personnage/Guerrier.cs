@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Projet_ASL
 {
-    class Guerrier : Personnage
+    public class Guerrier : Personnage
     {
         const int PTS_VITALITÉ_FOLIE = 1;
         const int NB_TOURS_FOLIE = 2;
@@ -18,8 +18,8 @@ namespace Projet_ASL
             private set { folie = value; }
         }
 
-        public Guerrier(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, string nom, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
-            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, nom, force, dextérité, intelligence, sagesse, ptsDeVie)
+        public Guerrier(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
+            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, dextérité, intelligence, sagesse, ptsDeVie)
         {
         }
         public Guerrier() { }

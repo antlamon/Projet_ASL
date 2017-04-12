@@ -10,6 +10,7 @@ namespace Projet_ASL
     {
         Login,
         PlayerPosition,
+        PersonnagePosition,
         AllPlayers,
         Input,
         InputVector,
