@@ -108,7 +108,7 @@ namespace Projet_ASL
             GestionnaireDeTextures = new RessourcesManager<Texture2D>(this, "Textures");
             GestionnaireDeModèles = new RessourcesManager<Model>(this, "Models");
             //GestionnaireDeShaders = new RessourcesManager<Effect>(this, "Effects");
-            GestionInput = new InputManager(this, CaméraJeu);
+            GestionInput = new InputManager(this, CaméraJeu, _managerNetwork);
             GestionSprites = new SpriteBatch(GraphicsDevice);
 
             Services.AddService(typeof(RessourcesManager<SpriteFont>), GestionnaireDeFonts);

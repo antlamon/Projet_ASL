@@ -6,6 +6,7 @@ namespace Projet_ASL
 {
     public class InputManager : Microsoft.Xna.Framework.GameComponent
     {
+        private ManagerNetwork _managerNetwork;
         Keys[] AnciennesTouches { get; set; }
         Keys[] NouvellesTouches { get; set; }
         KeyboardState ÉtatClavier { get; set; }
@@ -13,9 +14,10 @@ namespace Projet_ASL
         MouseState NouvelÉtatSouris { get; set; }
         Caméra Cam { get; set; }
 
-        public InputManager(Game game, Caméra caméraJeu)
+        public InputManager(Game game, Caméra caméraJeu, ManagerNetwork managerNetwork)
            : base(game)
         {
+            _managerNetwork = managerNetwork;
             Cam = caméraJeu;
         }
 
@@ -37,8 +39,35 @@ namespace Projet_ASL
             {
                 ActualiserÉtatSouris();
             }
+            //if(EstNouveauClicDroit())
+            //{
+            //    Ray ray = CalculateCursorRay();
+            //    if(DéterminerIntersectionPersonnageRay(ray))
+            //    {
+                    
+            //    }
+            //}
         }
 
+        public bool DéterminerIntersectionPersonnageRay(Ray ray)
+        {
+            bool rep = true;
+            float? distance;
+            float closestDistance = float.MaxValue;
+            foreach(Player p in _managerNetwork.Players)
+            {
+                foreach(Personnage perso in p.Personnages)
+                {
+                    distance = perso.SphèreDeCollision.Intersects(ray);
+                    if (distance != null && distance < closestDistance)
+                    {
+                        closestDistance = (float) distance;
+                    }
+                }
+            }
+
+            return rep;
+        }
         public bool EstClavierActivé
         {
             get { return NouvellesTouches.Length > 0; }
@@ -123,6 +152,20 @@ namespace Projet_ASL
             Vector3 zeroWorldPoint = nearWorldPoint + direction * zFactor;
 
             return zeroWorldPoint;
+        }
+        public Ray CalculateCursorRay()
+        {
+            Vector3 nearScreenPoint = new Vector3(NouvelÉtatSouris.X, NouvelÉtatSouris.Y, 0);
+            Vector3 farScreenPoint = new Vector3(NouvelÉtatSouris.X, NouvelÉtatSouris.Y, 1);
+            Vector3 nearWorldPoint = Game.GraphicsDevice.Viewport.Unproject(nearScreenPoint, Cam.Projection, Cam.Vue, Matrix.Identity);
+            Vector3 farWorldPoint = Game.GraphicsDevice.Viewport.Unproject(farScreenPoint, Cam.Projection, Cam.Vue, Matrix.Identity);
+
+            Vector3 direction = farWorldPoint - nearWorldPoint;
+
+            direction.Normalize();
+
+            // and then create a new ray using nearPoint as the source.
+            return new Ray(nearWorldPoint, direction);
         }
     }
 }
