@@ -13,15 +13,16 @@ namespace Projet_ASL.Server.Commands
         {
             if (player != null)
             {
-                //Console.WriteLine("Sending out new personnage position");
-                //var outmsg = server.CreateMessage();
-                //outmsg.Write((byte)PacketType.PersonnagePosition);
-                //outmsg.Write(player.Username);
-                //outmsg.Write(p.GetType().ToString());
-                //outmsg.Write(p.Position.X);
-                //outmsg.Write(p.Position.Z);
-                //outmsg.Write(p.PtsDeVie);
-                //server.SendToAll(outmsg, NetDeliveryMethod.ReliableOrdered);
+                Console.WriteLine("Sending out new personnage position");
+                int index = inc.ReadInt32();
+                Personnage p = player.Personnages[index];
+                var outmsg = server.CreateMessage();
+                outmsg.Write((byte)PacketType.PersonnagePosition);
+                outmsg.Write(player.Username);
+                outmsg.Write(index);
+                outmsg.Write(p.Position.X);
+                outmsg.Write(p.Position.Z);
+                server.SendToAll(outmsg, NetDeliveryMethod.ReliableOrdered);
             }
         }
     }

@@ -22,8 +22,7 @@ namespace Projet_ASL.Server.Commands
                 Console.WriteLine("Could not find player with name {0}", name);
                 return;
             }
-            int index = inc.ReadInt32();
-            Personnage pion = player.Personnages[index];
+            Personnage pion = player.Personnages[inc.PeekInt32()];
 
             if (ManagerDéplacement.CheckDéplacement(pion.Position,déplacement))
             {

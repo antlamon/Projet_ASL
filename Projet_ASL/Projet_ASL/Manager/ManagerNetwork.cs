@@ -99,7 +99,8 @@ namespace Projet_ASL
                         ReadPlayer(inc);
                         break;
                     case PacketType.PersonnagePosition:
-
+                        ReadPositionPersonnage(inc);
+                        break;
                     case PacketType.AllPlayers:
                         ReceiveAllPlayers(inc);
                         break;
@@ -112,10 +113,21 @@ namespace Projet_ASL
             }
         }
 
+        private void ReadPositionPersonnage(NetIncomingMessage inc)
+        {
+            Player player = Players.Find(p => p.Username == inc.ReadString());
+            player.Personnages[inc.ReadInt32()].GérerPositionObjet(new Vector3(inc.ReadFloat(), 0, inc.ReadFloat()));
+        }
+
         private void RemoveDisconnectedPlayer(NetIncomingMessage inc)
         {
             string username = inc.ReadString();
-            Players.Remove(Players.Find(p => p.Username == username));
+            Player player = Players.Find(p => p.Username == username);
+            foreach (Personnage p in player.Personnages)
+            {
+                Jeu.Components.Remove(p);
+            }
+            Players.Remove(player);
         }
 
         private void ReceiveAllPlayers(NetIncomingMessage inc)
@@ -166,7 +178,7 @@ namespace Projet_ASL
             float posX = inc.ReadFloat();
             float posZ = inc.ReadFloat();
             int ptsVie = inc.ReadInt32();
-            return InstancierPersonnage(inc.ReadString(), posX, posZ, ptsVie);
+            return InstancierPersonnage(type, posX, posZ, ptsVie);
         }
 
         private Personnage InstancierPersonnage(string type, float posX, float posZ, int ptsVie)
