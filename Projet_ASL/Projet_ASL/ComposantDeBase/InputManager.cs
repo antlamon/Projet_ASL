@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 
 namespace Projet_ASL
@@ -14,6 +15,10 @@ namespace Projet_ASL
         MouseState NouvelÉtatSouris { get; set; }
         Caméra Cam { get; set; }
 
+        bool PersonnageSélectionné { get; set; }
+        float? DistanceRayon { get; set; }
+        Personnage PersonnageChoisi { get; set; }
+
         public InputManager(Game game, Caméra caméraJeu, ManagerNetwork managerNetwork)
            : base(game)
         {
@@ -27,6 +32,9 @@ namespace Projet_ASL
             AnciennesTouches = NouvellesTouches;
             NouvelÉtatSouris = Mouse.GetState();
             AncienÉtatSouris = NouvelÉtatSouris;
+            PersonnageSélectionné = false;
+            DistanceRayon = null;
+            PersonnageChoisi = null;
             base.Initialize();
         }
 
@@ -39,35 +47,55 @@ namespace Projet_ASL
             {
                 ActualiserÉtatSouris();
             }
-            //if(EstNouveauClicDroit())
-            //{
-            //    Ray ray = CalculateCursorRay();
-            //    if(DéterminerIntersectionPersonnageRay(ray))
-            //    {
-                    
-            //    }
-            //}
+            DéterminerSélectionPersonnage();
+            DéterminerMouvementPersonnageSélectionné();
         }
 
-        public bool DéterminerIntersectionPersonnageRay(Ray ray)
+        public void DéterminerSélectionPersonnage()
         {
-            bool rep = true;
-            float? distance;
+            if (EstNouveauClicGauche())
+            {
+                DéterminerIntersectionPersonnageRay();
+                if (PersonnageChoisi != null)
+                {
+                    //envoyer au serveur quel personnage est sélectionné?
+                    PersonnageSélectionné = true;
+                    Console.WriteLine("{0} sélectionné", PersonnageChoisi);
+                }
+            }
+        }
+        public void DéterminerIntersectionPersonnageRay()
+        {
+
+            Ray ray = CalculateCursorRay();
             float closestDistance = float.MaxValue;
             foreach(Player p in _managerNetwork.Players)
             {
                 foreach(Personnage perso in p.Personnages)
                 {
-                    distance = perso.SphèreDeCollision.Intersects(ray);
-                    if (distance != null && distance < closestDistance)
+                    DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
+                    if (DistanceRayon != null && DistanceRayon < closestDistance)
                     {
-                        closestDistance = (float) distance;
+                        closestDistance = (float)DistanceRayon;
+                        PersonnageChoisi = perso;
                     }
                 }
             }
-
-            return rep;
         }
+
+        public void DéterminerMouvementPersonnageSélectionné()
+        {
+            if(PersonnageSélectionné)
+            {
+                if(EstAncienClicGauche())
+                {
+                    Vector3 PositionVouluePersonnage = GetPositionSourisPlan();
+                    Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
+                    PersonnageChoisi.BougerPersonnage(Déplacement);
+                }
+            }
+        }
+
         public bool EstClavierActivé
         {
             get { return NouvellesTouches.Length > 0; }
