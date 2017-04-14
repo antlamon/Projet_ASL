@@ -18,6 +18,7 @@ namespace Projet_ASL
         bool PersonnageSélectionné { get; set; }
         float? DistanceRayon { get; set; }
         Personnage PersonnageChoisi { get; set; }
+        int Index { get; set; }
 
         public InputManager(Game game, Caméra caméraJeu, ManagerNetwork managerNetwork)
            : base(game)
@@ -35,6 +36,7 @@ namespace Projet_ASL
             PersonnageSélectionné = false;
             DistanceRayon = null;
             PersonnageChoisi = null;
+            Index = 0;
             base.Initialize();
         }
 
@@ -47,8 +49,15 @@ namespace Projet_ASL
             {
                 ActualiserÉtatSouris();
             }
-            DéterminerSélectionPersonnage();
-            DéterminerMouvementPersonnageSélectionné();
+            if(!PersonnageSélectionné)
+            {
+                DéterminerSélectionPersonnage();
+                DéterminerMouvementPersonnageSélectionné();
+            }
+            else
+            {
+                DéterminerMouvementPersonnageSélectionné();
+            }
         }
 
         public void DéterminerSélectionPersonnage()
@@ -58,7 +67,6 @@ namespace Projet_ASL
                 DéterminerIntersectionPersonnageRay();
                 if (PersonnageChoisi != null)
                 {
-                    //envoyer au serveur quel personnage est sélectionné?
                     PersonnageSélectionné = true;
                     Console.WriteLine("{0} sélectionné", PersonnageChoisi);
                 }
@@ -66,19 +74,22 @@ namespace Projet_ASL
         }
         public void DéterminerIntersectionPersonnageRay()
         {
-
+            int cpt = -1;
             Ray ray = CalculateCursorRay();
             float closestDistance = float.MaxValue;
             foreach(Player p in _managerNetwork.Players)
             {
                 foreach(Personnage perso in p.Personnages)
                 {
+                    ++cpt;
                     DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
                     if (DistanceRayon != null && DistanceRayon < closestDistance)
                     {
                         closestDistance = (float)DistanceRayon;
                         PersonnageChoisi = perso;
+                        Index = cpt;
                     }
+                    
                 }
             }
         }
@@ -91,7 +102,13 @@ namespace Projet_ASL
                 {
                     Vector3 PositionVouluePersonnage = GetPositionSourisPlan();
                     Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
-                    PersonnageChoisi.BougerPersonnage(Déplacement);
+                    PersonnageChoisi.Bouger(Déplacement);
+                    //envoyer nouvelle position au serveur
+                    _managerNetwork.SendNewPosition(PersonnageChoisi.Position, Index);
+                }
+                if(EstReleasedClicGauche())
+                {
+                    PersonnageSélectionné = false;
                 }
             }
         }
@@ -150,6 +167,11 @@ namespace Projet_ASL
         {
             return NouvelÉtatSouris.LeftButton == ButtonState.Pressed &&
                    AncienÉtatSouris.LeftButton == ButtonState.Released;
+        }
+
+        public bool EstReleasedClicGauche()
+        {
+            return NouvelÉtatSouris.LeftButton == ButtonState.Released;
         }
 
         public Point GetPositionSouris()
