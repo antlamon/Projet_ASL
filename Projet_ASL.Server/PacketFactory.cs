@@ -26,6 +26,10 @@ namespace Projet_ASL.Server
                     return new MessageCommand();
                 case PacketType.Logout:
                     return new LogoutCommand();
+                case PacketType.InputVector:
+                    return new InputVectorCommand();
+                case PacketType.PersonnagePosition:
+                    return new PersonnagePositionCommand();
                 default:
                     throw new ArgumentOutOfRangeException("packetType");
             }
