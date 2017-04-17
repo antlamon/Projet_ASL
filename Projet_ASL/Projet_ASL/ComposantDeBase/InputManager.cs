@@ -68,7 +68,8 @@ namespace Projet_ASL
                 if (PersonnageChoisi != null)
                 {
                     PersonnageSélectionné = true;
-                    Console.WriteLine("{0} sélectionné", PersonnageChoisi);
+                    Game.Window.Title = PersonnageChoisi.GetType().ToString();
+                    _managerNetwork.SendMesage(PersonnageChoisi.GetType().ToString());
                 }
             }
         }
@@ -101,14 +102,15 @@ namespace Projet_ASL
                 if(EstAncienClicGauche())
                 {
                     Vector3 PositionVouluePersonnage = GetPositionSourisPlan();
-                    Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
-                    PersonnageChoisi.Bouger(Déplacement);
+                    //Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
+                    //PersonnageChoisi.Bouger(Déplacement);
                     //envoyer nouvelle position au serveur
-                    _managerNetwork.SendNewPosition(PersonnageChoisi.Position, Index);
+                    _managerNetwork.SendNewPosition(PositionVouluePersonnage, 0);
                 }
                 if(EstReleasedClicGauche())
                 {
                     PersonnageSélectionné = false;
+                    PersonnageChoisi = null;
                 }
             }
         }

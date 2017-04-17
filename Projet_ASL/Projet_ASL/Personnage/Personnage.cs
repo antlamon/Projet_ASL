@@ -178,10 +178,10 @@ namespace Projet_ASL
 
         protected Personnage() { }
 
-        public void Bouger(Vector3 Déplacement)
-        {
-            Vector3 nouvellePosition = Vector3.Add(Position, Déplacement);
-            Position = new Vector3(nouvellePosition.X, nouvellePosition.Y, nouvellePosition.Z);
-        }
+        //public void Bouger(Vector3 Déplacement)
+        //{
+        //    Vector3 nouvellePosition = Vector3.Add(Position, Déplacement);
+        //    Position = new Vector3(nouvellePosition.X, nouvellePosition.Y, nouvellePosition.Z);
+        //}
     }
 }
