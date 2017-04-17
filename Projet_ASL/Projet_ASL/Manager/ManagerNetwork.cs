@@ -23,6 +23,13 @@ namespace Projet_ASL
         public bool Active { get; set; }
         Game Jeu { get; set; }
 
+        public Player JoueurLocal
+        {
+            get
+            {
+                return Players.Find(p => p.Username == Username);
+            }
+        }
 
         public ManagerNetwork(Game jeu)
         {
@@ -186,11 +193,11 @@ namespace Projet_ASL
             Personnage p = null;
             if (type == TypePersonnage.ARCHER)
             {
-                p = new Archer(Jeu, "ArcherB", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Archer(Jeu, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             if (type == TypePersonnage.GUÉRISSEUR)
             {
-                p = new Guérisseur(Jeu, "Guerrier", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Guérisseur(Jeu, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             if (type == TypePersonnage.GUERRIER)
             {
@@ -198,16 +205,17 @@ namespace Projet_ASL
             }
             if (type == TypePersonnage.MAGE)
             {
-                p = new Mage(Jeu, "Mage", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Mage(Jeu, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             if (type == TypePersonnage.PALADIN)
             {
-                p = new Paladin(Jeu, "ArcherR", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Paladin(Jeu, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             if (type == TypePersonnage.VOLEUR)
             {
-                p = new Voleur(Jeu, "Mage", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Voleur(Jeu, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
+            p.DrawOrder = (int)OrdreDraw.MILIEU;
             return p;
         }
 

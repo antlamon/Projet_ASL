@@ -16,9 +16,35 @@ namespace Projet_ASL.Server.Managers
         const int BORNE_HORIZONTALE = 80;
         const int BORNE_VERTICALE = 50;
         const int DÉPLACEMENT_MAX = 10;
-        public static bool CheckDéplacement(Vector3 position, Vector3 déplacement)
+        public static bool CheckDéplacementMAX(Vector3 positionInitiale, Vector3 positionFinale)
         {
-            return Vector3.Distance(position, déplacement) <= DÉPLACEMENT_MAX && déplacement.X > -BORNE_HORIZONTALE && déplacement.X < BORNE_HORIZONTALE && déplacement.Z > -BORNE_VERTICALE && déplacement.Z < BORNE_VERTICALE;
+            return Vector3.Distance(positionInitiale, positionFinale) <= DÉPLACEMENT_MAX;
+        }
+        public static float CheckDéplacementX(float positionX)
+        {
+            float positionXExacte;
+            if(positionX <= 0)
+            {
+                positionXExacte = MathHelper.Max(-BORNE_HORIZONTALE, positionX);
+            }
+            else
+            {
+                positionXExacte = MathHelper.Min(BORNE_HORIZONTALE, positionX);
+            }
+            return positionXExacte;
+        }
+        public static float CheckDéplacementZ(float positionZ)
+        {
+            float positionZExacte;
+            if (positionZ <= 0)
+            {
+                positionZExacte = MathHelper.Max(-BORNE_VERTICALE, positionZ);
+            }
+            else
+            {
+                positionZExacte = MathHelper.Min(BORNE_VERTICALE, positionZ);
+            }
+            return positionZExacte;
         }
     }
 }

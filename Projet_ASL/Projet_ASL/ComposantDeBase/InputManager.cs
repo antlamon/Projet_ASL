@@ -49,14 +49,17 @@ namespace Projet_ASL
             {
                 ActualiserÉtatSouris();
             }
-            if(!PersonnageSélectionné)
-            {
-                DéterminerSélectionPersonnage();
-                DéterminerMouvementPersonnageSélectionné();
-            }
-            else
-            {
-                DéterminerMouvementPersonnageSélectionné();
+            if (_managerNetwork.Players.Count != 0)
+                {
+                if (!PersonnageSélectionné)
+                {
+                    DéterminerSélectionPersonnage();
+                    DéterminerMouvementPersonnageSélectionné();
+                }
+                else
+                {
+                    DéterminerMouvementPersonnageSélectionné();
+                }
             }
         }
 
@@ -68,31 +71,27 @@ namespace Projet_ASL
                 if (PersonnageChoisi != null)
                 {
                     PersonnageSélectionné = true;
-                    Game.Window.Title = PersonnageChoisi.GetType().ToString();
-                    _managerNetwork.SendMesage(PersonnageChoisi.GetType().ToString());
+                    Game.Window.Title = PersonnageChoisi.GetType().ToString() + PersonnageChoisi.Position.ToString() + GetPositionSourisPlan().ToString();
                 }
             }
         }
         public void DéterminerIntersectionPersonnageRay()
         {
-            int cpt = -1;
             Ray ray = CalculateCursorRay();
             float closestDistance = float.MaxValue;
-            foreach(Player p in _managerNetwork.Players)
-            {
-                foreach(Personnage perso in p.Personnages)
+            //foreach(Player p in _managerNetwork.Players)
+            //{
+                foreach(Personnage perso in  _managerNetwork.JoueurLocal.Personnages)
                 {
-                    ++cpt;
                     DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
                     if (DistanceRayon != null && DistanceRayon < closestDistance)
                     {
                         closestDistance = (float)DistanceRayon;
                         PersonnageChoisi = perso;
-                        Index = cpt;
                     }
                     
                 }
-            }
+            //}
         }
 
         public void DéterminerMouvementPersonnageSélectionné()
@@ -105,7 +104,7 @@ namespace Projet_ASL
                     //Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
                     //PersonnageChoisi.Bouger(Déplacement);
                     //envoyer nouvelle position au serveur
-                    _managerNetwork.SendNewPosition(PositionVouluePersonnage, 0);
+                    _managerNetwork.SendNewPosition(PositionVouluePersonnage, _managerNetwork.JoueurLocal.Personnages.FindIndex(p=>p.GetType() == PersonnageChoisi.GetType()));
                 }
                 if(EstReleasedClicGauche())
                 {

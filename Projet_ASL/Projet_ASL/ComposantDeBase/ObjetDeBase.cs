@@ -31,6 +31,7 @@ namespace Projet_ASL
 
         public ObjetDeBase():base(new Game()) { }
 
+
         public override void Initialize()
         {
             CréerSphèreDeCollision();
@@ -43,7 +44,7 @@ namespace Projet_ASL
 
         void CréerSphèreDeCollision()
         {
-            SphèreDeCollision = new BoundingSphere(new Vector3(Position.X,0,Position.Z), 1);
+            SphèreDeCollision = new BoundingSphere(new Vector3(Position.X,0,Position.Z), 2);
         }
 
         public bool EstEnCollision(object objet)
