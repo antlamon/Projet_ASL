@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 
 namespace Projet_ASL
@@ -14,6 +15,11 @@ namespace Projet_ASL
         MouseState NouvelÉtatSouris { get; set; }
         Caméra Cam { get; set; }
 
+        bool PersonnageSélectionné { get; set; }
+        float? DistanceRayon { get; set; }
+        Personnage PersonnageChoisi { get; set; }
+        int Index { get; set; }
+
         public InputManager(Game game, Caméra caméraJeu, ManagerNetwork managerNetwork)
            : base(game)
         {
@@ -27,6 +33,10 @@ namespace Projet_ASL
             AnciennesTouches = NouvellesTouches;
             NouvelÉtatSouris = Mouse.GetState();
             AncienÉtatSouris = NouvelÉtatSouris;
+            PersonnageSélectionné = false;
+            DistanceRayon = null;
+            PersonnageChoisi = null;
+            Index = 0;
             base.Initialize();
         }
 
@@ -39,35 +49,71 @@ namespace Projet_ASL
             {
                 ActualiserÉtatSouris();
             }
-            //if(EstNouveauClicDroit())
+            if (_managerNetwork.Players.Count != 0)
+                {
+                if (!PersonnageSélectionné)
+                {
+                    DéterminerSélectionPersonnage();
+                    DéterminerMouvementPersonnageSélectionné();
+                }
+                else
+                {
+                    DéterminerMouvementPersonnageSélectionné();
+                }
+            }
+        }
+
+        public void DéterminerSélectionPersonnage()
+        {
+            if (EstNouveauClicGauche())
+            {
+                DéterminerIntersectionPersonnageRay();
+                if (PersonnageChoisi != null)
+                {
+                    PersonnageSélectionné = true;
+                    Game.Window.Title = PersonnageChoisi.GetType().ToString() + PersonnageChoisi.Position.ToString() + GetPositionSourisPlan().ToString();
+                }
+            }
+        }
+        public void DéterminerIntersectionPersonnageRay()
+        {
+            Ray ray = CalculateCursorRay();
+            float closestDistance = float.MaxValue;
+            //foreach(Player p in _managerNetwork.Players)
             //{
-            //    Ray ray = CalculateCursorRay();
-            //    if(DéterminerIntersectionPersonnageRay(ray))
-            //    {
+                foreach(Personnage perso in  _managerNetwork.JoueurLocal.Personnages)
+                {
+                    DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
+                    if (DistanceRayon != null && DistanceRayon < closestDistance)
+                    {
+                        closestDistance = (float)DistanceRayon;
+                        PersonnageChoisi = perso;
+                    }
                     
-            //    }
+                }
             //}
         }
 
-        public bool DéterminerIntersectionPersonnageRay(Ray ray)
+        public void DéterminerMouvementPersonnageSélectionné()
         {
-            bool rep = true;
-            float? distance;
-            float closestDistance = float.MaxValue;
-            foreach(Player p in _managerNetwork.Players)
+            if(PersonnageSélectionné)
             {
-                foreach(Personnage perso in p.Personnages)
+                if(EstAncienClicGauche())
                 {
-                    distance = perso.SphèreDeCollision.Intersects(ray);
-                    if (distance != null && distance < closestDistance)
-                    {
-                        closestDistance = (float) distance;
-                    }
+                    Vector3 PositionVouluePersonnage = GetPositionSourisPlan();
+                    //Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
+                    //PersonnageChoisi.Bouger(Déplacement);
+                    //envoyer nouvelle position au serveur
+                    _managerNetwork.SendNewPosition(PositionVouluePersonnage, _managerNetwork.JoueurLocal.Personnages.FindIndex(p=>p.GetType() == PersonnageChoisi.GetType()));
+                }
+                if(EstReleasedClicGauche())
+                {
+                    PersonnageSélectionné = false;
+                    PersonnageChoisi = null;
                 }
             }
-
-            return rep;
         }
+
         public bool EstClavierActivé
         {
             get { return NouvellesTouches.Length > 0; }
@@ -122,6 +168,11 @@ namespace Projet_ASL
         {
             return NouvelÉtatSouris.LeftButton == ButtonState.Pressed &&
                    AncienÉtatSouris.LeftButton == ButtonState.Released;
+        }
+
+        public bool EstReleasedClicGauche()
+        {
+            return NouvelÉtatSouris.LeftButton == ButtonState.Released;
         }
 
         public Point GetPositionSouris()

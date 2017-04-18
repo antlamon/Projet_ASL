@@ -47,7 +47,7 @@ namespace Projet_ASL
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
-            Vector2 PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 5) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            Vector2 PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 5) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 4f);
             BtnArcher = new BoutonDeCommande(Game, "Archer", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Archer, INTERVALLE_MAJ_STANDARD);
             BtnArcher.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
@@ -55,7 +55,7 @@ namespace Projet_ASL
             BtnGuérisseur = new BoutonDeCommande(Game, "Guérisseur", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Guérisseur, INTERVALLE_MAJ_STANDARD);
             BtnGuérisseur.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 3) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 3) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 4f);
             BtnGuerrier = new BoutonDeCommande(Game, "Guerrier", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Guerrier, INTERVALLE_MAJ_STANDARD);
             BtnGuerrier.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
@@ -63,7 +63,7 @@ namespace Projet_ASL
             BtnMage = new BoutonDeCommande(Game, "Mage", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Mage, INTERVALLE_MAJ_STANDARD);
             BtnMage.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 4f);
             BtnPaladin = new BoutonDeCommande(Game, "Paladin", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Paladin, INTERVALLE_MAJ_STANDARD);
             BtnPaladin.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 

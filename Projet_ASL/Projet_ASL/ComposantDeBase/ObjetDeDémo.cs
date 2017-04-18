@@ -20,6 +20,7 @@ namespace Projet_ASL
         bool RotationX { get; set; }
         bool RotationY { get; set; }
         bool RotationZ { get; set; }
+        bool NouvellePosition { get; set; }
         Matrix MondeRefait { get; set; }
         Vector3 VectorX { get; set; }
         Vector3 VectorY { get; set; }
@@ -69,6 +70,7 @@ namespace Projet_ASL
         public void GérerPositionObjet(Vector3 nouvellePosition)
         {
             Position = nouvellePosition;
+            NouvellePosition = true;
         }
 
         private void GérerClavier()
@@ -102,12 +104,13 @@ namespace Projet_ASL
 
         public override Matrix GetMonde()
         {
-            if (RotationX || RotationY || RotationZ || AncienneÉchelle != ÉchelleDémo)
+            if (RotationX || RotationY || RotationZ || AncienneÉchelle != ÉchelleDémo || NouvellePosition)
             {
                 MondeRefait = Matrix.Identity;
                 MondeRefait *= Matrix.CreateScale(ÉchelleDémo);
                 MondeRefait *= Matrix.CreateFromYawPitchRoll(RotationDémo.Y, RotationDémo.X, RotationDémo.Z);
                 MondeRefait *= Matrix.CreateTranslation(Position);
+                NouvellePosition = false;
             }
             return MondeRefait;
         }
