@@ -52,6 +52,8 @@ namespace Projet_ASL
             _managerNetwork = new ManagerNetwork(this);
             _managerInput = new ManagerInput(_managerNetwork);
             PériphériqueGraphique.SynchronizeWithVerticalRetrace = false;
+            PériphériqueGraphique.PreferredBackBufferHeight = 720;
+            PériphériqueGraphique.PreferredBackBufferWidth = 1280;
             IsFixedTimeStep = false;
             IsMouseVisible = true;
         }
@@ -211,6 +213,11 @@ namespace Projet_ASL
             {
                 MenuAccueil.VoirBouttonMenu(!MenuAccueil.MenuVisible);
             }
+            if (GestionInput.EstNouvelleTouche(Keys.F11))
+            {
+                PériphériqueGraphique.ToggleFullScreen();
+            }
+
         }
 
         /// <summary>
