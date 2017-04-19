@@ -13,7 +13,7 @@ namespace Projet_ASL.Server.Commands
         {
             if (player != null)
             {
-                Console.WriteLine("Sending out new personnage position");
+                //Console.WriteLine("Sending out new personnage position");
                 int index = inc.ReadInt32();
                 Personnage p = player.Personnages[index];
                 var outmsg = server.CreateMessage();

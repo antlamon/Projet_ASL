@@ -15,7 +15,7 @@ namespace Projet_ASL.Server.Commands
 {
     class LoginCommand : ICommand
     {
-        const int POSITION_X_DEPART = 70;
+        const int POSITION_X_DEPART = 40;
         const int POSITION_Z_DEPART = -15;
 
         public void Run(NetServer server, NetIncomingMessage inc, Player player, List<Player> players)

@@ -18,6 +18,7 @@ namespace Projet_ASL
         public BoutonDeCommande BtnQuitter { get; private set; }
         SpriteFont Police { get; set; }
         ManagerNetwork _managerNetwork { get; set; }
+        public bool MenuVisible { get; private set; }
 
         public DialogueMenu(Game jeu, Vector2 dimensionDialogue, ManagerNetwork managerNetwork)
            : base(jeu)
@@ -27,6 +28,7 @@ namespace Projet_ASL
                                                  (int)DimensionDialogue.X, (int)DimensionDialogue.Y);
             ÉtatJouer = false;
             ÉtatInventaire = false;
+            MenuVisible = true;
             _managerNetwork = managerNetwork;
         }
 
@@ -73,6 +75,7 @@ namespace Projet_ASL
 
         public void VoirBouttonMenu(bool x)
         {
+            MenuVisible = x;
             BtnJouer.Enabled = x;
             BtnJouer.Visible = x;
             BtnInventaire.Enabled = x;

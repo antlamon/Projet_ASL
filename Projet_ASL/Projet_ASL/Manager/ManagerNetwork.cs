@@ -122,7 +122,8 @@ namespace Projet_ASL
 
         private void ReadPositionPersonnage(NetIncomingMessage inc)
         {
-            Player player = Players.Find(p => p.Username == inc.ReadString());
+            string username = inc.ReadString();
+            Player player = Players.Find(p => p.Username == username);
             player.Personnages[inc.ReadInt32()].GérerPositionObjet(new Vector3(inc.ReadFloat(), 0, inc.ReadFloat()));
         }
 
@@ -250,11 +251,14 @@ namespace Projet_ASL
 
         public void SendLogout()
         {
-            NetOutgoingMessage outMessage = _client.CreateMessage();
-            outMessage.Write((byte)PacketType.Logout);
-            outMessage.Write(Username);
-            _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
-            _client.Disconnect("Thank you, come again");
+            if (Active)
+            {
+                NetOutgoingMessage outMessage = _client.CreateMessage();
+                outMessage.Write((byte)PacketType.Logout);
+                outMessage.Write(Username);
+                _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
+                _client.Disconnect("Bye");
+            }
         }
     }
 }

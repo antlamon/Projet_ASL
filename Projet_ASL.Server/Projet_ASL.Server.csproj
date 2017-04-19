@@ -77,7 +77,7 @@
     <Compile Include="Commands\MessageCommand.cs" />
     <Compile Include="Commands\PersonnagePositionCommand.cs" />
     <Compile Include="Commands\PlayerPositionCommand.cs" />
-    <Compile Include="Managers\ManagerCollisionDéplacement.cs" />
+    <Compile Include="Managers\ManagerDéplacement.cs" />
     <Compile Include="PacketFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

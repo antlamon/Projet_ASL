@@ -16,6 +16,7 @@ namespace Projet_ASL.Server.Managers
         const int BORNE_HORIZONTALE = 80;
         const int BORNE_VERTICALE = 50;
         const int DÉPLACEMENT_MAX = 10;
+
         public static bool CheckDéplacementMAX(Vector3 positionInitiale, Vector3 positionFinale)
         {
             return Vector3.Distance(positionInitiale, positionFinale) <= DÉPLACEMENT_MAX;
