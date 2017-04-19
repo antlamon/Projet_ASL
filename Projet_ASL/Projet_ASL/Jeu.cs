@@ -79,11 +79,11 @@ namespace Projet_ASL
             //Vector3 positionObjet4 = new Vector3(0, -1.5f, 0);
             //Vector3 positionObjet5 = new Vector3(2, 0, 0);
             //Vector3 positionLumière = new Vector3(0, 0f, 3f);
-            Vector3 positionCaméra = new Vector3(0, 70, 10);
+            Vector3 positionCaméra = new Vector3(0, 80, 20);
             Vector3 cibleCaméra = new Vector3(0, 0, 0);
             Vector2 dimensionDialogueMenu = new Vector2(Window.ClientBounds.Width / 3, Window.ClientBounds.Height);
             Vector2 dimensionDialogueInventaire = new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height);
-            CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, Vector3.Up, INTERVALLE_MAJ_STANDARD);
+            CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, -Vector3.UnitZ, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
 
@@ -93,6 +93,9 @@ namespace Projet_ASL
             Components.Add(new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS));
 
             Components.Add(new Afficheur3D(this)); //Ne pas mettre de sprite apres ca
+            Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(16, 10), "metal1", INTERVALLE_MAJ_STANDARD);
+            carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            Components.Add(carte);
             Components.Add(GestionInput);
             Components.Add(CaméraJeu);
 
@@ -182,6 +185,7 @@ namespace Projet_ASL
 
         private void DémarrerPhaseDeJeu()
         {
+            
             //Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(-5,0,-4), "Guerrier", 0, 0, 0, 0, 1);
             //pion.DrawOrder = (int)OrdreDraw.MILIEU;
             //Components.Add(pion);
