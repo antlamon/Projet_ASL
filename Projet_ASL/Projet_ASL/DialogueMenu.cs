@@ -16,6 +16,7 @@ namespace Projet_ASL
         public BoutonDeCommande BtnInventaire { get; private set; }
         public bool ÉtatInventaire { get; set; }
         public BoutonDeCommande BtnQuitter { get; private set; }
+        public TexteCentré NomJeu { get; private set; }
         SpriteFont Police { get; set; }
         ManagerNetwork _managerNetwork { get; set; }
         public bool MenuVisible { get; private set; }
@@ -52,9 +53,13 @@ namespace Projet_ASL
             BtnQuitter = new BoutonDeCommande(Game, "Quitter", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Quitter, INTERVALLE_MAJ_STANDARD);
             BtnQuitter.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
+            DimensionBouton = Police.MeasureString("Jeu de bataille");
+            NomJeu = new TexteCentré(Game, "Jeu de bataille", "Arial20", new Rectangle(100, 100,(int) DimensionBouton.X, (int) DimensionBouton.Y), Color.White, 0.10f);
+
             Game.Components.Add(BtnJouer);
             Game.Components.Add(BtnInventaire);
             Game.Components.Add(BtnQuitter);
+            Game.Components.Add(NomJeu);
         }
 
         private void Inventaire()
@@ -82,6 +87,8 @@ namespace Projet_ASL
             BtnInventaire.Visible = x;
             BtnQuitter.Enabled = x;
             BtnQuitter.Visible = x;
+            NomJeu.Enabled = x;
+            NomJeu.Visible = x;
             ÉtatInventaire = false;
             ÉtatJouer = false;
         }
