@@ -91,13 +91,10 @@ namespace Projet_ASL
 
             CréationDuPanierDeServices();
             
-            Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
+            //Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
             Components.Add(new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS));
 
             Components.Add(new Afficheur3D(this)); //Ne pas mettre de sprite apres ca
-            Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(16, 10), "metal1", INTERVALLE_MAJ_STANDARD);
-            carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
-            Components.Add(carte);
             Components.Add(GestionInput);
             Components.Add(CaméraJeu);
 
@@ -187,7 +184,9 @@ namespace Projet_ASL
 
         private void DémarrerPhaseDeJeu()
         {
-            
+            Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(12, 8), "hexconcrete", INTERVALLE_MAJ_STANDARD);
+            carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            Components.Add(carte);
             //Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(-5,0,-4), "Guerrier", 0, 0, 0, 0, 1);
             //pion.DrawOrder = (int)OrdreDraw.MILIEU;
             //Components.Add(pion);
