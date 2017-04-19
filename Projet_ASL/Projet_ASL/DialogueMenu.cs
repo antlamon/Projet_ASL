@@ -55,6 +55,7 @@ namespace Projet_ASL
 
             DimensionBouton = Police.MeasureString("Jeu de bataille");
             NomJeu = new TexteCentré(Game, "Jeu de bataille", "Arial20", new Rectangle(100, 100,(int) DimensionBouton.X, (int) DimensionBouton.Y), Color.White, 0.10f);
+            NomJeu.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Game.Components.Add(BtnJouer);
             Game.Components.Add(BtnInventaire);
