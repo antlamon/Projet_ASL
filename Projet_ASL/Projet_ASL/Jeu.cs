@@ -41,8 +41,12 @@ namespace Projet_ASL
 
         private Texture2D _texture; //For test
         private SpriteFont _font; //For test
-        //private Mage pion2; //for test
-        //private Color couleur;
+                                  //private Mage pion2; //for test
+                                  //private Color couleur;
+
+        private int CompteurDeTours { get; set; }
+
+        public bool TourLocal { get; set; }
 
         public Jeu()
             : base()
@@ -90,7 +94,7 @@ namespace Projet_ASL
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
 
             CréationDuPanierDeServices();
-            
+
             //Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
             Components.Add(new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS));
             Components.Add(new Afficheur3D(this)); //Ne pas mettre de sprite apres ca
@@ -165,9 +169,17 @@ namespace Projet_ASL
                     DémarrerPhaseDeJeu();
                     break;
                 case États.JEU:
-                    _managerNetwork.Update();
-                    _managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
-                    //pion2.Visible = _managerNetwork.Players.Count > 1;
+                    if (PeopleAlive())
+                    {
+                        Combat();
+                        _managerNetwork.Update();
+                        _managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
+                    }
+                    else
+                    {
+                        ÉtatJeu = États.FIN_DE_JEU;
+                    }
+
                     break;
                 case États.INVENTAIRE:
                     if (MenuInventaire.ÉtatMenu)
@@ -186,24 +198,23 @@ namespace Projet_ASL
             Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
             carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(carte);
-            //Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(-5,0,-4), "Guerrier", 0, 0, 0, 0, 1);
-            //pion.DrawOrder = (int)OrdreDraw.MILIEU;
-            //Components.Add(pion);
-
-            //pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(-5, 0, 0), "Mage", 0, 0, 0, 0, 1);
-            //pion2.DrawOrder = (int)OrdreDraw.MILIEU;
-            //pion2.Visible = false;
-            //Components.Add(pion2);
-
-            //Archer pion3 = new Archer(this, "ArcherB", 0.03f, Vector3.Zero, new Vector3(-5,0,4), "Archer", 0, 0, 0, 0, 1);
-            //pion3.DrawOrder = (int)OrdreDraw.MILIEU;
-            //Components.Add(pion3);
-
-            // Il faudrait implémenter un compteur de tours pour compter les tours des debuffs, ex. Folie, Freeze...
-            // Je pense que l'idéal serait de créer une classe qui le ferait comme ça on pourrait créer une instance
-            // chaque fois qu'un des sorts qui appliquent un debuff est lancé... J'avais pensé au départ à un booléen 
-            // pour chaque sort mais il est possible que le même sort soit lancé plus d'une fois a différents personnages
         }
+
+
+        private void Combat()
+        {
+            if(TourLocal)
+            {
+
+            }
+            ++CompteurDeTours;
+        }
+
+        private bool PeopleAlive()
+        {
+            return _managerNetwork.Players.TrueForAll(player => player.Personnages.Exists(perso => !perso.EstMort));
+        }
+
 
         private void GérerClavier()
         {
