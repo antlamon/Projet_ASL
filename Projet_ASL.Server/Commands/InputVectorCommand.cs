@@ -26,13 +26,10 @@ namespace Projet_ASL.Server.Commands
             Personnage pion = player.Personnages[inc.PeekInt32()];
 
 
-            if (ManagerDéplacement.CheckDéplacementMAX(pion.Position,déplacement))
-            {
-                pion.GérerPositionObjet(déplacement);
+            pion.GérerPositionObjet(déplacement);
 
-                var command = new PersonnagePositionCommand();
-                command.Run(server, inc, player, players);
-            }
+            var command = new PersonnagePositionCommand();
+            command.Run(server, inc, player, players);
 
         }
     }

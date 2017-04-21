@@ -16,8 +16,6 @@ namespace Projet_ASL
         const int NB_PERSONNAGE = 4;
         public string Username { get; set; }
         public List<Personnage> Personnages { get; set; }
-        public int XPosition { get; set; }
-        public int YPosition { get; set; }
 
         public Player(string username)
         {

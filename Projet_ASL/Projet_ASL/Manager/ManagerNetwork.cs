@@ -51,7 +51,7 @@ namespace Projet_ASL
             {
                 outmsg.Write(ObtenirType(p));
             }
-            _client.Connect("172.17.106.118", 5013, outmsg);
+            _client.Connect("localhost", 5013, outmsg);
             return EsablishInfo();
         }
 

@@ -167,7 +167,6 @@ namespace Projet_ASL
                 case États.JEU:
                     _managerNetwork.Update();
                     _managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
-                    //pion2.Visible = _managerNetwork.Players.Count > 1;
                     break;
                 case États.INVENTAIRE:
                     if (MenuInventaire.ÉtatMenu)
@@ -186,18 +185,6 @@ namespace Projet_ASL
             Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
             carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(carte);
-            //Guerrier pion = new Guerrier(this, "GuerrierB", 0.03f, Vector3.Zero, new Vector3(-5,0,-4), "Guerrier", 0, 0, 0, 0, 1);
-            //pion.DrawOrder = (int)OrdreDraw.MILIEU;
-            //Components.Add(pion);
-
-            //pion2 = new Mage(this, "Mage", 0.03f, Vector3.Zero, new Vector3(-5, 0, 0), "Mage", 0, 0, 0, 0, 1);
-            //pion2.DrawOrder = (int)OrdreDraw.MILIEU;
-            //pion2.Visible = false;
-            //Components.Add(pion2);
-
-            //Archer pion3 = new Archer(this, "ArcherB", 0.03f, Vector3.Zero, new Vector3(-5,0,4), "Archer", 0, 0, 0, 0, 1);
-            //pion3.DrawOrder = (int)OrdreDraw.MILIEU;
-            //Components.Add(pion3);
 
             // Il faudrait implémenter un compteur de tours pour compter les tours des debuffs, ex. Folie, Freeze...
             // Je pense que l'idéal serait de créer une classe qui le ferait comme ça on pourrait créer une instance
