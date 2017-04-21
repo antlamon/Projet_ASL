@@ -7,6 +7,8 @@ namespace Projet_ASL
 {
     public class InputManager : Microsoft.Xna.Framework.GameComponent
     {
+        const int DÉPLACEMENT_MAX = 15;
+
         private ManagerNetwork _managerNetwork;
         Keys[] AnciennesTouches { get; set; }
         Keys[] NouvellesTouches { get; set; }
@@ -18,6 +20,7 @@ namespace Projet_ASL
         bool PersonnageSélectionné { get; set; }
         float? DistanceRayon { get; set; }
         Personnage PersonnageChoisi { get; set; }
+        Vector3 PositionInitialePersonnage { get; set; }
         int Index { get; set; }
 
         public InputManager(Game game, Caméra caméraJeu, ManagerNetwork managerNetwork)
@@ -71,7 +74,8 @@ namespace Projet_ASL
                 if (PersonnageChoisi != null)
                 {
                     PersonnageSélectionné = true;
-                    Game.Window.Title = PersonnageChoisi.GetType().ToString() + PersonnageChoisi.Position.ToString() + GetPositionSourisPlan().ToString();
+                    PositionInitialePersonnage = PersonnageChoisi.Position;
+                    //Game.Window.Title = PersonnageChoisi.GetType().ToString() + PersonnageChoisi.Position.ToString() + GetPositionSourisPlan().ToString();
                 }
             }
         }
@@ -104,6 +108,7 @@ namespace Projet_ASL
                     //Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
                     //PersonnageChoisi.Bouger(Déplacement);
                     //envoyer nouvelle position au serveur
+                    PositionVouluePersonnage = VérifierDéplacementMAX(PositionVouluePersonnage);
                     _managerNetwork.SendNewPosition(PositionVouluePersonnage, _managerNetwork.JoueurLocal.Personnages.FindIndex(p=>p.GetType() == PersonnageChoisi.GetType()));
                 }
                 if(EstReleasedClicGauche())
@@ -112,6 +117,21 @@ namespace Projet_ASL
                     PersonnageChoisi = null;
                 }
             }
+        }
+
+        private Vector3 VérifierDéplacementMAX(Vector3 positionVouluePersonnage)
+        {
+            Vector3 positionVérifiée;
+            if(Vector3.Distance(PositionInitialePersonnage,positionVouluePersonnage) <= DÉPLACEMENT_MAX)
+            {
+                positionVérifiée = positionVouluePersonnage;
+            }
+            else
+            {
+                positionVérifiée = DÉPLACEMENT_MAX * Vector3.Normalize(positionVouluePersonnage - PositionInitialePersonnage) + PositionInitialePersonnage;
+                Game.Window.Title = positionVérifiée.ToString() + PositionInitialePersonnage.ToString() + positionVouluePersonnage.ToString();
+            }
+            return positionVérifiée;
         }
 
         public bool EstClavierActivé
