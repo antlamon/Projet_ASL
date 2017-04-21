@@ -17,9 +17,7 @@ namespace Projet_ASL
 {
     enum OrdreDraw { ARRIÈRE_PLAN, MILIEU, AVANT_PLAN };
     enum États { MENU, INVENTAIRE, QUITTER, CONNEXION, JEU, FIN_DE_JEU };
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
+
     public class Jeu : Game
     {
         const float INTERVALLE_CALCUL_FPS = 1f;
@@ -38,6 +36,7 @@ namespace Projet_ASL
 
         DialogueMenu MenuAccueil { get; set; }
         DialogueInventaire MenuInventaire { get; set; }
+        DialogueActions MenuActions { get; set; }
 
         private Texture2D _texture; //For test
         private SpriteFont _font; //For test
@@ -45,6 +44,7 @@ namespace Projet_ASL
                                   //private Color couleur;
 
         private int CompteurDeTours { get; set; }
+        private int CompteurPersonnage { get; set; }
 
         public bool TourLocal { get; set; }
 
@@ -62,37 +62,28 @@ namespace Projet_ASL
             IsMouseVisible = true;
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
+
         protected override void Initialize()
         {
-            //if (_managerNetwork.Start())
-            //{
-            //    couleur = Color.Black;
-            //}
-            //else
-            //{
-            //    couleur = Color.Red;
-            //}
-
             //Vector3 positionObjet1 = new Vector3(-2, 0, 0);
             //Vector3 positionObjet2 = new Vector3(0, 1.5f, 0);
             //Vector3 positionObjet3 = new Vector3(0, 0, 0);
             //Vector3 positionObjet4 = new Vector3(0, -1.5f, 0);
             //Vector3 positionObjet5 = new Vector3(2, 0, 0);
             //Vector3 positionLumière = new Vector3(0, 0f, 3f);
+            CompteurDeTours = 1;
+            CompteurPersonnage = 0;
+
             Vector3 positionCaméra = new Vector3(0, 80, 20);
             Vector3 cibleCaméra = new Vector3(0, 0, 0);
             Vector2 dimensionDialogueMenu = new Vector2(Window.ClientBounds.Width / 3, Window.ClientBounds.Height);
             Vector2 dimensionDialogueInventaire = new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height);
+            //a changer les dimensions
+            Vector2 dimensionDialogueSpells = new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height / 4);
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, -Vector3.UnitZ, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
-
+            MenuActions = new DialogueActions(this, dimensionDialogueSpells);
             CréationDuPanierDeServices();
 
             //Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
@@ -103,7 +94,7 @@ namespace Projet_ASL
 
             Components.Add(MenuAccueil);
             Components.Add(MenuInventaire);
-
+            Components.Add(MenuActions);
             base.Initialize();
         }
 
@@ -132,11 +123,7 @@ namespace Projet_ASL
             base.LoadContent();
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
         protected override void Update(GameTime gameTime)
         {
             GérerClavier();
@@ -193,6 +180,7 @@ namespace Projet_ASL
             }
         }
 
+
         private void DémarrerPhaseDeJeu()
         {
             Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
@@ -201,18 +189,36 @@ namespace Projet_ASL
         }
 
 
+        private bool PeopleAlive()
+        {
+            return _managerNetwork.Players.TrueForAll(player => player.Personnages.Exists(perso => !perso.EstMort));
+        }
+
+
         private void Combat()
         {
             if(TourLocal)
             {
-
+                Personnage persoLocal = _managerNetwork.JoueurLocal.Personnages[CompteurPersonnage];
+                MenuActions.VoirBouttonAction(true);
             }
-            ++CompteurDeTours;
+            MenuActions.VoirBouttonAction(false);
+            GérerCompteurs();
         }
 
-        private bool PeopleAlive()
+
+        private void GérerCompteurs()
         {
-            return _managerNetwork.Players.TrueForAll(player => player.Personnages.Exists(perso => !perso.EstMort));
+            ++CompteurDeTours;
+
+            if(CompteurPersonnage < _managerNetwork.JoueurLocal.Personnages.Count)
+            {
+                ++CompteurPersonnage;
+            }
+            else
+            {
+                CompteurPersonnage = 0;
+            }
         }
 
 

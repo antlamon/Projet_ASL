@@ -99,6 +99,7 @@
     <Compile Include="ComposantDeBase\TexteCentré.cs" />
     <Compile Include="DialogueInventaire.cs" />
     <Compile Include="DialogueMenu.cs" />
+    <Compile Include="DialogueActions.cs" />
     <Compile Include="Items\Arme.cs" />
     <Compile Include="Items\Armure.cs" />
     <Compile Include="Items\Item.cs" />
