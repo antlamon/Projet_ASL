@@ -199,27 +199,27 @@ namespace Projet_ASL
             Personnage p = null;
             if (type == TypePersonnage.ARCHER)
             {
-                p = new Archer(Jeu, "ArcherB", 0.0075f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Archer(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             if (type == TypePersonnage.GUÉRISSEUR)
             {
-                p = new Guérisseur(Jeu, "GuerrierB", 0.0075f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Guérisseur(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             if (type == TypePersonnage.GUERRIER)
             {
-                p = new Guerrier(Jeu, "GuerrierB", 0.0075f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Guerrier(Jeu, allié ? "GuerrierB" : "GuerrierR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             if (type == TypePersonnage.MAGE)
             {
-                p = new Mage(Jeu, "MageB", 0.0075f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Mage(Jeu, allié ? "MageB" : "MageR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             if (type == TypePersonnage.PALADIN)
             {
-                p = new Paladin(Jeu, "GuerrierB", 0.0075f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Paladin(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             if (type == TypePersonnage.VOLEUR)
             {
-                p = new Voleur(Jeu, "GuerrierB", 0.0075f, Vector3.Zero, new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Voleur(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
             }
             p.DrawOrder = (int)OrdreDraw.MILIEU;
             return p;

@@ -22,7 +22,6 @@ namespace Projet_ASL
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, dextérité, intelligence, sagesse, ptsDeVie)
         {
         }
-        public Guerrier() { }
 
         public override int Attaquer()
         {

@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Projet_ASL
 {
-    public class Carte : PrimitiveDeBaseAnimée
+    public class Carte : PrimitiveDeBase
     {
         const int NB_TRIANGLES = 2;
 
@@ -30,7 +30,7 @@ namespace Projet_ASL
         BlendState GestionAlpha { get; set; }
 
         public Carte(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, Vector2 charpente, string nomTexture, float intervalleMAJ)
-           : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
+           : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale)
         {
             NbColonnes = (int)charpente.X;
             NbRangées = (int)charpente.Y;

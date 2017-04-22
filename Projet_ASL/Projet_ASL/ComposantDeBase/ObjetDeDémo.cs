@@ -61,7 +61,7 @@ namespace Projet_ASL
             {
                 TempsÉcouléDepuisMAJ = 0;
                 GérerRotationDémo();
-                SphèreDeCollision = new BoundingSphere(new Vector3(Position.X,0,Position.Z), 1);
+                SphèreDeCollision = new BoundingSphere(new Vector3(Position.X,0,Position.Z), 2);
             }
         }
 

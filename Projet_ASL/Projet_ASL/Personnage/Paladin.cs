@@ -12,7 +12,6 @@ namespace Projet_ASL
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, dextérité, intelligence, sagesse, ptsDeVie)
         {
         }
-        public Paladin() { }
         public override int Attaquer()
         {
             return Force;

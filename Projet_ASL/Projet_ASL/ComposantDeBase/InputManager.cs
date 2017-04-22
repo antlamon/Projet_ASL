@@ -7,7 +7,7 @@ namespace Projet_ASL
 {
     public class InputManager : Microsoft.Xna.Framework.GameComponent
     {
-        const int DÉPLACEMENT_MAX = 15;
+        const int DÉPLACEMENT_MAX = 10;
 
         private ManagerNetwork _managerNetwork;
         Keys[] AnciennesTouches { get; set; }
@@ -73,7 +73,6 @@ namespace Projet_ASL
                 {
                     PersonnageSélectionné = true;
                     PositionInitialePersonnage = PersonnageChoisi.Position;
-                    //Game.Window.Title = PersonnageChoisi.GetType().ToString() + PersonnageChoisi.Position.ToString() + GetPositionSourisPlan().ToString();
                 }
             }
         }

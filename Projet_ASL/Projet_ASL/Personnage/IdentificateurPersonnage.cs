@@ -9,6 +9,7 @@ namespace Projet_ASL
 {
     class IdentificateurPersonnage : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        const int NB_CASES = 20;
         string NomImage { get; set; }
         public Vector2 Position { get; protected set; }        // En prévision d'une spécialisation vers un sprite dynamique
         protected Texture2D Image { get; set; } // En prévision d'une spécialisation vers un sprite animé
@@ -18,16 +19,23 @@ namespace Projet_ASL
         protected float Échelle { get; set; }
         protected Rectangle RectangleSource { get; set; }
         private Personnage PersonnageÀIdentifier { get; set; }
+        private int PtsViePersonnage { get; set; }
+        private TexteCentré AfficheurPtsVie { get; set; }
 
 
         public IdentificateurPersonnage(Game jeu, Personnage personnage)
            : base(jeu)
         {
             PersonnageÀIdentifier = personnage;
+            PtsViePersonnage = PersonnageÀIdentifier.PtsDeVie;
             DéterminerNomImage();
             DéterminerPosition();
             ZoneAffichage = new Rectangle(0,0,Game.Window.ClientBounds.Width,Game.Window.ClientBounds.Height/15);
-
+            AfficheurPtsVie = new TexteCentré(Game, ":" + PtsViePersonnage.ToString(), "Arial20",
+                new Rectangle((int)Position.X + 2 * Game.Window.ClientBounds.Width / (3 * NB_CASES), (int)Position.Y, Game.Window.ClientBounds.Width / NB_CASES, Game.Window.ClientBounds.Height / 15),
+                Color.Red, 0);
+            AfficheurPtsVie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Game.Components.Add(AfficheurPtsVie);
         }
 
         private void DéterminerPosition()
@@ -38,22 +46,22 @@ namespace Projet_ASL
                 {
                     if(PersonnageÀIdentifier.Position.Z < -10)
                     {
-                        Position = new Vector2(Game.Window.ClientBounds.Width/11, 0);
+                        Position = new Vector2(Game.Window.ClientBounds.Width/NB_CASES, 0);
                     }
                     else
                     {
-                        Position = new Vector2(2*Game.Window.ClientBounds.Width / 11, 0);
+                        Position = new Vector2(3*Game.Window.ClientBounds.Width / NB_CASES, 0);
                     }
                 }
                 else
                 {
                     if (PersonnageÀIdentifier.Position.Z < 10)
                     {
-                        Position = new Vector2(3*Game.Window.ClientBounds.Width / 11, 0);
+                        Position = new Vector2(5*Game.Window.ClientBounds.Width / NB_CASES, 0);
                     }
                     else
                     {
-                        Position = new Vector2(4 * Game.Window.ClientBounds.Width / 11, 0);
+                        Position = new Vector2(7 * Game.Window.ClientBounds.Width / NB_CASES, 0);
                     }
                 }
             }
@@ -63,22 +71,22 @@ namespace Projet_ASL
                 {
                     if (PersonnageÀIdentifier.Position.Z < -10)
                     {
-                        Position = new Vector2(6 * Game.Window.ClientBounds.Width / 11, 0);
+                        Position = new Vector2(12 * Game.Window.ClientBounds.Width / NB_CASES, 0);
                     }
                     else
                     {
-                        Position = new Vector2(7 * Game.Window.ClientBounds.Width / 11, 0);
+                        Position = new Vector2(14 * Game.Window.ClientBounds.Width / NB_CASES, 0);
                     }
                 }
                 else
                 {
                     if (PersonnageÀIdentifier.Position.Z < 10)
                     {
-                        Position = new Vector2(8 * Game.Window.ClientBounds.Width / 11, 0);
+                        Position = new Vector2(16 * Game.Window.ClientBounds.Width / NB_CASES, 0);
                     }
                     else
                     {
-                        Position = new Vector2(9 * Game.Window.ClientBounds.Width / 11, 0);
+                        Position = new Vector2(18 * Game.Window.ClientBounds.Width / NB_CASES, 0);
                     }
                 }
             }
@@ -106,6 +114,15 @@ namespace Projet_ASL
                 case TypePersonnage.VOLEUR:
                     NomImage = "Throwing_Knife";
                     break;
+            }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if(PtsViePersonnage != PersonnageÀIdentifier.PtsDeVie)
+            {
+                PtsViePersonnage = PersonnageÀIdentifier.PtsDeVie;
+                AfficheurPtsVie.ModifierTexte(":" + PtsViePersonnage.ToString());
             }
         }
 
