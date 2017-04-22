@@ -36,7 +36,7 @@ namespace Projet_ASL
 
         DialogueMenu MenuAccueil { get; set; }
         DialogueInventaire MenuInventaire { get; set; }
-        DialogueActions MenuActions { get; set; }
+        //DialogueActions MenuActions { get; set; }
 
         private Texture2D _texture; //For test
         private SpriteFont _font; //For test
@@ -83,7 +83,7 @@ namespace Projet_ASL
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, -Vector3.UnitZ, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
-            MenuActions = new DialogueActions(this, dimensionDialogueSpells);
+            //MenuActions = new DialogueActions(this, dimensionDialogueSpells);
             CréationDuPanierDeServices();
 
             //Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
@@ -96,7 +96,7 @@ namespace Projet_ASL
 
             Components.Add(MenuAccueil);
             Components.Add(MenuInventaire);
-            Components.Add(MenuActions);
+            //Components.Add(MenuActions);
             base.Initialize();
         }
 
@@ -202,10 +202,10 @@ namespace Projet_ASL
         {
             if(TourLocal)
             {
-                Personnage persoLocal = _managerNetwork.JoueurLocal.Personnages[CompteurPersonnage];
-                MenuActions.VoirBouttonAction(true);
+                //Personnage persoLocal = _managerNetwork.JoueurLocal.Personnages[CompteurPersonnage];
+                //MenuActions.VoirBouttonAction(true);
             }
-            MenuActions.VoirBouttonAction(false);
+            //MenuActions.VoirBouttonAction(false);
             GérerCompteurs();
         }
 
