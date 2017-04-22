@@ -21,6 +21,7 @@ namespace Projet_ASL
         public string Username { get; set; }
 
         public bool Active { get; set; }
+        public bool PremierTour { get; set; }
         Game Jeu { get; set; }
 
         public Player JoueurLocal
@@ -141,6 +142,7 @@ namespace Projet_ASL
         private void ReceiveAllPlayers(NetIncomingMessage inc)
         {
             var count = inc.ReadInt32();
+            PremierTour = count == 1;
             for (int n = 0; n < count; n++)
             {
                 ReadPlayer(inc);
@@ -176,6 +178,9 @@ namespace Projet_ASL
                 foreach (Personnage p in player.Personnages)
                 {
                     Jeu.Components.Add(p);
+                    IdentificateurPersonnage identificateur = new IdentificateurPersonnage(Jeu, p);
+                    identificateur.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+                    Jeu.Components.Add(identificateur);
                 }
             }
         }

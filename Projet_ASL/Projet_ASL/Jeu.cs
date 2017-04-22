@@ -46,7 +46,7 @@ namespace Projet_ASL
 
         private int CompteurDeTours { get; set; }
 
-        public bool TourLocal { get; set; }
+        bool TourLocal { get; set; }
 
         public Jeu()
             : base()
@@ -96,7 +96,9 @@ namespace Projet_ASL
             CréationDuPanierDeServices();
 
             //Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
-            Components.Add(new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS));
+            AfficheurFPS afficheurFPS = new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS);
+            afficheurFPS.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Components.Add(afficheurFPS);
             Components.Add(new Afficheur3D(this)); //Ne pas mettre de sprite apres ca
             Components.Add(GestionInput);
             Components.Add(CaméraJeu);
@@ -195,6 +197,7 @@ namespace Projet_ASL
 
         private void DémarrerPhaseDeJeu()
         {
+            TourLocal = _managerNetwork.PremierTour;
             Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
             carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(carte);

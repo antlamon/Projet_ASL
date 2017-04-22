@@ -109,6 +109,7 @@
     <Compile Include="Personnage\Archer.cs" />
     <Compile Include="Personnage\Guerrier.cs" />
     <Compile Include="Personnage\Guérisseur.cs" />
+    <Compile Include="Personnage\IdentificateurPersonnage.cs" />
     <Compile Include="Personnage\Mage.cs" />
     <Compile Include="Personnage\Paladin.cs" />
     <Compile Include="Personnage\Personnage.cs" />
