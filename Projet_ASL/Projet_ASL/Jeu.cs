@@ -200,13 +200,13 @@ namespace Projet_ASL
 
         private void Combat()
         {
-            if(TourLocal)
-            {
-                Personnage persoLocal = _managerNetwork.JoueurLocal.Personnages[CompteurPersonnage];
-                MenuActions.VoirBouttonAction(true);
-            }
-            MenuActions.VoirBouttonAction(false);
-            GérerCompteurs();
+            //if(TourLocal)
+            //{
+            //    Personnage persoLocal = _managerNetwork.JoueurLocal.Personnages[CompteurPersonnage];
+            //    MenuActions.VoirBouttonAction(true);
+            //}
+            //MenuActions.VoirBouttonAction(false);
+            //GérerCompteurs();
         }
 
 

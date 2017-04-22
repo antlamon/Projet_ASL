@@ -155,7 +155,7 @@ namespace Projet_ASL
             inc.ReadAllProperties(player);
             for (int i = 0; i < player.Personnages.Capacity; ++i)
             {
-                player.Personnages.Add(ReadPersonnage(inc));
+                player.Personnages.Add(ReadPersonnage(inc, player.Username));
             }
             if (Players.Any(p => p.Username == player.Username))
             {
@@ -185,16 +185,16 @@ namespace Projet_ASL
             }
         }
 
-        private Personnage ReadPersonnage(NetIncomingMessage inc)
+        private Personnage ReadPersonnage(NetIncomingMessage inc, string username)
         {
             string type = inc.ReadString();
             float posX = inc.ReadFloat();
             float posZ = inc.ReadFloat();
             int ptsVie = inc.ReadInt32();
-            return InstancierPersonnage(type, posX, posZ, ptsVie);
+            return InstancierPersonnage(type, username == Username, posX, posZ, ptsVie);
         }
 
-        private Personnage InstancierPersonnage(string type, float posX, float posZ, int ptsVie)
+        private Personnage InstancierPersonnage(string type, bool allié, float posX, float posZ, int ptsVie)
         {
             Personnage p = null;
             if (type == TypePersonnage.ARCHER)

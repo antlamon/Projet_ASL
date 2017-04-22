@@ -26,7 +26,7 @@ namespace Projet_ASL
             PersonnageÀIdentifier = personnage;
             DéterminerNomImage();
             DéterminerPosition();
-            ZoneAffichage = new Rectangle(0,0,Game.Window.ClientBounds.Width,Game.Window.ClientBounds.Height/10);
+            ZoneAffichage = new Rectangle(0,0,Game.Window.ClientBounds.Width,Game.Window.ClientBounds.Height/15);
 
         }
 
