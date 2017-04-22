@@ -71,27 +71,27 @@ namespace Projet_ASL.Server.Commands
             Personnage personnage = null;
             if (type == TypePersonnage.ARCHER)
             {
-                personnage = new Archer(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                personnage = new Archer(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
             }
             if (type == TypePersonnage.GUÉRISSEUR)
             {
-                personnage = new Guérisseur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                personnage = new Guérisseur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
             }
             if (type == TypePersonnage.GUERRIER)
             {
-                personnage = new Guerrier(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                personnage = new Guerrier(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
             }
             if (type == TypePersonnage.MAGE)
             {
-                personnage = new Mage(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                personnage = new Mage(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
             }
             if (type == TypePersonnage.PALADIN)
             {
-                personnage = new Paladin(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                personnage = new Paladin(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
             }
             if (type == TypePersonnage.VOLEUR)
             {
-                personnage = new Voleur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                personnage = new Voleur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
             }
             return personnage;
         }

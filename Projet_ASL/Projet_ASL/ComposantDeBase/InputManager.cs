@@ -21,7 +21,6 @@ namespace Projet_ASL
         float? DistanceRayon { get; set; }
         Personnage PersonnageChoisi { get; set; }
         Vector3 PositionInitialePersonnage { get; set; }
-        int Index { get; set; }
 
         public InputManager(Game game, Caméra caméraJeu, ManagerNetwork managerNetwork)
            : base(game)
@@ -39,7 +38,6 @@ namespace Projet_ASL
             PersonnageSélectionné = false;
             DistanceRayon = null;
             PersonnageChoisi = null;
-            Index = 0;
             base.Initialize();
         }
 
@@ -129,7 +127,6 @@ namespace Projet_ASL
             else
             {
                 positionVérifiée = DÉPLACEMENT_MAX * Vector3.Normalize(positionVouluePersonnage - PositionInitialePersonnage) + PositionInitialePersonnage;
-                Game.Window.Title = positionVérifiée.ToString() + PositionInitialePersonnage.ToString() + positionVouluePersonnage.ToString();
             }
             return positionVérifiée;
         }
