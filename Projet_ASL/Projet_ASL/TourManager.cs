@@ -17,10 +17,16 @@ namespace Projet_ASL
     /// </summary>
     public class TourManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        public TourManager(Jeu jeu, Personnage perso)
+        DialogueActions BoutonsActions { get; set; }
+        ManagerNetwork NetworkManager { get; set; }
+        Player JoueurLocal { get; set; }
+        Player JoueurEnemi { get; set; }
+
+        public TourManager(Jeu jeu, ManagerNetwork networkManager)
             : base(jeu)
         {
-            
+            NetworkManager = networkManager;
+            BoutonsActions = new DialogueActions(jeu, new Vector2(Game.Window.ClientBounds.Width / 2f, Game.Window.ClientBounds.Height / 5f));
         }
 
         /// <summary>
@@ -29,8 +35,8 @@ namespace Projet_ASL
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
-
+            JoueurLocal = NetworkManager.JoueurLocal;
+            JoueurEnemi = NetworkManager.
             base.Initialize();
         }
 
