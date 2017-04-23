@@ -31,6 +31,13 @@ namespace Projet_ASL
                 return Players.Find(p => p.Username == Username);
             }
         }
+        public Player JoueurEnnemi
+        {
+            get
+            {
+                return Players.FirstOrDefault(p => p.Username != Username);
+            }
+        }
 
         public ManagerNetwork(Game jeu)
         {

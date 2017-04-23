@@ -51,7 +51,7 @@ namespace Projet_ASL
             BtnArcher = new BoutonDeCommande(Game, "Archer", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Archer, INTERVALLE_MAJ_STANDARD);
             BtnArcher.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 4) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 4) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 4f);
             BtnGuérisseur = new BoutonDeCommande(Game, "Guérisseur", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Guérisseur, INTERVALLE_MAJ_STANDARD);
             BtnGuérisseur.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
@@ -59,7 +59,7 @@ namespace Projet_ASL
             BtnGuerrier = new BoutonDeCommande(Game, "Guerrier", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Guerrier, INTERVALLE_MAJ_STANDARD);
             BtnGuerrier.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            PositionBouton = new Vector2((NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 4f);
             BtnMage = new BoutonDeCommande(Game, "Mage", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Mage, INTERVALLE_MAJ_STANDARD);
             BtnMage.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
@@ -67,7 +67,7 @@ namespace Projet_ASL
             BtnPaladin = new BoutonDeCommande(Game, "Paladin", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Paladin, INTERVALLE_MAJ_STANDARD);
             BtnPaladin.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            PositionBouton = new Vector2((NB_ZONES_DIALOGUE) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            PositionBouton = new Vector2((NB_ZONES_DIALOGUE) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 4f);
             BtnVoleur = new BoutonDeCommande(Game, "Voleur", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Voleur, INTERVALLE_MAJ_STANDARD);
             BtnVoleur.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
