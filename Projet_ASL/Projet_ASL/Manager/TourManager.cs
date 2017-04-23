@@ -21,6 +21,7 @@ namespace Projet_ASL
         ManagerNetwork NetworkManager { get; set; }
         Player JoueurLocal { get; set; }
         Player JoueurEnnemi { get; set; }
+        List<List<BoutonDeCommande>> Boutons { get; set; }
         int CompteurPersonnage { get; set; }
 
         public TourManager(Jeu jeu, ManagerNetwork networkManager)
@@ -38,6 +39,7 @@ namespace Projet_ASL
         {
             JoueurLocal = NetworkManager.JoueurLocal;
             JoueurEnnemi = NetworkManager.JoueurEnnemi;
+            Boutons = new List<List<BoutonDeCommande>>();
             CompteurPersonnage = 0;
             CréerBtnClasses();
             base.Initialize();
@@ -45,27 +47,27 @@ namespace Projet_ASL
 
         private void CréerBtnClasses()
         {
-            foreach(Personnage p in JoueurLocal.Personnages)
+            for(int personnage = 0; personnage < JoueurLocal.Personnages.Count - 1; ++personnage) // À vérifer
             {
-                switch(p.GetType().ToString())
+                switch(JoueurLocal.Personnages[personnage].GetType().ToString())
                 {
                     case TypePersonnage.ARCHER:
-                        BoutonsActions.CréerBtnArcher();
+                        Boutons = BoutonsActions.CréerBtnArcher();
                         break;
                     case TypePersonnage.GUÉRISSEUR:
-                        BoutonsActions.CréerBtnGuérisseur();
+                        Boutons = BoutonsActions.CréerBtnGuérisseur();
                         break;
                     case TypePersonnage.GUERRIER:
-                        BoutonsActions.CréerBtnGuerrier();
+                        Boutons = BoutonsActions.CréerBtnGuerrier();
                         break;
                     case TypePersonnage.MAGE:
-                        BoutonsActions.CréerBtnMage();
+                        Boutons = BoutonsActions.CréerBtnMage();
                         break;
                     case TypePersonnage.PALADIN:
-                        BoutonsActions.CréerBtnPaladin();
+                        Boutons = BoutonsActions.CréerBtnPaladin();
                         break;
                     case TypePersonnage.VOLEUR:
-                        BoutonsActions.CréerBtnVoleur();
+                        Boutons = BoutonsActions.CréerBtnVoleur();
                         break;
                 }
             }
@@ -103,6 +105,7 @@ namespace Projet_ASL
             }
             else
             {
+
                 BoutonsActions.BtnPasserTour.Visible = true;
 
             }
