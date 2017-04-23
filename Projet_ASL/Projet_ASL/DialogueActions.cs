@@ -13,7 +13,6 @@ namespace Projet_ASL
         Vector2 DimensionDialogue { get; set; }
         Rectangle RectangleDestination { get; set; }
         public BoutonDeCommande BtnSorts { get; private set; }
-        public bool ÉtatSorts { get; private set; }
         public BoutonDeCommande BtnAttaquer { get; private set; }
         public bool ÉtatAttaquer { get; private set; }
         public BoutonDeCommande BtnPasserTour { get; private set; }
@@ -39,16 +38,21 @@ namespace Projet_ASL
         BoutonDeCommande BtnRetour { get; set; }
         #endregion
 
-        public DialogueActions(Game jeu, Vector2 dimensionDialogue)
+        public DialogueActions(Game jeu, Vector2 dimensionDialogue, ManagerNetwork managerNetwork)
            : base(jeu)
         {
             DimensionDialogue = dimensionDialogue;
             //zone occupée par dialogue, comprend position
             RectangleDestination = new Rectangle(Game.Window.ClientBounds.Width - 2*(int)DimensionDialogue.X, Game.Window.ClientBounds.Height - (int)DimensionDialogue.Y,
                                                  (int)DimensionDialogue.X, (int)DimensionDialogue.Y);
-            ÉtatSorts = false;
             ÉtatAttaquer = false;
             MenuActionVisible = true;
+        }
+
+        public void RéinitialiserDialogueActions(Personnage personnage)
+        {
+            Retour();
+            PersonnageActif = personnage;
         }
 
         public override void Initialize()
@@ -86,7 +90,7 @@ namespace Projet_ASL
         }
 
         #region Archer
-        public List<BoutonDeCommande> CréerBtnArcher()
+        public void CréerBtnArcher()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -102,8 +106,6 @@ namespace Projet_ASL
             Game.Components.Add(BtnFlèchePercante);
 
             VoirBoutonsArcher(false);
-
-            return new List<BoutonDeCommande>() { BtnPluieDeFlèches, BtnFlèchePercante };
         }
 
         public void VoirBoutonsArcher(bool v)
@@ -117,7 +119,7 @@ namespace Projet_ASL
         #endregion
 
         #region Guérisseur
-        public List<BoutonDeCommande> CréerBtnGuérisseur()
+        public void CréerBtnGuérisseur()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -139,8 +141,6 @@ namespace Projet_ASL
 
             VoirBoutonsGuérisseur(false);
             VoirBoutonsSatan(false);
-
-            return new List<BoutonDeCommande>() { BtnSoinDeZone, BtnRéssurection, BtnVolDeVie };
         }
 
         public void VoirBoutonsSatan(bool v)
@@ -163,7 +163,7 @@ namespace Projet_ASL
         #endregion
 
         #region Guerrier
-        public List<BoutonDeCommande> CréerBtnGuerrier()
+        public void CréerBtnGuerrier()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -179,7 +179,6 @@ namespace Projet_ASL
             Game.Components.Add(BtnFolie);
 
             VoirBoutonsGuerrier(false);
-            return new List<BoutonDeCommande>() { BtnTornadeFurieuse, BtnFolie };
         }
 
         public void VoirBoutonsGuerrier(bool v)
@@ -193,7 +192,7 @@ namespace Projet_ASL
         #endregion
 
         #region Mage
-        public List<BoutonDeCommande> CréerBtnMage()
+        public void CréerBtnMage()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -209,7 +208,6 @@ namespace Projet_ASL
             Game.Components.Add(BtnFreezeDontMove);
 
             VoirBoutonsMage(false);
-            return new List<BoutonDeCommande>() { BtnBrazzer, BtnFreezeDontMove };
         }
 
         public void VoirBoutonsMage(bool v)
@@ -223,7 +221,7 @@ namespace Projet_ASL
         #endregion
 
         #region Paladin
-        public List<BoutonDeCommande> CréerBtnPaladin()
+        public void CréerBtnPaladin()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -239,7 +237,6 @@ namespace Projet_ASL
             Game.Components.Add(BtnBouclierDivin);
 
             VoirBoutonsPaladin(false);
-            return new List<BoutonDeCommande>() { BtnClarité, BtnBouclierDivin };
         }
 
         public void VoirBoutonsPaladin(bool v)
@@ -253,7 +250,7 @@ namespace Projet_ASL
         #endregion
 
         #region Voleur
-        public List<BoutonDeCommande> CréerBtnVoleur()
+        public void CréerBtnVoleur()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -269,7 +266,6 @@ namespace Projet_ASL
             Game.Components.Add(BtnLancerCouteau);
 
             VoirBoutonsVoleur(false);
-            return new List<BoutonDeCommande>() { BtnInvisibilité, BtnLancerCouteau };
         }
 
         public void VoirBoutonsVoleur(bool v)
@@ -289,7 +285,29 @@ namespace Projet_ASL
 
         private void Sorts()
         {
-            ÉtatSorts = true;
+            switch (PersonnageActif.GetType().ToString())
+            {
+                case TypePersonnage.ARCHER:
+                    VoirBoutonsArcher(true);
+                    break;
+                case TypePersonnage.GUÉRISSEUR:
+                    VoirBoutonsGuérisseur(true);
+                    break;
+                case TypePersonnage.GUERRIER:
+                    VoirBoutonsGuerrier(true);
+                    break;
+                case TypePersonnage.MAGE:
+                    VoirBoutonsMage(true);
+                    break;
+                case TypePersonnage.PALADIN:
+                    VoirBoutonsPaladin(true);
+                    break;
+                case TypePersonnage.VOLEUR:
+                    VoirBoutonsVoleur(true);
+                    break;
+            }
+            VoirBoutonAction(false);
+
         }
 
         private void PasserTour()
@@ -299,6 +317,27 @@ namespace Projet_ASL
 
         private void Retour()
         {
+            switch (PersonnageActif.GetType().ToString())
+            {
+                case TypePersonnage.ARCHER:
+                    VoirBoutonsArcher(false);
+                    break;
+                case TypePersonnage.GUÉRISSEUR:
+                    VoirBoutonsGuérisseur(false);
+                    break;
+                case TypePersonnage.GUERRIER:
+                    VoirBoutonsGuerrier(false);
+                    break;
+                case TypePersonnage.MAGE:
+                    VoirBoutonsMage(false);
+                    break;
+                case TypePersonnage.PALADIN:
+                    VoirBoutonsPaladin(false);
+                    break;
+                case TypePersonnage.VOLEUR:
+                    VoirBoutonsVoleur(false);
+                    break;
+            }
             VoirBoutonAction(true);
         }
 
@@ -312,8 +351,8 @@ namespace Projet_ASL
             BtnPasserTour.Enabled = x;
             BtnPasserTour.Visible = x;
             ÉtatAttaquer = false;
-            ÉtatSorts = false;
             ÉtatPasserTour = false;
         }
+
     }
 }
