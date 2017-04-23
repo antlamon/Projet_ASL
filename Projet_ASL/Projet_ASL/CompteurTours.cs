@@ -5,23 +5,23 @@ using System.Text;
 
 namespace Projet_ASL
 {
-    static class CompteurTours
+    static class CompteurManches
     {
-        public static int NumeroTour { get; private set; } 
+        public static int NumeroManche { get; private set; } 
 
-        static CompteurTours()
+        static CompteurManches()
         {
-            NumeroTour = 0;
+            NumeroManche = 0;
         }
 
-        public static void ProchainTour()
+        public static void ProchaineManche()
         {
-            ++NumeroTour;
+            ++NumeroManche;
         }
         
-        public static void RedémarrerCompteur()
+        public static void RéinitialiserCompteur()
         {
-            NumeroTour = 0;
+            NumeroManche = 0;
         }
     }
 }

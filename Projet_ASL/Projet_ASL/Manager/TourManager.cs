@@ -17,12 +17,17 @@ namespace Projet_ASL
     /// </summary>
     public class TourManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        const int DÉPLACEMENT_MAX = 10;
+
         DialogueActions BoutonsActions { get; set; }
         ManagerNetwork NetworkManager { get; set; }
         Player JoueurLocal { get; set; }
         Player JoueurEnnemi { get; set; }
         List<List<BoutonDeCommande>> Boutons { get; set; }
-        int CompteurPersonnage { get; set; }
+        int IndicePersonnage { get; set; }
+        float DéplacementRestant { get; set; }
+        Vector3 PositionInitiale { get; set; }
+        bool PeutAttaquer { get; set; }
 
         public TourManager(Jeu jeu, ManagerNetwork networkManager)
             : base(jeu)
@@ -39,8 +44,9 @@ namespace Projet_ASL
         {
             JoueurLocal = NetworkManager.JoueurLocal;
             JoueurEnnemi = NetworkManager.JoueurEnnemi;
-            Boutons = new List<List<BoutonDeCommande>>();
-            CompteurPersonnage = 0;
+            IndicePersonnage = 0;
+            PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
+            DéplacementRestant = DÉPLACEMENT_MAX;
             CréerBtnClasses();
             base.Initialize();
         }
@@ -52,22 +58,22 @@ namespace Projet_ASL
                 switch(JoueurLocal.Personnages[personnage].GetType().ToString())
                 {
                     case TypePersonnage.ARCHER:
-                        Boutons = BoutonsActions.CréerBtnArcher();
+                        BoutonsActions.CréerBtnArcher();
                         break;
                     case TypePersonnage.GUÉRISSEUR:
-                        Boutons = BoutonsActions.CréerBtnGuérisseur();
+                        BoutonsActions.CréerBtnGuérisseur();
                         break;
                     case TypePersonnage.GUERRIER:
-                        Boutons = BoutonsActions.CréerBtnGuerrier();
+                        BoutonsActions.CréerBtnGuerrier();
                         break;
                     case TypePersonnage.MAGE:
-                        Boutons = BoutonsActions.CréerBtnMage();
+                        BoutonsActions.CréerBtnMage();
                         break;
                     case TypePersonnage.PALADIN:
-                        Boutons = BoutonsActions.CréerBtnPaladin();
+                        BoutonsActions.CréerBtnPaladin();
                         break;
                     case TypePersonnage.VOLEUR:
-                        Boutons = BoutonsActions.CréerBtnVoleur();
+                        BoutonsActions.CréerBtnVoleur();
                         break;
                 }
             }
@@ -79,37 +85,20 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if(BoutonsActions.ÉtatSorts)
+            if(TourFini())
             {
-                switch(JoueurLocal.Personnages[CompteurPersonnage].GetType().ToString())
-                {
-                    case TypePersonnage.ARCHER:
-                        BoutonsActions.VoirBoutonsArcher(true);
-                        break;
-                    case TypePersonnage.GUÉRISSEUR:
-                        BoutonsActions.VoirBoutonsGuérisseur(true);
-                        break;
-                    case TypePersonnage.GUERRIER:
-                        BoutonsActions.VoirBoutonsGuerrier(true);
-                        break;
-                    case TypePersonnage.MAGE:
-                        BoutonsActions.VoirBoutonsMage(true);
-                        break;
-                    case TypePersonnage.PALADIN:
-                        BoutonsActions.VoirBoutonsPaladin(true);
-                        break;
-                    case TypePersonnage.VOLEUR:
-                        BoutonsActions.VoirBoutonsVoleur(true);
-                        break;
-                }
-            }
-            else
-            {
-
-                BoutonsActions.BtnPasserTour.Visible = true;
-
+                NetworkManager.SendFinDeTour();
+                IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
+                BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
+                PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
+                DéplacementRestant = DÉPLACEMENT_MAX;
             }
             base.Update(gameTime);
+        }
+
+        bool TourFini()
+        {
+            return BoutonsActions.ÉtatPasserTour || BoutonsActions.ÉtatAttaquer && (int)Math.Round(DéplacementRestant) == 0;
         }
     }
 }

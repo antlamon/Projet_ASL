@@ -173,7 +173,7 @@ namespace Projet_ASL
                     }
                     else
                     {
-                        CompteurTours.RedémarrerCompteur();
+                        CompteurManches.RéinitialiserCompteur();
                         ÉtatJeu = États.FIN_DE_JEU;
                     }
                     break;
