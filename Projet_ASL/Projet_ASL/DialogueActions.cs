@@ -81,7 +81,6 @@ namespace Projet_ASL
 
             VoirBoutonRetour(false);
             VoirBoutonAction(false);
-            ÉtatPasserTour = true;
         }
 
         public void VoirBoutonRetour(bool x)
