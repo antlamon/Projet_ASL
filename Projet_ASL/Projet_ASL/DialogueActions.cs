@@ -132,7 +132,7 @@ namespace Projet_ASL
             VoirBoutonsSatan(false);
         }
 
-        private void VoirBoutonsSatan(bool v)
+        public void VoirBoutonsSatan(bool v)
         {
             BtnSoinDeZone.Enabled = v;
             BtnSoinDeZone.Visible = v;
@@ -141,7 +141,7 @@ namespace Projet_ASL
             VoirBoutonRetour(v);
         }
 
-        private void VoirBoutonsGuérisseur(bool v)
+        public void VoirBoutonsGuérisseur(bool v)
         {
             BtnSoinDeZone.Enabled = v;
             BtnSoinDeZone.Visible = v;
@@ -168,7 +168,7 @@ namespace Projet_ASL
             VoirBoutonsGuerrier(false);
         }
 
-        private void VoirBoutonsGuerrier(bool v)
+        public void VoirBoutonsGuerrier(bool v)
         {
             BtnTornadeFurieuse.Enabled = v;
             BtnTornadeFurieuse.Visible = v;
@@ -195,7 +195,7 @@ namespace Projet_ASL
             VoirBoutonsMage(false);
         }
 
-        private void VoirBoutonsMage(bool v)
+        public void VoirBoutonsMage(bool v)
         {
             BtnBrazzer.Enabled = v;
             BtnBrazzer.Visible = v;
@@ -222,7 +222,7 @@ namespace Projet_ASL
             VoirBoutonsPaladin(false);
         }
 
-        private void VoirBoutonsPaladin(bool v)
+        public void VoirBoutonsPaladin(bool v)
         {
             BtnClarité.Enabled = v;
             BtnClarité.Visible = v;
@@ -249,7 +249,7 @@ namespace Projet_ASL
             VoirBoutonsVoleur(false);
         }
 
-        private void VoirBoutonsVoleur(bool v)
+        public void VoirBoutonsVoleur(bool v)
         {
             BtnInvisibilité.Enabled = v;
             BtnInvisibilité.Visible = v;
