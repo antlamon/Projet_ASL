@@ -20,7 +20,8 @@ namespace Projet_ASL
         DialogueActions BoutonsActions { get; set; }
         ManagerNetwork NetworkManager { get; set; }
         Player JoueurLocal { get; set; }
-        Player JoueurEnemi { get; set; }
+        Player JoueurEnnemi { get; set; }
+        int CompteurPersonnage { get; set; }
 
         public TourManager(Jeu jeu, ManagerNetwork networkManager)
             : base(jeu)
@@ -36,7 +37,8 @@ namespace Projet_ASL
         public override void Initialize()
         {
             JoueurLocal = NetworkManager.JoueurLocal;
-            JoueurEnemi = NetworkManager.
+            JoueurEnnemi = NetworkManager.JoueurEnnemi;
+            CompteurPersonnage = 0;
             base.Initialize();
         }
 
@@ -46,8 +48,29 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
+            if(BoutonsActions.ÉtatSorts)
+            {
+                switch(JoueurLocal.Personnages[CompteurPersonnage].GetType().ToString())
+                {
+                    case TypePersonnage.ARCHER:
+                        break;
+                    case TypePersonnage.GUERRIER:
+                        break;
+                    case TypePersonnage.GUÉRISSEUR:
+                        break;
+                    case TypePersonnage.MAGE:
+                        break;
+                    case TypePersonnage.PALADIN:
+                        break;
+                    case TypePersonnage.VOLEUR:
+                        break;
+                }
+            }
+            else
+            {
+                BoutonsActions.BtnPasserTour.Visible = true;
 
+            }
             base.Update(gameTime);
         }
     }
