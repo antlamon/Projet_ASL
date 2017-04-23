@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Projet_ASL
 {
@@ -19,7 +20,9 @@ namespace Projet_ASL
         public bool ÉtatPasserTour { get; private set; }
         SpriteFont Police { get; set; }
         public bool MenuActionVisible { get; private set; }
+        Personnage PersonnageActif { get; set; }
 
+        #region Btn Sorts
         BoutonDeCommande BtnPluieDeFlèches { get; set; }
         BoutonDeCommande BtnFlèchePercante { get; set; }
         BoutonDeCommande BtnSoinDeZone { get; set; }
@@ -34,6 +37,7 @@ namespace Projet_ASL
         BoutonDeCommande BtnInvisibilité { get; set; }
         BoutonDeCommande BtnLancerCouteau { get; set; }
         BoutonDeCommande BtnRetour { get; set; }
+        #endregion
 
         public DialogueActions(Game jeu, Vector2 dimensionDialogue)
            : base(jeu)
@@ -81,7 +85,8 @@ namespace Projet_ASL
             BtnRetour.Visible = x;
         }
 
-        public void CréerBtnArcher()
+        #region Archer
+        public List<BoutonDeCommande> CréerBtnArcher()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -97,6 +102,8 @@ namespace Projet_ASL
             Game.Components.Add(BtnFlèchePercante);
 
             VoirBoutonsArcher(false);
+
+            return new List<BoutonDeCommande>() { BtnPluieDeFlèches, BtnFlèchePercante };
         }
 
         public void VoirBoutonsArcher(bool v)
@@ -107,8 +114,10 @@ namespace Projet_ASL
             BtnFlèchePercante.Visible = v;
             VoirBoutonRetour(v);
         }
+        #endregion
 
-        public void CréerBtnGuérisseur()
+        #region Guérisseur
+        public List<BoutonDeCommande> CréerBtnGuérisseur()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -130,6 +139,8 @@ namespace Projet_ASL
 
             VoirBoutonsGuérisseur(false);
             VoirBoutonsSatan(false);
+
+            return new List<BoutonDeCommande>() { BtnSoinDeZone, BtnRéssurection, BtnVolDeVie };
         }
 
         public void VoirBoutonsSatan(bool v)
@@ -149,8 +160,10 @@ namespace Projet_ASL
             BtnRéssurection.Visible = v;
             VoirBoutonRetour(v);
         }
+        #endregion
 
-        public void CréerBtnGuerrier()
+        #region Guerrier
+        public List<BoutonDeCommande> CréerBtnGuerrier()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -166,6 +179,7 @@ namespace Projet_ASL
             Game.Components.Add(BtnFolie);
 
             VoirBoutonsGuerrier(false);
+            return new List<BoutonDeCommande>() { BtnTornadeFurieuse, BtnFolie };
         }
 
         public void VoirBoutonsGuerrier(bool v)
@@ -176,8 +190,10 @@ namespace Projet_ASL
             BtnFolie.Visible = v;
             VoirBoutonRetour(v);
         }
+        #endregion
 
-        public void CréerBtnMage()
+        #region Mage
+        public List<BoutonDeCommande> CréerBtnMage()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -193,6 +209,7 @@ namespace Projet_ASL
             Game.Components.Add(BtnFreezeDontMove);
 
             VoirBoutonsMage(false);
+            return new List<BoutonDeCommande>() { BtnBrazzer, BtnFreezeDontMove };
         }
 
         public void VoirBoutonsMage(bool v)
@@ -203,8 +220,10 @@ namespace Projet_ASL
             BtnFreezeDontMove.Visible = v;
             VoirBoutonRetour(v);
         }
+        #endregion
 
-        public void CréerBtnPaladin()
+        #region Paladin
+        public List<BoutonDeCommande> CréerBtnPaladin()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -220,6 +239,7 @@ namespace Projet_ASL
             Game.Components.Add(BtnBouclierDivin);
 
             VoirBoutonsPaladin(false);
+            return new List<BoutonDeCommande>() { BtnClarité, BtnBouclierDivin };
         }
 
         public void VoirBoutonsPaladin(bool v)
@@ -230,8 +250,10 @@ namespace Projet_ASL
             BtnBouclierDivin.Visible = v;
             VoirBoutonRetour(v);
         }
+        #endregion
 
-        public void CréerBtnVoleur()
+        #region Voleur
+        public List<BoutonDeCommande> CréerBtnVoleur()
         {
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
@@ -247,6 +269,7 @@ namespace Projet_ASL
             Game.Components.Add(BtnLancerCouteau);
 
             VoirBoutonsVoleur(false);
+            return new List<BoutonDeCommande>() { BtnInvisibilité, BtnLancerCouteau };
         }
 
         public void VoirBoutonsVoleur(bool v)
@@ -257,6 +280,7 @@ namespace Projet_ASL
             BtnLancerCouteau.Visible = v;
             VoirBoutonRetour(v);
         }
+        #endregion
 
         private void Attaquer()
         {
