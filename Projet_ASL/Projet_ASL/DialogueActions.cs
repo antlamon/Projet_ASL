@@ -17,16 +17,31 @@ namespace Projet_ASL
         public bool ÉtatAttaquer { get; private set; }
         public BoutonDeCommande BtnPasserTour { get; private set; }
         public bool ÉtatPasserTour { get; private set; }
-        public TexteCentré NomJeu { get; private set; }
         SpriteFont Police { get; set; }
         public bool MenuActionVisible { get; private set; }
+
+        BoutonDeCommande BtnPluieDeFlèches { get; set; }
+        BoutonDeCommande BtnFlèchePercante { get; set; }
+        BoutonDeCommande BtnSoinDeZone { get; set; }
+        BoutonDeCommande BtnRéssurection { get; set; }
+        BoutonDeCommande BtnVolDeVie { get; set; }
+        BoutonDeCommande BtnTornadeFurieuse { get; set; }
+        BoutonDeCommande BtnFolie { get; set; }
+        BoutonDeCommande BtnBrazzer { get; set; }
+        BoutonDeCommande BtnFreezeDontMove { get; set; }
+        BoutonDeCommande BtnBouclierDivin { get; set; }
+        BoutonDeCommande BtnClarité { get; set; }
+        BoutonDeCommande BtnInvisibilité { get; set; }
+        BoutonDeCommande BtnLancerCouteau { get; set; }
+        BoutonDeCommande BtnRetour { get; set; }
 
         public DialogueActions(Game jeu, Vector2 dimensionDialogue)
            : base(jeu)
         {
             DimensionDialogue = dimensionDialogue;
             //zone occupée par dialogue, comprend position
-            RectangleDestination = new Rectangle(0, 0, (int)DimensionDialogue.X, (int)DimensionDialogue.Y);
+            RectangleDestination = new Rectangle(Game.Window.ClientBounds.Width - 2*(int)DimensionDialogue.X, Game.Window.ClientBounds.Height - (int)DimensionDialogue.Y,
+                                                 (int)DimensionDialogue.X, (int)DimensionDialogue.Y);
             ÉtatSorts = false;
             ÉtatAttaquer = false;
             MenuActionVisible = true;
@@ -34,39 +49,218 @@ namespace Projet_ASL
 
         public override void Initialize()
         {
-            int hauteurBouton = RectangleDestination.Height / (NB_ZONES_DIALOGUE + 1);
-            Police = Game.Content.Load<SpriteFont>("Fonts/" + "Arial20");
+            int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
-            Vector2 DimensionBouton = Police.MeasureString("Attaquer");
-            Vector2 PositionBouton = new Vector2(RectangleDestination.X + RectangleDestination.Width / 2f, (NB_ZONES_DIALOGUE - 2) * hauteurBouton);
-            BtnAttaquer = new BoutonDeCommande(Game, "Jouer", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnAttaquer = new BoutonDeCommande(Game, "Attaquer", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
             BtnAttaquer.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            DimensionBouton = Police.MeasureString("Sorts");
-            PositionBouton = new Vector2(RectangleDestination.X + RectangleDestination.Width / 2f, (NB_ZONES_DIALOGUE - 1) * hauteurBouton);
-            BtnSorts = new BoutonDeCommande(Game, "Inventaire", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sorts, INTERVALLE_MAJ_STANDARD);
+            PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnSorts = new BoutonDeCommande(Game, "Sorts", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sorts, INTERVALLE_MAJ_STANDARD);
             BtnSorts.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            DimensionBouton = Police.MeasureString("Quitter");
-            PositionBouton = new Vector2(DimensionBouton.X / 2, Game.Window.ClientBounds.Height - DimensionBouton.Y / 2);
-            BtnPasserTour = new BoutonDeCommande(Game, "Quitter", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, PasserTour, INTERVALLE_MAJ_STANDARD);
+            PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnPasserTour = new BoutonDeCommande(Game, "Passer", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, PasserTour, INTERVALLE_MAJ_STANDARD);
             BtnPasserTour.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            DimensionBouton = Police.MeasureString("Jeu de bataille");
-            NomJeu = new TexteCentré(Game, "Jeu de bataille", "Arial20", new Rectangle(100, 100, (int)DimensionBouton.X, (int)DimensionBouton.Y), Color.White, 0.10f);
-            NomJeu.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            BtnRetour = new BoutonDeCommande(Game, "retour", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Retour, INTERVALLE_MAJ_STANDARD);
+            BtnRetour.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Game.Components.Add(BtnSorts);
             Game.Components.Add(BtnAttaquer);
             Game.Components.Add(BtnPasserTour);
-            Game.Components.Add(NomJeu);
+            Game.Components.Add(BtnRetour);
 
-            VoirBouttonAction(false);
+            VoirBoutonRetour(false);
+            VoirBoutonAction(false);
+        }
+
+        public void VoirBoutonRetour(bool x)
+        {
+            BtnRetour.Enabled = x;
+            BtnRetour.Visible = x;
+        }
+
+        public void CréerBtnArcher()
+        {
+            int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
+
+            Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnPluieDeFlèches = new BoutonDeCommande(Game, "Pluie de flèches", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnPluieDeFlèches.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnFlèchePercante = new BoutonDeCommande(Game, "Flèche perçante", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnFlèchePercante.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            Game.Components.Add(BtnPluieDeFlèches);
+            Game.Components.Add(BtnFlèchePercante);
+
+            VoirBoutonsArcher(false);
+        }
+
+        public void VoirBoutonsArcher(bool v)
+        {
+            BtnPluieDeFlèches.Enabled = v;
+            BtnPluieDeFlèches.Visible = v;
+            BtnFlèchePercante.Enabled = v;
+            BtnFlèchePercante.Visible = v;
+            VoirBoutonRetour(v);
+        }
+
+        public void CréerBtnGuérisseur()
+        {
+            int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
+
+            Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnSoinDeZone = new BoutonDeCommande(Game, "Soin de zone", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnSoinDeZone.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnRéssurection = new BoutonDeCommande(Game, "Résurrection", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnRéssurection.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            BtnVolDeVie = new BoutonDeCommande(Game, "Vol de vie", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnVolDeVie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            Game.Components.Add(BtnSoinDeZone);
+            Game.Components.Add(BtnRéssurection);
+            Game.Components.Add(BtnVolDeVie);
+
+
+            VoirBoutonsGuérisseur(false);
+            VoirBoutonsSatan(false);
+        }
+
+        private void VoirBoutonsSatan(bool v)
+        {
+            BtnSoinDeZone.Enabled = v;
+            BtnSoinDeZone.Visible = v;
+            BtnVolDeVie.Enabled = v;
+            BtnVolDeVie.Visible = v;
+            VoirBoutonRetour(v);
+        }
+
+        private void VoirBoutonsGuérisseur(bool v)
+        {
+            BtnSoinDeZone.Enabled = v;
+            BtnSoinDeZone.Visible = v;
+            BtnRéssurection.Enabled = v;
+            BtnRéssurection.Visible = v;
+            VoirBoutonRetour(v);
+        }
+
+        public void CréerBtnGuerrier()
+        {
+            int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
+
+            Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnTornadeFurieuse = new BoutonDeCommande(Game, "Tornade furieuse", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnTornadeFurieuse.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnFolie = new BoutonDeCommande(Game, "Folie", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnFolie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            Game.Components.Add(BtnTornadeFurieuse);
+            Game.Components.Add(BtnFolie);
+
+            VoirBoutonsGuerrier(false);
+        }
+
+        private void VoirBoutonsGuerrier(bool v)
+        {
+            BtnTornadeFurieuse.Enabled = v;
+            BtnTornadeFurieuse.Visible = v;
+            BtnFolie.Enabled = v;
+            BtnFolie.Visible = v;
+            VoirBoutonRetour(v);
+        }
+
+        public void CréerBtnMage()
+        {
+            int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
+
+            Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnBrazzer = new BoutonDeCommande(Game, "Brasier", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnBrazzer.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnFreezeDontMove = new BoutonDeCommande(Game, "Freeze", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnFreezeDontMove.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            Game.Components.Add(BtnBrazzer);
+            Game.Components.Add(BtnFreezeDontMove);
+
+            VoirBoutonsMage(false);
+        }
+
+        private void VoirBoutonsMage(bool v)
+        {
+            BtnBrazzer.Enabled = v;
+            BtnBrazzer.Visible = v;
+            BtnFreezeDontMove.Enabled = v;
+            BtnFreezeDontMove.Visible = v;
+            VoirBoutonRetour(v);
+        }
+
+        public void CréerBtnPaladin()
+        {
+            int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
+
+            Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnClarité = new BoutonDeCommande(Game, "Clarité", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnClarité.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnBouclierDivin = new BoutonDeCommande(Game, "Bouclier divin", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnBouclierDivin.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            Game.Components.Add(BtnClarité);
+            Game.Components.Add(BtnBouclierDivin);
+
+            VoirBoutonsPaladin(false);
+        }
+
+        private void VoirBoutonsPaladin(bool v)
+        {
+            BtnClarité.Enabled = v;
+            BtnClarité.Visible = v;
+            BtnBouclierDivin.Enabled = v;
+            BtnBouclierDivin.Visible = v;
+            VoirBoutonRetour(v);
+        }
+
+        public void CréerBtnVoleur()
+        {
+            int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
+
+            Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnInvisibilité = new BoutonDeCommande(Game, "Invisibilité", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnInvisibilité.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
+            BtnLancerCouteau = new BoutonDeCommande(Game, "Lancer du couteau", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnLancerCouteau.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+
+            Game.Components.Add(BtnInvisibilité);
+            Game.Components.Add(BtnLancerCouteau);
+
+            VoirBoutonsVoleur(false);
+        }
+
+        private void VoirBoutonsVoleur(bool v)
+        {
+            BtnInvisibilité.Enabled = v;
+            BtnInvisibilité.Visible = v;
+            BtnLancerCouteau.Enabled = v;
+            BtnLancerCouteau.Visible = v;
+            VoirBoutonRetour(v);
         }
 
         private void Attaquer()
         {
-            ÉtatAttaquer = true; ;
+            ÉtatAttaquer = true;
         }
 
         private void Sorts()
@@ -79,7 +273,12 @@ namespace Projet_ASL
             ÉtatPasserTour = true;
         }
 
-        public void VoirBouttonAction(bool x)
+        private void Retour()
+        {
+            VoirBoutonAction(true);
+        }
+
+        public void VoirBoutonAction(bool x)
         {
             MenuActionVisible = x;
             BtnSorts.Enabled = x;
@@ -88,10 +287,9 @@ namespace Projet_ASL
             BtnAttaquer.Visible = x;
             BtnPasserTour.Enabled = x;
             BtnPasserTour.Visible = x;
-            NomJeu.Enabled = x;
-            NomJeu.Visible = x;
             ÉtatAttaquer = false;
             ÉtatSorts = false;
+            ÉtatPasserTour = false;
         }
     }
 }

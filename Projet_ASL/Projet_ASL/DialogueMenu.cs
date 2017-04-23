@@ -25,7 +25,7 @@ namespace Projet_ASL
            : base(jeu)
         {
             DimensionDialogue = dimensionDialogue;
-            RectangleDestination = new Rectangle((int)Game.Window.ClientBounds.Width - (int)DimensionDialogue.X, 0,
+            RectangleDestination = new Rectangle(Game.Window.ClientBounds.Width - (int)DimensionDialogue.X, 0,
                                                  (int)DimensionDialogue.X, (int)DimensionDialogue.Y);
             ÉtatJouer = false;
             ÉtatInventaire = false;
@@ -38,23 +38,21 @@ namespace Projet_ASL
             int hauteurBouton = RectangleDestination.Height / (NB_ZONES_DIALOGUE + 1);
             Police = Game.Content.Load<SpriteFont>("Fonts/" + "Arial20");
 
-            Vector2 DimensionBouton = Police.MeasureString("Jouer");
             Vector2 PositionBouton = new Vector2(RectangleDestination.X + RectangleDestination.Width / 2f, (NB_ZONES_DIALOGUE - 2) * hauteurBouton);
             BtnJouer = new BoutonDeCommande(Game, "Jouer", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Jouer, INTERVALLE_MAJ_STANDARD);
             BtnJouer.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            DimensionBouton = Police.MeasureString("Inventaire");
             PositionBouton = new Vector2(RectangleDestination.X + RectangleDestination.Width / 2f, (NB_ZONES_DIALOGUE - 1) * hauteurBouton);
             BtnInventaire = new BoutonDeCommande(Game, "Inventaire", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Inventaire, INTERVALLE_MAJ_STANDARD);
             BtnInventaire.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            DimensionBouton = Police.MeasureString("Quitter");
+            Vector2 DimensionBouton = Police.MeasureString("Quitter");
             PositionBouton = new Vector2(DimensionBouton.X / 2, Game.Window.ClientBounds.Height - DimensionBouton.Y / 2);
             BtnQuitter = new BoutonDeCommande(Game, "Quitter", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Quitter, INTERVALLE_MAJ_STANDARD);
             BtnQuitter.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             DimensionBouton = Police.MeasureString("Jeu de bataille");
-            NomJeu = new TexteCentré(Game, "Jeu de bataille", "Arial20", new Rectangle(100, 100,(int) DimensionBouton.X, (int) DimensionBouton.Y), Color.White, 0.10f);
+            NomJeu = new TexteCentré(Game, "Jeu de bataille", "Arial20", new Rectangle(100, 100,(int) DimensionBouton.X, (int) DimensionBouton.Y), Color.White, 0);
             NomJeu.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Game.Components.Add(BtnJouer);
@@ -79,7 +77,7 @@ namespace Projet_ASL
             Game.Exit();
         }
 
-        public void VoirBouttonMenu(bool x)
+        public void VoirBoutonMenu(bool x)
         {
             MenuVisible = x;
             BtnJouer.Enabled = x;

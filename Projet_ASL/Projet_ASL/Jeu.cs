@@ -79,7 +79,7 @@ namespace Projet_ASL
             Vector2 dimensionDialogueMenu = new Vector2(Window.ClientBounds.Width / 3, Window.ClientBounds.Height);
             Vector2 dimensionDialogueInventaire = new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height);
             //a changer les dimensions
-            Vector2 dimensionDialogueSpells = new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height / 4);
+            Vector2 dimensionDialogueSpells = new Vector2(Window.ClientBounds.Width/3f, Window.ClientBounds.Height / 7f);
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, -Vector3.UnitZ, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
@@ -143,12 +143,12 @@ namespace Projet_ASL
                     if (MenuAccueil.ÉtatJouer)
                     {
                         ÉtatJeu = États.CONNEXION;
-                        MenuAccueil.VoirBouttonMenu(false);
+                        MenuAccueil.VoirBoutonMenu(false);
                     }
                     if (MenuAccueil.ÉtatInventaire)
                     {
                         ÉtatJeu = États.INVENTAIRE;
-                        MenuAccueil.VoirBouttonMenu(false);
+                        MenuAccueil.VoirBoutonMenu(false);
                         MenuInventaire.VoirBoutonInventaire(true);
                     }
                     break;
@@ -175,7 +175,7 @@ namespace Projet_ASL
                     {
                         ÉtatJeu = États.MENU;
                         MenuInventaire.VoirBoutonInventaire(false);
-                        MenuAccueil.VoirBouttonMenu(true);
+                        MenuAccueil.VoirBoutonMenu(true);
                     }
 
                     break;
@@ -192,6 +192,7 @@ namespace Projet_ASL
             Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
             carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(carte);
+            //MenuActions.VoirBoutonAction(true);
         }
 
 
@@ -231,7 +232,7 @@ namespace Projet_ASL
         {
             if (GestionInput.EstNouvelleTouche(Keys.Escape))
             {
-                MenuAccueil.VoirBouttonMenu(!MenuAccueil.MenuVisible);
+                MenuAccueil.VoirBoutonMenu(!MenuAccueil.MenuVisible);
             }
             if (GestionInput.EstNouvelleTouche(Keys.F11))
             {
