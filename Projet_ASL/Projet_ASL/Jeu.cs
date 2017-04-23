@@ -33,6 +33,7 @@ namespace Projet_ASL
         États ÉtatJeu { get; set; }
         ManagerNetwork _managerNetwork;
         ManagerInput _managerInput;
+        TourManager ManagerTour;
 
         DialogueMenu MenuAccueil { get; set; }
         DialogueInventaire MenuInventaire { get; set; }
@@ -84,18 +85,21 @@ namespace Projet_ASL
             MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
             //MenuActions = new DialogueActions(this, dimensionDialogueSpells);
+            ManagerTour = new TourManager(this, _managerNetwork);
+            
             CréationDuPanierDeServices();
 
             //Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
             AfficheurFPS afficheurFPS = new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS);
             afficheurFPS.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Components.Add(afficheurFPS);
-            Components.Add(new Afficheur3D(this)); //Ne pas mettre de sprite apres ca
+            Components.Add(new Afficheur3D(this));
             Components.Add(GestionInput);
             Components.Add(CaméraJeu);
 
             Components.Add(MenuAccueil);
             Components.Add(MenuInventaire);
+            Components.Add(ManagerTour);
             //Components.Add(MenuActions);
             base.Initialize();
         }
@@ -160,7 +164,10 @@ namespace Projet_ASL
                 case États.JEU:
                     if (PeopleAlive())
                     {
-                        Combat();
+                        if(TourLocal)
+                        {
+                            ManagerTour.Update(gameTime);
+                        }
                         _managerNetwork.Update();
                         _managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
                     }

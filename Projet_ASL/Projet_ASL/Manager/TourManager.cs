@@ -39,7 +39,36 @@ namespace Projet_ASL
             JoueurLocal = NetworkManager.JoueurLocal;
             JoueurEnnemi = NetworkManager.JoueurEnnemi;
             CompteurPersonnage = 0;
+            CréerBtnClasses();
             base.Initialize();
+        }
+
+        private void CréerBtnClasses()
+        {
+            foreach(Personnage p in JoueurLocal.Personnages)
+            {
+                switch(p.GetType().ToString())
+                {
+                    case TypePersonnage.ARCHER:
+                        BoutonsActions.CréerBtnArcher();
+                        break;
+                    case TypePersonnage.GUÉRISSEUR:
+                        BoutonsActions.CréerBtnGuérisseur();
+                        break;
+                    case TypePersonnage.GUERRIER:
+                        BoutonsActions.CréerBtnGuerrier();
+                        break;
+                    case TypePersonnage.MAGE:
+                        BoutonsActions.CréerBtnMage();
+                        break;
+                    case TypePersonnage.PALADIN:
+                        BoutonsActions.CréerBtnPaladin();
+                        break;
+                    case TypePersonnage.VOLEUR:
+                        BoutonsActions.CréerBtnVoleur();
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -53,16 +82,22 @@ namespace Projet_ASL
                 switch(JoueurLocal.Personnages[CompteurPersonnage].GetType().ToString())
                 {
                     case TypePersonnage.ARCHER:
-                        break;
-                    case TypePersonnage.GUERRIER:
+                        BoutonsActions.VoirBoutonsArcher(true);
                         break;
                     case TypePersonnage.GUÉRISSEUR:
+                        BoutonsActions.VoirBoutonsGuérisseur(true);
+                        break;
+                    case TypePersonnage.GUERRIER:
+                        BoutonsActions.VoirBoutonsGuerrier(true);
                         break;
                     case TypePersonnage.MAGE:
+                        BoutonsActions.VoirBoutonsMage(true);
                         break;
                     case TypePersonnage.PALADIN:
+                        BoutonsActions.VoirBoutonsPaladin(true);
                         break;
                     case TypePersonnage.VOLEUR:
+                        BoutonsActions.VoirBoutonsVoleur(true);
                         break;
                 }
             }
