@@ -105,7 +105,7 @@ namespace Projet_ASL
                     //Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
                     //PersonnageChoisi.Bouger(Déplacement);
                     //envoyer nouvelle position au serveur
-                    PositionVouluePersonnage = VérifierDéplacementMAX(PositionVouluePersonnage);
+                    PositionVouluePersonnage = VérifierDéplacementMAX(PositionVouluePersonnage,PositionInitialePersonnage,DÉPLACEMENT_MAX);
                     _managerNetwork.SendNewPosition(PositionVouluePersonnage, _managerNetwork.JoueurLocal.Personnages.FindIndex(p=>p.GetType() == PersonnageChoisi.GetType()));
                 }
                 if(EstReleasedClicGauche())
@@ -116,16 +116,16 @@ namespace Projet_ASL
             }
         }
 
-        private Vector3 VérifierDéplacementMAX(Vector3 positionVouluePersonnage)
+        public Vector3 VérifierDéplacementMAX(Vector3 positionVouluePersonnage, Vector3 positionInitiale, float déplacementMax)
         {
             Vector3 positionVérifiée;
-            if(Vector3.Distance(PositionInitialePersonnage,positionVouluePersonnage) <= DÉPLACEMENT_MAX)
+            if(Vector3.Distance(positionInitiale,positionVouluePersonnage) <= déplacementMax)
             {
                 positionVérifiée = positionVouluePersonnage;
             }
             else
             {
-                positionVérifiée = DÉPLACEMENT_MAX * Vector3.Normalize(positionVouluePersonnage - PositionInitialePersonnage) + PositionInitialePersonnage;
+                positionVérifiée = déplacementMax * Vector3.Normalize(positionVouluePersonnage - positionInitiale) + positionInitiale;
             }
             return positionVérifiée;
         }
