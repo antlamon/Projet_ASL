@@ -154,8 +154,8 @@ namespace Projet_ASL
                     break;
                 case États.CONNEXION:
                     _managerNetwork.Start(MenuInventaire._player);
-                    ÉtatJeu = États.JEU;
                     DémarrerPhaseDeJeu();
+                    ÉtatJeu = États.JEU;
                     break;
                 case États.JEU:
                     if (PeopleAlive())
@@ -166,9 +166,9 @@ namespace Projet_ASL
                     }
                     else
                     {
+                        CompteurTours.RedémarrerCompteur();
                         ÉtatJeu = États.FIN_DE_JEU;
                     }
-
                     break;
                 case États.INVENTAIRE:
                     if (MenuInventaire.ÉtatMenu)
@@ -178,6 +178,9 @@ namespace Projet_ASL
                         MenuAccueil.VoirBouttonMenu(true);
                     }
 
+                    break;
+                case États.FIN_DE_JEU:
+                    ÉtatJeu = États.MENU;
                     break;
             }
         }
@@ -204,18 +207,17 @@ namespace Projet_ASL
             {
                 //Personnage persoLocal = _managerNetwork.JoueurLocal.Personnages[CompteurPersonnage];
                 //MenuActions.VoirBouttonAction(true);
+
+                GérerCompteurs(); // à revoir
             }
             //MenuActions.VoirBouttonAction(false);
-            GérerCompteurs();
         }
 
 
         private void GérerCompteurs()
         {
-            ++CompteurDeTours;
-
             if(CompteurPersonnage < _managerNetwork.JoueurLocal.Personnages.Count)
-            {
+            { // devrait etre .Count - 1, ex. : Count = 5, si cptPerso = 4, ++cptPerso = 5, alors l'indice de la list va etre OutOfBounds
                 ++CompteurPersonnage;
             }
             else

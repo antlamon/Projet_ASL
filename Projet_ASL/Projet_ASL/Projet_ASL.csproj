@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Carte.cs" />
+    <Compile Include="CompteurTours.cs" />
     <Compile Include="ComposantDeBase\Afficheur3D.cs" />
     <Compile Include="ComposantDeBase\AfficheurFPS.cs" />
     <Compile Include="ComposantDeBase\ArrièrePlan.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Personnage\Voleur.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TourManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
