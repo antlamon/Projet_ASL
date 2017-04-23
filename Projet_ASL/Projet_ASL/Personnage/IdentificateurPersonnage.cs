@@ -20,6 +20,7 @@ namespace Projet_ASL
         protected Rectangle RectangleSource { get; set; }
         private Personnage PersonnageÀIdentifier { get; set; }
         private int PtsViePersonnage { get; set; }
+        private int PtsVieMax { get; set; }
         private TexteCentré AfficheurPtsVie { get; set; }
 
 
@@ -27,11 +28,12 @@ namespace Projet_ASL
            : base(jeu)
         {
             PersonnageÀIdentifier = personnage;
+            PtsVieMax = PersonnageÀIdentifier.PtsDeVie;
             PtsViePersonnage = PersonnageÀIdentifier.PtsDeVie;
             DéterminerNomImage();
             DéterminerPosition();
             ZoneAffichage = new Rectangle(0,0,Game.Window.ClientBounds.Width,Game.Window.ClientBounds.Height/15);
-            AfficheurPtsVie = new TexteCentré(Game, ":" + PtsViePersonnage.ToString(), "Arial20",
+            AfficheurPtsVie = new TexteCentré(Game, ":" + PtsViePersonnage.ToString() + "/" + PtsVieMax.ToString(), "Arial20",
                 new Rectangle((int)Position.X + 2 * Game.Window.ClientBounds.Width / (3 * NB_CASES), (int)Position.Y, Game.Window.ClientBounds.Width / NB_CASES, Game.Window.ClientBounds.Height / 15),
                 Color.Red, 0);
             AfficheurPtsVie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
@@ -122,7 +124,7 @@ namespace Projet_ASL
             if(PtsViePersonnage != PersonnageÀIdentifier.PtsDeVie)
             {
                 PtsViePersonnage = PersonnageÀIdentifier.PtsDeVie;
-                AfficheurPtsVie.ModifierTexte(":" + PtsViePersonnage.ToString());
+                AfficheurPtsVie.ModifierTexte(":" + PtsViePersonnage.ToString() + "/" + PtsVieMax.ToString());
             }
         }
 

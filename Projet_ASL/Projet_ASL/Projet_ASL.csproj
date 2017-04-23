@@ -119,7 +119,7 @@
     <Compile Include="Personnage\Voleur.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="TourManager.cs" />
+    <Compile Include="Manager\TourManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

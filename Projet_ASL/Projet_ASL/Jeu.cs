@@ -156,7 +156,7 @@ namespace Projet_ASL
                     _managerNetwork.Start(MenuInventaire._player);
                     DémarrerPhaseDeJeu();
                     ÉtatJeu = États.JEU;
-                    break;
+                     goto case États.JEU;
                 case États.JEU:
                     if (PeopleAlive())
                     {
