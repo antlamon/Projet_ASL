@@ -188,7 +188,7 @@ namespace Projet_ASL
 
         private void DémarrerPhaseDeJeu()
         {
-            TourLocal = _managerNetwork.PremierTour;
+            TourLocal = _managerNetwork.TourActif;
             Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
             carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(carte);

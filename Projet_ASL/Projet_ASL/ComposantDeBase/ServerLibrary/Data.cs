@@ -15,6 +15,7 @@ namespace Projet_ASL
         Input,
         InputVector,
         Message,
-        Logout
+        Logout,
+        FinDeTour
     }
 }

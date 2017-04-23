@@ -21,7 +21,7 @@ namespace Projet_ASL
         public string Username { get; set; }
 
         public bool Active { get; set; }
-        public bool PremierTour { get; set; }
+        public bool TourActif { get; set; }
         Game Jeu { get; set; }
 
         public Player JoueurLocal
@@ -122,10 +122,18 @@ namespace Projet_ASL
                     case PacketType.Logout:
                         RemoveDisconnectedPlayer(inc);
                         break;
+                    case PacketType.FinDeTour:
+                        ChangerDeTour();
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
+        }
+
+        private void ChangerDeTour()
+        {
+            TourActif = !TourActif;
         }
 
         private void ReadPositionPersonnage(NetIncomingMessage inc)
@@ -149,7 +157,7 @@ namespace Projet_ASL
         private void ReceiveAllPlayers(NetIncomingMessage inc)
         {
             var count = inc.ReadInt32();
-            PremierTour = count == 1;
+            TourActif = count == 1;
             for (int n = 0; n < count; n++)
             {
                 ReadPlayer(inc);
@@ -239,6 +247,13 @@ namespace Projet_ASL
             outmessage.Write((byte)key);
             outmessage.Write(Username);
             _client.SendMessage(outmessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendFinDeTour()
+        {
+            var outMessge = _client.CreateMessage();
+            outMessge.Write((byte)PacketType.FinDeTour);
+            _client.SendMessage(outMessge, NetDeliveryMethod.ReliableOrdered);
         }
 
         public void SendNewPosition(Vector3 position, int indexPersonnage)

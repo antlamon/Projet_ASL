@@ -30,6 +30,8 @@ namespace Projet_ASL.Server
                     return new InputVectorCommand();
                 case PacketType.PersonnagePosition:
                     return new PersonnagePositionCommand();
+                case PacketType.FinDeTour:
+                    return new FinDeTourCommand();
                 default:
                     throw new ArgumentOutOfRangeException("packetType");
             }

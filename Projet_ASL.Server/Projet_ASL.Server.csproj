@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AllPlayersCommand.cs" />
+    <Compile Include="Commands\FinDeTourCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\InputCommand.cs" />
     <Compile Include="Commands\InputVectorCommand.cs" />
