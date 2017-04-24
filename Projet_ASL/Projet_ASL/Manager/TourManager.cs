@@ -128,7 +128,7 @@ namespace Projet_ASL
 
         bool TourFini()
         {
-            return BoutonsActions.ÉtatPasserTour || BoutonsActions.ÉtatAttaquer && (int)Math.Round(DéplacementRestant) <= 1;
+            return BoutonsActions.ÉtatPasserTour || BoutonsActions.ÉtatAttaquer && (int)Math.Round(DéplacementRestant) <= 0;
         }
     }
 }
