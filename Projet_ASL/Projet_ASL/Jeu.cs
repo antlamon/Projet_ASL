@@ -32,12 +32,14 @@ namespace Projet_ASL
         InputManager GestionInput { get; set; }
         États ÉtatJeu { get; set; }
         ManagerNetwork _managerNetwork;
-        ManagerInput _managerInput;
+        //ManagerInput _managerInput;
         TourManager ManagerTour;
 
         DialogueMenu MenuAccueil { get; set; }
         DialogueInventaire MenuInventaire { get; set; }
         //DialogueActions MenuActions { get; set; }
+
+        TexteCentré TexteConnection { get; set; }
 
         private Texture2D _texture; //For test
         private SpriteFont _font; //For test
@@ -85,13 +87,17 @@ namespace Projet_ASL
             MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
             //MenuActions = new DialogueActions(this, dimensionDialogueSpells);
-            
+
             CréationDuPanierDeServices();
 
             //Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
             AfficheurFPS afficheurFPS = new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS);
             afficheurFPS.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Components.Add(afficheurFPS);
+            TexteConnection = new TexteCentré(this, "En attente d'un autre joueur", "Arial20", new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), Color.Red, 0.2f);
+            TexteConnection.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Components.Add(TexteConnection);
+            TexteConnection.Visible = false;
             Components.Add(new Afficheur3D(this));
             Components.Add(GestionInput);
             Components.Add(CaméraJeu);
@@ -146,6 +152,8 @@ namespace Projet_ASL
                     {
                         ÉtatJeu = États.CONNEXION;
                         MenuAccueil.VoirBoutonMenu(false);
+                        _managerNetwork.Start(MenuInventaire._player);
+                        DémarrerJeu(gameTime);
                     }
                     if (MenuAccueil.ÉtatInventaire)
                     {
@@ -155,17 +163,21 @@ namespace Projet_ASL
                     }
                     break;
                 case États.CONNEXION:
-                    _managerNetwork.Start(MenuInventaire._player);
-                    DémarrerPhaseDeJeu();
-                    ÉtatJeu = États.JEU;
-                     goto case États.JEU;
+                    _managerNetwork.Update();
+                    if (_managerNetwork.Players.Count == 2)
+                    {
+                        TexteConnection.Visible = false;
+                        ManagerTour = new TourManager(this, _managerNetwork);
+                        ManagerTour.Initialize();
+                        ÉtatJeu = États.JEU;
+                    }
+                    break;
                 case États.JEU:
                     if (PeopleAlive())
                     {
                         _managerNetwork.Update();
                         TourLocal = _managerNetwork.TourActif;
-                        Window.Title = TourLocal.ToString();
-                        if(TourLocal)
+                        if (TourLocal)
                         {
                             ManagerTour.Update(gameTime);
                         }
@@ -193,19 +205,13 @@ namespace Projet_ASL
         }
 
 
-        private void DémarrerPhaseDeJeu()
+        private void DémarrerJeu(GameTime gameTime)
         {
             TourLocal = _managerNetwork.TourActif;
             Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
             carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(carte);
-
-            while(_managerNetwork.JoueurLocal == null)
-            {
-                _managerNetwork.Update();
-            }
-            ManagerTour = new TourManager(this, _managerNetwork);
-            ManagerTour.Initialize();
+            TexteConnection.Visible = true;
         }
 
 
@@ -217,7 +223,7 @@ namespace Projet_ASL
 
         private void Combat()
         {
-            if(TourLocal)
+            if (TourLocal)
             {
                 //Personnage persoLocal = _managerNetwork.JoueurLocal.Personnages[CompteurPersonnage];
                 //MenuActions.VoirBouttonAction(true);
@@ -230,7 +236,7 @@ namespace Projet_ASL
 
         private void GérerCompteurs()
         {
-            if(CompteurPersonnage < _managerNetwork.JoueurLocal.Personnages.Count)
+            if (CompteurPersonnage < _managerNetwork.JoueurLocal.Personnages.Count)
             { // devrait etre .Count - 1, ex. : Count = 5, si cptPerso = 4, ++cptPerso = 5, alors l'indice de la list va etre OutOfBounds
                 ++CompteurPersonnage;
             }

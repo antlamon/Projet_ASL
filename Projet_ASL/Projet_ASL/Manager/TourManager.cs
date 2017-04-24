@@ -30,6 +30,7 @@ namespace Projet_ASL
         float DéplacementRestant { get; set; }
         Vector3 PositionInitiale { get; set; }
         bool PeutAttaquer { get; set; }
+        int TempsDepuisDernierUpdate { get; set; }
 
         public TourManager(Jeu jeu, ManagerNetwork networkManager)
             : base(jeu)
@@ -49,6 +50,7 @@ namespace Projet_ASL
             //JoueurEnnemi = NetworkManager.JoueurEnnemi;
             ancienIndicePersonnage = -1;
             IndicePersonnage = 0;
+            TempsDepuisDernierUpdate = 0;
             PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
             DéplacementRestant = DÉPLACEMENT_MAX;
             CréerBtnClasses();
@@ -97,7 +99,7 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if(ancienIndicePersonnage != IndicePersonnage)
+            if(ancienIndicePersonnage != IndicePersonnage && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 1)
             {
                 BoutonsActions.VoirBoutonAction(true);
                 ancienIndicePersonnage = IndicePersonnage;
@@ -115,6 +117,7 @@ namespace Projet_ASL
                 PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
                 DéplacementRestant = DÉPLACEMENT_MAX;
                 BoutonsActions.VoirBoutonAction(false);
+                TempsDepuisDernierUpdate = gameTime.TotalGameTime.Seconds;
             }
             base.Update(gameTime);
         }
