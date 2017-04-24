@@ -126,25 +126,33 @@ namespace Projet_ASL
             //}
         }
 
-        public void DéterminerMouvementPersonnageSélectionné()
+        public float DéterminerMouvementPersonnageSélectionné(float déplacement_maximal)
         {
+            float déplacement_restant = déplacement_maximal;
             if(PersonnageSélectionné)
             {
                 if(EstAncienClicGauche())
                 {
-                    Vector3 PositionVouluePersonnage = GetPositionSourisPlan();
+                    Vector3 positionVouluePersonnage = GetPositionSourisPlan();
                     //Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
                     //PersonnageChoisi.Bouger(Déplacement);
                     //envoyer nouvelle position au serveur
-                    PositionVouluePersonnage = VérifierDéplacementMAX(PositionVouluePersonnage,PositionInitialePersonnage,DÉPLACEMENT_MAX);
-                    _managerNetwork.SendNewPosition(PositionVouluePersonnage, _managerNetwork.JoueurLocal.Personnages.FindIndex(p=>p.GetType() == PersonnageChoisi.GetType()));
+                    positionVouluePersonnage = VérifierDéplacementMAX(positionVouluePersonnage,PositionInitialePersonnage, déplacement_maximal);
+                    _managerNetwork.SendNewPosition(positionVouluePersonnage, _managerNetwork.JoueurLocal.Personnages.FindIndex(p=>p.GetType() == PersonnageChoisi.GetType()));
                 }
                 if(EstReleasedClicGauche())
                 {
+                    déplacement_restant = déplacement_maximal - Vector3.Distance(PositionInitialePersonnage, PersonnageChoisi.Position);
                     PersonnageSélectionné = false;
                     PersonnageChoisi = null;
                 }
             }
+            return déplacement_restant;
+        }
+
+        public void ChangerDéplacementMax()
+        {
+
         }
 
         public Vector3 VérifierDéplacementMAX(Vector3 positionVouluePersonnage, Vector3 positionInitiale, float déplacementMax)

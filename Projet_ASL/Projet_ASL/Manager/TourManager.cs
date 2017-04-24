@@ -106,8 +106,12 @@ namespace Projet_ASL
             }
             if(!BoutonsActions.ÉtatSorts && !BoutonsActions.ÉtatAttaquer)
             {
+                if(DéplacementRestant >= 1)
+                {
                 GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
-                GestionnaireInput.DéterminerMouvementPersonnageSélectionné();
+                DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant);
+                }
+
             }
             if(TourFini())
             {
@@ -124,7 +128,7 @@ namespace Projet_ASL
 
         bool TourFini()
         {
-            return BoutonsActions.ÉtatPasserTour || BoutonsActions.ÉtatAttaquer && (int)Math.Round(DéplacementRestant) == 0;
+            return BoutonsActions.ÉtatPasserTour || BoutonsActions.ÉtatAttaquer && (int)Math.Round(DéplacementRestant) <= 1;
         }
     }
 }

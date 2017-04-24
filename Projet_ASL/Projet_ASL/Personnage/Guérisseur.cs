@@ -36,20 +36,18 @@ namespace Projet_ASL
             }
             return attaque;
         }
-        public List<Personnage> SoinDeZone(Vector2 positionClic, out int dégats)
+        public List<Personnage> SoinDeZone(Vector2 positionClic, List<Personnage> CiblesPotentielles, out int dégats)
         {
             List<Personnage> cibles = new List<Personnage>();
-            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_SOIN_DE_ZONE);
+            BoundingSphere zone = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_SOIN_DE_ZONE);
             dégats = (int)(RATIO_SOIN_DE_ZONE * Attaquer());
 
-            if (this is Guérisseur)
+            foreach (Personnage p in CiblesPotentielles)
             {
-                //foreach (Personnage p in Personnages)
-                //{
-                //    if (portée.Intersects(p.SphèreDeCollision) && !p.EstMort)
-                //    { cibles.Add(p); }
-                //}
+                if (zone.Intersects(p.SphèreDeCollision) && !p.EstMort)
+                { cibles.Add(p); }
             }
+
 
             return cibles;
         }
@@ -58,7 +56,7 @@ namespace Projet_ASL
         {
             int dégats = 0;
 
-            if (this is Guérisseur && cible.EstMort)
+            if (cible.EstMort)
             {
                 dégats = (int)(RATIO_RESURRECT * Attaquer());
             }
