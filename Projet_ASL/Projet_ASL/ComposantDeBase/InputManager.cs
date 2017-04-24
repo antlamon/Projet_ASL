@@ -5,6 +5,12 @@ using System;
 
 namespace Projet_ASL
 {
+    //Déplacement max (cercle, plus petit rayon chaque fois)
+    //distance parcourue max 
+    //juste bouger personnage sélectionné (tourmanager a index)
+    //méthode mettre dans tourmanager
+    // déplacement se fait dans tour manager
+    
     public class InputManager : Microsoft.Xna.Framework.GameComponent
     {
         const int DÉPLACEMENT_MAX = 10;
@@ -17,7 +23,7 @@ namespace Projet_ASL
         MouseState NouvelÉtatSouris { get; set; }
         Caméra Cam { get; set; }
 
-        bool PersonnageSélectionné { get; set; }
+        public bool PersonnageSélectionné { get; private set; }
         float? DistanceRayon { get; set; }
         Personnage PersonnageChoisi { get; set; }
         Vector3 PositionInitialePersonnage { get; set; }
@@ -50,18 +56,43 @@ namespace Projet_ASL
             {
                 ActualiserÉtatSouris();
             }
-            if (_managerNetwork.Players.Count != 0)
+            //if (_managerNetwork.Players.Count != 0)
+            //{
+            //    if (!PersonnageSélectionné)
+            //    {
+            //        DéterminerSélectionPersonnage();
+            //        DéterminerMouvementPersonnageSélectionné();
+            //    }
+            //    else
+            //    {
+            //        DéterminerMouvementPersonnageSélectionné();
+            //    }
+            //}
+        }
+        public void DéterminerSélectionPersonnageDéplacement(int indice)
+        {
+            if (EstNouveauClicGauche())
+            {
+                if (DéterminerIntersectionPersonnageRayDéplacement(indice))
                 {
-                if (!PersonnageSélectionné)
-                {
-                    DéterminerSélectionPersonnage();
-                    DéterminerMouvementPersonnageSélectionné();
-                }
-                else
-                {
-                    DéterminerMouvementPersonnageSélectionné();
+                    PersonnageSélectionné = true;
+                    PositionInitialePersonnage = PersonnageChoisi.Position;
                 }
             }
+        }
+
+        public bool DéterminerIntersectionPersonnageRayDéplacement(int indice)
+        {
+            bool rep = false;
+            Ray ray = CalculateCursorRay();
+            Personnage perso = _managerNetwork.JoueurLocal.Personnages[indice];
+            DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
+            if (DistanceRayon != null)
+            {
+                PersonnageChoisi = perso;
+                rep = true;
+            }
+            return rep;
         }
 
         public void DéterminerSélectionPersonnage()
