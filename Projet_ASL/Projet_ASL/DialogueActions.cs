@@ -55,7 +55,10 @@ namespace Projet_ASL
 
         public void RéinitialiserDialogueActions(Personnage personnage)
         {
-            Retour();
+            if(PersonnageActif != null)
+            {
+                Retour();
+            }
             PersonnageActif = personnage;
         }
 
