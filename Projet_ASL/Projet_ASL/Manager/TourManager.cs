@@ -33,7 +33,7 @@ namespace Projet_ASL
             : base(jeu)
         {
             NetworkManager = networkManager;
-            BoutonsActions = new DialogueActions(jeu, new Vector2(Game.Window.ClientBounds.Width / 2f, Game.Window.ClientBounds.Height / 5f));
+            BoutonsActions = new DialogueActions(jeu, new Vector2(Game.Window.ClientBounds.Width / 2f, Game.Window.ClientBounds.Height / 5f), NetworkManager);
         }
 
         /// <summary>
