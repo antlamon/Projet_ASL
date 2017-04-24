@@ -203,6 +203,7 @@ namespace Projet_ASL
             BtnVoleur.Enabled = v;
             BtnOK.Visible = v;
             BtnOK.Enabled = v;
+            ÉtatMenu = false;
         }
     }
 }

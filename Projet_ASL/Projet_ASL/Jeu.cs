@@ -196,7 +196,6 @@ namespace Projet_ASL
                         MenuInventaire.VoirBoutonInventaire(false);
                         MenuAccueil.VoirBoutonMenu(true);
                     }
-
                     break;
                 case États.FIN_DE_JEU:
                     ÉtatJeu = États.MENU;
