@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace Projet_ASL
 {
+
+    //bool A deja attaqué
+    //
     public class DialogueActions : Microsoft.Xna.Framework.GameComponent
     {
         const float INTERVALLE_MAJ_STANDARD = 1f / 60f;

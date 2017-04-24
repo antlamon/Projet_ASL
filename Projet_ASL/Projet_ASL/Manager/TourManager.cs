@@ -21,6 +21,7 @@ namespace Projet_ASL
 
         DialogueActions BoutonsActions { get; set; }
         ManagerNetwork NetworkManager { get; set; }
+        InputManager GestionnaireInput { get; set; }
         Player JoueurLocal { get; set; }
         Player JoueurEnnemi { get; set; }
         List<List<BoutonDeCommande>> Boutons { get; set; }
@@ -50,6 +51,12 @@ namespace Projet_ASL
             DéplacementRestant = DÉPLACEMENT_MAX;
             CréerBtnClasses();
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            GestionnaireInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
+            base.LoadContent();
         }
 
         private void CréerBtnClasses()
@@ -86,6 +93,11 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
+            if(!BoutonsActions.ÉtatSorts && !BoutonsActions.ÉtatAttaquer)
+            {
+                GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
+                GestionnaireInput.DéterminerMouvementPersonnageSélectionné();
+            }
             if(TourFini())
             {
                 NetworkManager.SendFinDeTour();
