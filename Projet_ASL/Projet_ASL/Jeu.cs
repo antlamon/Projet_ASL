@@ -80,7 +80,7 @@ namespace Projet_ASL
             Vector2 dimensionDialogueMenu = new Vector2(Window.ClientBounds.Width / 3, Window.ClientBounds.Height);
             Vector2 dimensionDialogueInventaire = new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height);
             //a changer les dimensions
-            Vector2 dimensionDialogueSpells = new Vector2(Window.ClientBounds.Width/3f, Window.ClientBounds.Height / 7f);
+            //Vector2 dimensionDialogueSpells = new Vector2(Window.ClientBounds.Width/3f, Window.ClientBounds.Height / 7f);
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, -Vector3.UnitZ, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
@@ -164,6 +164,7 @@ namespace Projet_ASL
                     {
                         _managerNetwork.Update();
                         TourLocal = _managerNetwork.TourActif;
+                        Window.Title = TourLocal.ToString();
                         if(TourLocal)
                         {
                             ManagerTour.Update(gameTime);
@@ -198,7 +199,11 @@ namespace Projet_ASL
             Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
             carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(carte);
-            //MenuActions.VoirBoutonAction(true);
+
+            while(_managerNetwork.JoueurLocal == null)
+            {
+                _managerNetwork.Update();
+            }
             ManagerTour = new TourManager(this, _managerNetwork);
             ManagerTour.Initialize();
         }

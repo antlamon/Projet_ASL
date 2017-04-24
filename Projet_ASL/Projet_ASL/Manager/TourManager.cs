@@ -21,9 +21,10 @@ namespace Projet_ASL
 
         DialogueActions BoutonsActions { get; set; }
         ManagerNetwork NetworkManager { get; set; }
-        Player JoueurLocal { get; set; }
+        public Player JoueurLocal { get; set; }
         Player JoueurEnnemi { get; set; }
         List<List<BoutonDeCommande>> Boutons { get; set; }
+        int ancienIndicePersonnage { get; set; }
         int IndicePersonnage { get; set; }
         float DéplacementRestant { get; set; }
         Vector3 PositionInitiale { get; set; }
@@ -33,7 +34,7 @@ namespace Projet_ASL
             : base(jeu)
         {
             NetworkManager = networkManager;
-            BoutonsActions = new DialogueActions(jeu, new Vector2(Game.Window.ClientBounds.Width / 2f, Game.Window.ClientBounds.Height / 5f), NetworkManager);
+            BoutonsActions = new DialogueActions(jeu, new Vector2(Game.Window.ClientBounds.Width / 3f, Game.Window.ClientBounds.Height / 7f), NetworkManager);
             Game.Components.Add(BoutonsActions);
         }
 
@@ -44,11 +45,14 @@ namespace Projet_ASL
         public override void Initialize()
         {
             JoueurLocal = NetworkManager.JoueurLocal;
-            JoueurEnnemi = NetworkManager.JoueurEnnemi;
+            //JoueurEnnemi = NetworkManager.JoueurEnnemi;
+            ancienIndicePersonnage = -1;
             IndicePersonnage = 0;
             PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
             DéplacementRestant = DÉPLACEMENT_MAX;
             CréerBtnClasses();
+            BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
+            BoutonsActions.VoirBoutonAction(NetworkManager.TourActif);
             base.Initialize();
         }
 
@@ -86,6 +90,11 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
+            if(ancienIndicePersonnage != IndicePersonnage)
+            {
+                BoutonsActions.VoirBoutonAction(true);
+                ancienIndicePersonnage = IndicePersonnage;
+            }
             if(TourFini())
             {
                 NetworkManager.SendFinDeTour();
@@ -93,7 +102,7 @@ namespace Projet_ASL
                 BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
                 PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
                 DéplacementRestant = DÉPLACEMENT_MAX;
-                BoutonsActions.VoirBoutonAction(!BoutonsActions.MenuActionVisible);
+                BoutonsActions.VoirBoutonAction(false);
             }
             base.Update(gameTime);
         }
