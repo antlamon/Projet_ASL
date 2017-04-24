@@ -13,6 +13,7 @@ namespace Projet_ASL
         Vector2 DimensionDialogue { get; set; }
         Rectangle RectangleDestination { get; set; }
         public BoutonDeCommande BtnSorts { get; private set; }
+        public bool ÉtatSorts { get; set; }
         public BoutonDeCommande BtnAttaquer { get; private set; }
         public bool ÉtatAttaquer { get; private set; }
         public BoutonDeCommande BtnPasserTour { get; private set; }
@@ -285,6 +286,7 @@ namespace Projet_ASL
 
         private void Sorts()
         {
+            ÉtatSorts = true;
             switch (PersonnageActif.GetType().ToString())
             {
                 case TypePersonnage.ARCHER:
@@ -317,6 +319,7 @@ namespace Projet_ASL
 
         private void Retour()
         {
+            ÉtatSorts = false;
             switch (PersonnageActif.GetType().ToString())
             {
                 case TypePersonnage.ARCHER:

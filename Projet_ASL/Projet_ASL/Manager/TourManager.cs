@@ -33,7 +33,8 @@ namespace Projet_ASL
             : base(jeu)
         {
             NetworkManager = networkManager;
-            BoutonsActions = new DialogueActions(jeu, new Vector2(Game.Window.ClientBounds.Width / 2f, Game.Window.ClientBounds.Height / 5f));
+            BoutonsActions = new DialogueActions(jeu, new Vector2(Game.Window.ClientBounds.Width / 2f, Game.Window.ClientBounds.Height / 5f), networkManager);
+            Game.Components.Add(BoutonsActions);
         }
 
         /// <summary>
@@ -92,6 +93,7 @@ namespace Projet_ASL
                 BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
                 PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
                 DéplacementRestant = DÉPLACEMENT_MAX;
+                BoutonsActions.VoirBoutonAction(!BoutonsActions.MenuActionVisible);
             }
             base.Update(gameTime);
         }

@@ -55,7 +55,7 @@ namespace Projet_ASL
             PériphériqueGraphique = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             _managerNetwork = new ManagerNetwork(this);
-            _managerInput = new ManagerInput(_managerNetwork);
+            //_managerInput = new ManagerInput(_managerNetwork);
             PériphériqueGraphique.SynchronizeWithVerticalRetrace = false;
             PériphériqueGraphique.PreferredBackBufferHeight = 720;
             PériphériqueGraphique.PreferredBackBufferWidth = 1280;
@@ -85,7 +85,6 @@ namespace Projet_ASL
             MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
             //MenuActions = new DialogueActions(this, dimensionDialogueSpells);
-            ManagerTour = new TourManager(this, _managerNetwork);
             
             CréationDuPanierDeServices();
 
@@ -99,7 +98,6 @@ namespace Projet_ASL
 
             Components.Add(MenuAccueil);
             Components.Add(MenuInventaire);
-            Components.Add(ManagerTour);
             //Components.Add(MenuActions);
             base.Initialize();
         }
@@ -164,12 +162,13 @@ namespace Projet_ASL
                 case États.JEU:
                     if (PeopleAlive())
                     {
+                        _managerNetwork.Update();
+                        TourLocal = _managerNetwork.TourActif;
                         if(TourLocal)
                         {
                             ManagerTour.Update(gameTime);
                         }
-                        _managerNetwork.Update();
-                        _managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
+                        //_managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
                     }
                     else
                     {
@@ -200,6 +199,8 @@ namespace Projet_ASL
             carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(carte);
             //MenuActions.VoirBoutonAction(true);
+            ManagerTour = new TourManager(this, _managerNetwork);
+            ManagerTour.Initialize();
         }
 
 
