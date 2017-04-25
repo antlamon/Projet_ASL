@@ -34,6 +34,7 @@ namespace Projet_ASL
         ManagerNetwork _managerNetwork;
         //ManagerInput _managerInput;
         TourManager ManagerTour;
+        Carte PlancheDeJeu { get; set; }
 
         DialogueMenu MenuAccueil { get; set; }
         DialogueInventaire MenuInventaire { get; set; }
@@ -94,6 +95,10 @@ namespace Projet_ASL
             AfficheurFPS afficheurFPS = new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS);
             afficheurFPS.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Components.Add(afficheurFPS);
+            PlancheDeJeu = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
+            PlancheDeJeu.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            PlancheDeJeu.Visible = false;
+            Components.Add(PlancheDeJeu);
             TexteConnection = new TexteCentré(this, "En attente d'un autre joueur", "Arial20", new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), Color.Red, 0.2f);
             TexteConnection.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Components.Add(TexteConnection);
@@ -147,7 +152,7 @@ namespace Projet_ASL
             switch (ÉtatJeu)
             {
                 case États.MENU:
-                    MenuAccueil.BtnJouer.Enabled = MenuInventaire._player.Personnages.Count == 4;
+                    MenuAccueil.BtnJouer.EstActif = MenuInventaire._player.Personnages.Count == 4;
                     if (MenuAccueil.ÉtatJouer)
                     {
                         ÉtatJeu = États.CONNEXION;
@@ -171,15 +176,23 @@ namespace Projet_ASL
                         ManagerTour.Initialize();
                         ÉtatJeu = États.JEU;
                     }
+                    if (_managerNetwork.Players.Count == 0)
+                    {
+                        RetourAuMenu();
+                    }
                     break;
                 case États.JEU:
                     if (PeopleAlive())
                     {
                         _managerNetwork.Update();
                         TourLocal = _managerNetwork.TourActif;
-                        if (TourLocal)
+                        if (TourLocal && _managerNetwork.JoueurLocal != null)
                         {
                             ManagerTour.Update(gameTime);
+                        }
+                        if (MenuAccueil.ÉtatRetourMenu || _managerNetwork.Players.Count == 0)
+                        {
+                            RetourAuMenu();
                         }
                         //_managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
                     }
@@ -190,6 +203,7 @@ namespace Projet_ASL
                     }
                     break;
                 case États.INVENTAIRE:
+                    MenuInventaire.BtnOK.EstActif = MenuInventaire._player.Personnages.Count == 4;
                     if (MenuInventaire.ÉtatMenu)
                     {
                         ÉtatJeu = États.MENU;
@@ -203,13 +217,28 @@ namespace Projet_ASL
             }
         }
 
+        private void RetourAuMenu()
+        {
+            ÉtatJeu = États.MENU;
+            MenuAccueil.VoirOptionsMenu(false);
+            MenuAccueil.VoirBoutonMenu(true);
+            PlancheDeJeu.Visible = false;
+            TexteConnection.Visible = false;
+            if (ManagerTour != null)
+            {
+                foreach (BoutonDeCommande b in ManagerTour.BoutonsActions.Boutons)
+                {
+                    Components.Remove(b);
+                }
+            }
+
+        }
+
 
         private void DémarrerJeu(GameTime gameTime)
         {
             TourLocal = _managerNetwork.TourActif;
-            Carte carte = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
-            carte.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
-            Components.Add(carte);
+            PlancheDeJeu.Visible = true;
             TexteConnection.Visible = true;
         }
 
@@ -250,7 +279,7 @@ namespace Projet_ASL
         {
             if (GestionInput.EstNouvelleTouche(Keys.Escape))
             {
-                MenuAccueil.VoirBoutonMenu(!MenuAccueil.MenuVisible);
+                MenuAccueil.VoirOptionsMenu(!MenuAccueil.MenuVisible);
             }
             if (GestionInput.EstNouvelleTouche(Keys.F11))
             {

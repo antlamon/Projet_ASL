@@ -19,7 +19,7 @@ namespace Projet_ASL
     {
         const int DÉPLACEMENT_MAX = 10;
 
-        DialogueActions BoutonsActions { get; set; }
+        public DialogueActions BoutonsActions { get; private set; }
         ManagerNetwork NetworkManager { get; set; }
         InputManager GestionnaireInput { get; set; }
         Player JoueurLocal { get; set; }
@@ -67,9 +67,9 @@ namespace Projet_ASL
 
         private void CréerBtnClasses()
         {
-            for(int personnage = 0; personnage < JoueurLocal.Personnages.Count - 1; ++personnage) // À vérifer
-            {
-                switch(JoueurLocal.Personnages[personnage].GetType().ToString())
+            for (int personnage = 0; personnage < JoueurLocal.Personnages.Count - 1; ++personnage) // À vérifer
+            {//pourquoi pas un foreach?
+                switch (JoueurLocal.Personnages[personnage].GetType().ToString())
                 {
                     case TypePersonnage.ARCHER:
                         BoutonsActions.CréerBtnArcher();
@@ -99,21 +99,21 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if(ancienIndicePersonnage != IndicePersonnage && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 1)
+            if (ancienIndicePersonnage != IndicePersonnage && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 1)
             {
                 BoutonsActions.VoirBoutonAction(true);
                 ancienIndicePersonnage = IndicePersonnage;
             }
-            if(!BoutonsActions.ÉtatSorts && !BoutonsActions.ÉtatAttaquer)
+            if (!BoutonsActions.ÉtatSorts && !BoutonsActions.ÉtatAttaquer)
             {
-                if(DéplacementRestant >= 1)
+                if (DéplacementRestant >= 0.5f)
                 {
-                GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
-                DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant);
+                    GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
+                    DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant);
                 }
 
             }
-            if(TourFini())
+            if (TourFini())
             {
                 NetworkManager.SendFinDeTour();
                 IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;

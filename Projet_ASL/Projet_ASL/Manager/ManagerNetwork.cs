@@ -45,6 +45,11 @@ namespace Projet_ASL
             Jeu = jeu;
         }
 
+        private void RéinitialiserListePlayer()
+        {
+            Players.Clear();
+        }
+
         public bool Start(Player player)
         {
             var random = new Random();
@@ -145,13 +150,7 @@ namespace Projet_ASL
 
         private void RemoveDisconnectedPlayer(NetIncomingMessage inc)
         {
-            string username = inc.ReadString();
-            Player player = Players.Find(p => p.Username == username);
-            foreach (Personnage p in player.Personnages)
-            {
-                Jeu.Components.Remove(p);
-            }
-            Players.Remove(player);
+            DéconnectionServeur();
         }
 
         private void ReceiveAllPlayers(NetIncomingMessage inc)
@@ -282,10 +281,30 @@ namespace Projet_ASL
             {
                 NetOutgoingMessage outMessage = _client.CreateMessage();
                 outMessage.Write((byte)PacketType.Logout);
-                outMessage.Write(Username);
                 _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
-                _client.Disconnect("Bye");
+                DéconnectionServeur();
             }
+        }
+
+        private void DéconnectionServeur()
+        {
+            _client.Disconnect("Bye");
+            RetirerPersonnages();
+        }
+
+        private void RetirerPersonnages()
+        {
+            foreach (Player player in Players)
+            {
+                foreach (Personnage p in player.Personnages)
+                {
+                    Jeu.Components.Remove(p);
+                    IdentificateurPersonnage identificateur = Jeu.Components.First(id => id is IdentificateurPersonnage && (id as IdentificateurPersonnage).PersonnageÀIdentifier == p) as IdentificateurPersonnage;
+                    Jeu.Components.Remove(identificateur);
+                    Jeu.Components.Remove(identificateur.AfficheurPtsVie);
+                }
+            }
+            RéinitialiserListePlayer();
         }
     }
 }
