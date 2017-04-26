@@ -18,6 +18,7 @@ namespace Projet_ASL
     public class TourManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
         const int DÉPLACEMENT_MAX = 10;
+        const float INTERVALLE_MAJ_STANDARD = 1f / 60f;
 
         public DialogueActions BoutonsActions { get; private set; }
         ManagerNetwork NetworkManager { get; set; }
@@ -31,6 +32,8 @@ namespace Projet_ASL
         Vector3 PositionInitiale { get; set; }
         bool PeutAttaquer { get; set; }
         int TempsDepuisDernierUpdate { get; set; }
+        public AOE ZoneDEffet { get; private set; }
+        public AOE Portée { get; private set; }
 
         public TourManager(Jeu jeu, ManagerNetwork networkManager)
             : base(jeu)
@@ -56,6 +59,14 @@ namespace Projet_ASL
             CréerBtnClasses();
             BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
             BoutonsActions.VoirBoutonAction(NetworkManager.TourActif);
+            ZoneDEffet = new AOE(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
+            ZoneDEffet.Visible = false;
+            ZoneDEffet.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            Game.Components.Add(ZoneDEffet);
+            Portée = new AOE(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
+            Portée.Visible = false;
+            Portée.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            Game.Components.Add(Portée);
             base.Initialize();
         }
 
@@ -103,6 +114,9 @@ namespace Projet_ASL
             {
                 BoutonsActions.VoirBoutonAction(true);
                 ancienIndicePersonnage = IndicePersonnage;
+                ZoneDEffet.Visible = true;
+                ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), JoueurLocal.Personnages[IndicePersonnage].Position­);
+                ZoneDEffet.Update(gameTime);
             }
             if (!BoutonsActions.ÉtatSorts && !BoutonsActions.ÉtatAttaquer)
             {
@@ -110,6 +124,7 @@ namespace Projet_ASL
                 {
                     GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
                     DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant);
+
                 }
 
             }

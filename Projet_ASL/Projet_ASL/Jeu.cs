@@ -35,7 +35,6 @@ namespace Projet_ASL
         //ManagerInput _managerInput;
         TourManager ManagerTour;
         Carte PlancheDeJeu { get; set; }
-
         DialogueMenu MenuAccueil { get; set; }
         DialogueInventaire MenuInventaire { get; set; }
         //DialogueActions MenuActions { get; set; }
@@ -230,10 +229,11 @@ namespace Projet_ASL
                 {
                     Components.Remove(b);
                 }
+                Components.Remove(ManagerTour.ZoneDEffet);
+                Components.Remove(ManagerTour.Portée);
             }
 
         }
-
 
         private void DémarrerJeu(GameTime gameTime)
         {
@@ -242,38 +242,10 @@ namespace Projet_ASL
             TexteConnection.Visible = true;
         }
 
-
         private bool PeopleAlive()
         {
             return _managerNetwork.Players.TrueForAll(player => player.Personnages.Exists(perso => !perso.EstMort));
         }
-
-
-        private void Combat()
-        {
-            if (TourLocal)
-            {
-                //Personnage persoLocal = _managerNetwork.JoueurLocal.Personnages[CompteurPersonnage];
-                //MenuActions.VoirBouttonAction(true);
-
-                GérerCompteurs(); // à revoir
-            }
-            //MenuActions.VoirBouttonAction(false);
-        }
-
-
-        private void GérerCompteurs()
-        {
-            if (CompteurPersonnage < _managerNetwork.JoueurLocal.Personnages.Count)
-            { // devrait etre .Count - 1, ex. : Count = 5, si cptPerso = 4, ++cptPerso = 5, alors l'indice de la list va etre OutOfBounds
-                ++CompteurPersonnage;
-            }
-            else
-            {
-                CompteurPersonnage = 0;
-            }
-        }
-
 
         private void GérerClavier()
         {
