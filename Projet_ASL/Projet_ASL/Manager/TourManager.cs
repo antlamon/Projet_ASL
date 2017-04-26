@@ -78,9 +78,9 @@ namespace Projet_ASL
 
         private void CréerBtnClasses()
         {
-            for (int personnage = 0; personnage < JoueurLocal.Personnages.Count - 1; ++personnage) // À vérifer
-            {//pourquoi pas un foreach?
-                switch (JoueurLocal.Personnages[personnage].GetType().ToString())
+            foreach(Personnage p in JoueurLocal.Personnages)
+            {
+                switch (p.GetType().ToString())
                 {
                     case TypePersonnage.ARCHER:
                         BoutonsActions.CréerBtnArcher();
@@ -123,8 +123,7 @@ namespace Projet_ASL
                 if (DéplacementRestant >= 0.5f)
                 {
                     GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
-                    DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant);
-
+                DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant, IndicePersonnage);
                 }
 
             }

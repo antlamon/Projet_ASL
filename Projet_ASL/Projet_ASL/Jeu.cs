@@ -86,11 +86,9 @@ namespace Projet_ASL
             CaméraJeu = new CaméraSubjective(this, positionCaméra, cibleCaméra, -Vector3.UnitZ, INTERVALLE_MAJ_STANDARD);
             MenuAccueil = new DialogueMenu(this, dimensionDialogueMenu, _managerNetwork);
             MenuInventaire = new DialogueInventaire(this, dimensionDialogueInventaire);
-            //MenuActions = new DialogueActions(this, dimensionDialogueSpells);
 
             CréationDuPanierDeServices();
 
-            //Components.Add(new ArrièrePlanSpatial(this, "CielÉtoilé", INTERVALLE_MAJ_STANDARD));
             AfficheurFPS afficheurFPS = new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS);
             afficheurFPS.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Components.Add(afficheurFPS);
@@ -108,7 +106,7 @@ namespace Projet_ASL
 
             Components.Add(MenuAccueil);
             Components.Add(MenuInventaire);
-            //Components.Add(MenuActions);
+
             base.Initialize();
         }
 
@@ -117,14 +115,14 @@ namespace Projet_ASL
             GestionnaireDeFonts = new RessourcesManager<SpriteFont>(this, "Fonts");
             GestionnaireDeTextures = new RessourcesManager<Texture2D>(this, "Textures");
             GestionnaireDeModèles = new RessourcesManager<Model>(this, "Models");
-            //GestionnaireDeShaders = new RessourcesManager<Effect>(this, "Effects");
+
             GestionInput = new InputManager(this, CaméraJeu, _managerNetwork);
             GestionSprites = new SpriteBatch(GraphicsDevice);
 
             Services.AddService(typeof(RessourcesManager<SpriteFont>), GestionnaireDeFonts);
             Services.AddService(typeof(RessourcesManager<Texture2D>), GestionnaireDeTextures);
             Services.AddService(typeof(RessourcesManager<Model>), GestionnaireDeModèles);
-            //Services.AddService(typeof(RessourcesManager<Effect>), GestionnaireDeShaders);
+
             Services.AddService(typeof(InputManager), GestionInput);
             Services.AddService(typeof(Caméra), CaméraJeu);
             Services.AddService(typeof(SpriteBatch), GestionSprites);
@@ -151,9 +149,12 @@ namespace Projet_ASL
             switch (ÉtatJeu)
             {
                 case États.MENU:
-                    MenuAccueil.BtnJouer.EstActif = MenuInventaire._player.Personnages.Count == 4;
                     if (MenuAccueil.ÉtatJouer)
                     {
+                        if(MenuInventaire._player.Personnages.Count != 4)
+                        {
+                            MenuInventaire.InitialiserPersonnageParDéfaut();
+                        }
                         ÉtatJeu = États.CONNEXION;
                         MenuAccueil.VoirBoutonMenu(false);
                         _managerNetwork.Start(MenuInventaire._player);
