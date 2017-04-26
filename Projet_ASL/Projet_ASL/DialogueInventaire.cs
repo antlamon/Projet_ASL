@@ -88,10 +88,7 @@ namespace Projet_ASL
 
         private void OK()
         {
-            if(_player.Personnages.Count == 4)
-            {
-                ÉtatMenu = true;
-            }
+            ÉtatMenu = true;
         }
 
         private void Archer()

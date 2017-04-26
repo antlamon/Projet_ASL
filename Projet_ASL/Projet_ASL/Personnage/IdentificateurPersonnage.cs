@@ -18,10 +18,10 @@ namespace Projet_ASL
         protected Rectangle ZoneAffichage { get; private set; }
         protected float Échelle { get; set; }
         protected Rectangle RectangleSource { get; set; }
-        private Personnage PersonnageÀIdentifier { get; set; }
+        public Personnage PersonnageÀIdentifier { get; private set; }
         private int PtsViePersonnage { get; set; }
         private int PtsVieMax { get; set; }
-        private TexteCentré AfficheurPtsVie { get; set; }
+        public TexteCentré AfficheurPtsVie { get; private set; }
 
 
         public IdentificateurPersonnage(Game jeu, Personnage personnage)
@@ -148,5 +148,6 @@ namespace Projet_ASL
         {
             Échelle = MathHelper.Min((float)ZoneAffichage.Width / (float)Image.Width, (float)ZoneAffichage.Height / (float)Image.Height);
         }
+
     }
 }

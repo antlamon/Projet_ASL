@@ -24,6 +24,7 @@ namespace Projet_ASL
         SpriteFont Police { get; set; }
         public bool MenuActionVisible { get; private set; }
         Personnage PersonnageActif { get; set; }
+        public List<BoutonDeCommande> Boutons { get; private set; }
 
         #region Btn Sorts
         BoutonDeCommande BtnPluieDeFlèches { get; set; }
@@ -51,6 +52,7 @@ namespace Projet_ASL
                                                  (int)DimensionDialogue.X, (int)DimensionDialogue.Y);
             ÉtatAttaquer = false;
             MenuActionVisible = true;
+            Boutons = new List<BoutonDeCommande>();
         }
 
         public void RéinitialiserDialogueActions(Personnage personnage)
@@ -86,6 +88,11 @@ namespace Projet_ASL
             Game.Components.Add(BtnPasserTour);
             Game.Components.Add(BtnRetour);
 
+            Boutons.Add(BtnSorts);
+            Boutons.Add(BtnAttaquer);
+            Boutons.Add(BtnPasserTour);
+            Boutons.Add(BtnRetour);
+
             VoirBoutonRetour(false);
             VoirBoutonAction(false);
         }
@@ -104,10 +111,12 @@ namespace Projet_ASL
             Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
             BtnPluieDeFlèches = new BoutonDeCommande(Game, "Pluie de flèches", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
             BtnPluieDeFlèches.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Boutons.Add(BtnPluieDeFlèches);
 
             PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
             BtnFlèchePercante = new BoutonDeCommande(Game, "Flèche perçante", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
             BtnFlèchePercante.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Boutons.Add(BtnFlèchePercante);
 
             Game.Components.Add(BtnPluieDeFlèches);
             Game.Components.Add(BtnFlèchePercante);
@@ -145,6 +154,9 @@ namespace Projet_ASL
             Game.Components.Add(BtnRéssurection);
             Game.Components.Add(BtnVolDeVie);
 
+            Boutons.Add(BtnSoinDeZone);
+            Boutons.Add(BtnRéssurection);
+            Boutons.Add(BtnVolDeVie);
 
             VoirBoutonsGuérisseur(false);
             VoirBoutonsSatan(false);
@@ -185,6 +197,9 @@ namespace Projet_ASL
             Game.Components.Add(BtnTornadeFurieuse);
             Game.Components.Add(BtnFolie);
 
+            Boutons.Add(BtnTornadeFurieuse);
+            Boutons.Add(BtnFolie);
+
             VoirBoutonsGuerrier(false);
         }
 
@@ -213,6 +228,9 @@ namespace Projet_ASL
 
             Game.Components.Add(BtnBrazzer);
             Game.Components.Add(BtnFreezeDontMove);
+
+            Boutons.Add(BtnBrazzer);
+            Boutons.Add(BtnFreezeDontMove);
 
             VoirBoutonsMage(false);
         }
@@ -243,6 +261,9 @@ namespace Projet_ASL
             Game.Components.Add(BtnClarité);
             Game.Components.Add(BtnBouclierDivin);
 
+            Boutons.Add(BtnClarité);
+            Boutons.Add(BtnBouclierDivin);
+
             VoirBoutonsPaladin(false);
         }
 
@@ -271,6 +292,9 @@ namespace Projet_ASL
 
             Game.Components.Add(BtnInvisibilité);
             Game.Components.Add(BtnLancerCouteau);
+
+            Boutons.Add(BtnInvisibilité);
+            Boutons.Add(BtnLancerCouteau);
 
             VoirBoutonsVoleur(false);
         }
