@@ -25,6 +25,8 @@ namespace Projet_ASL
         public bool MenuActionVisible { get; private set; }
         Personnage PersonnageActif { get; set; }
         public List<BoutonDeCommande> Boutons { get; private set; }
+        public bool ÉtatSort1 { get; private set; }
+        public bool ÉtatSort2 { get; private set; }
 
         #region Btn Sorts
         BoutonDeCommande BtnPluieDeFlèches { get; set; }
@@ -314,6 +316,16 @@ namespace Projet_ASL
             ÉtatAttaquer = true;
         }
 
+        private void Sort1()
+        {
+            ÉtatSort1 = true;
+        }
+
+        private void Sort2()
+        {
+            ÉtatSort2 = true;
+        }
+
         private void Sorts()
         {
             ÉtatSorts = true;
@@ -323,7 +335,14 @@ namespace Projet_ASL
                     VoirBoutonsArcher(true);
                     break;
                 case TypePersonnage.GUÉRISSEUR:
-                    VoirBoutonsGuérisseur(true);
+                    if((PersonnageActif as Guérisseur)._SatanMode)
+                    {
+                        VoirBoutonsSatan(true);
+                    }
+                    else
+                    {
+                        VoirBoutonsGuérisseur(true);
+                    }
                     break;
                 case TypePersonnage.GUERRIER:
                     VoirBoutonsGuerrier(true);
@@ -350,6 +369,8 @@ namespace Projet_ASL
         private void Retour()
         {
             ÉtatSorts = false;
+            ÉtatSort1 = false;
+            ÉtatSort2 = false;
             switch (PersonnageActif.GetType().ToString())
             {
                 case TypePersonnage.ARCHER:
@@ -357,6 +378,7 @@ namespace Projet_ASL
                     break;
                 case TypePersonnage.GUÉRISSEUR:
                     VoirBoutonsGuérisseur(false);
+                    VoirBoutonsSatan(false);
                     break;
                 case TypePersonnage.GUERRIER:
                     VoirBoutonsGuerrier(false);

@@ -17,6 +17,7 @@ namespace Projet_ASL.Server.Commands
     {
         const int POSITION_X_DEPART = 40;
         const int POSITION_Z_DEPART = -15;
+        const int VIE_MAX = 100;
 
         public void Run(NetServer server, NetIncomingMessage inc, Player player, List<Player> players)
         {
@@ -71,27 +72,27 @@ namespace Projet_ASL.Server.Commands
             Personnage personnage = null;
             if (type == TypePersonnage.ARCHER)
             {
-                personnage = new Archer(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
+                personnage = new Archer(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, VIE_MAX);
             }
             if (type == TypePersonnage.GUÉRISSEUR)
             {
-                personnage = new Guérisseur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
+                personnage = new Guérisseur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, VIE_MAX);
             }
             if (type == TypePersonnage.GUERRIER)
             {
-                personnage = new Guerrier(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
+                personnage = new Guerrier(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, VIE_MAX);
             }
             if (type == TypePersonnage.MAGE)
             {
-                personnage = new Mage(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
+                personnage = new Mage(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, VIE_MAX);
             }
             if (type == TypePersonnage.PALADIN)
             {
-                personnage = new Paladin(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
+                personnage = new Paladin(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, VIE_MAX);
             }
             if (type == TypePersonnage.VOLEUR)
             {
-                personnage = new Voleur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 10);
+                personnage = new Voleur(null, null, 0, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, VIE_MAX);
             }
             return personnage;
         }
