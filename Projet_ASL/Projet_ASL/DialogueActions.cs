@@ -111,12 +111,12 @@ namespace Projet_ASL
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
             Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnPluieDeFlèches = new BoutonDeCommande(Game, "Pluie de flèches", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnPluieDeFlèches = new BoutonDeCommande(Game, "Pluie de flèches", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort1, INTERVALLE_MAJ_STANDARD);
             BtnPluieDeFlèches.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Boutons.Add(BtnPluieDeFlèches);
 
             PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnFlèchePercante = new BoutonDeCommande(Game, "Flèche perçante", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnFlèchePercante = new BoutonDeCommande(Game, "Flèche perçante", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort2, INTERVALLE_MAJ_STANDARD);
             BtnFlèchePercante.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Boutons.Add(BtnFlèchePercante);
 
@@ -142,14 +142,14 @@ namespace Projet_ASL
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
             Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnSoinDeZone = new BoutonDeCommande(Game, "Soin de zone", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnSoinDeZone = new BoutonDeCommande(Game, "Soin de zone", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort1, INTERVALLE_MAJ_STANDARD);
             BtnSoinDeZone.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnRéssurection = new BoutonDeCommande(Game, "Résurrection", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnRéssurection = new BoutonDeCommande(Game, "Résurrection", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort2, INTERVALLE_MAJ_STANDARD);
             BtnRéssurection.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
-            BtnVolDeVie = new BoutonDeCommande(Game, "Vol de vie", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnVolDeVie = new BoutonDeCommande(Game, "Vol de vie", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort2, INTERVALLE_MAJ_STANDARD);
             BtnVolDeVie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Game.Components.Add(BtnSoinDeZone);
@@ -189,11 +189,11 @@ namespace Projet_ASL
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
             Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnTornadeFurieuse = new BoutonDeCommande(Game, "Tornade furieuse", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnTornadeFurieuse = new BoutonDeCommande(Game, "Tornade furieuse", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort1, INTERVALLE_MAJ_STANDARD);
             BtnTornadeFurieuse.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnFolie = new BoutonDeCommande(Game, "Folie", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnFolie = new BoutonDeCommande(Game, "Folie", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort2, INTERVALLE_MAJ_STANDARD);
             BtnFolie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Game.Components.Add(BtnTornadeFurieuse);
@@ -221,11 +221,11 @@ namespace Projet_ASL
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
             Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnBrazzer = new BoutonDeCommande(Game, "Brasier", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnBrazzer = new BoutonDeCommande(Game, "Brasier", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort1, INTERVALLE_MAJ_STANDARD);
             BtnBrazzer.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnFreezeDontMove = new BoutonDeCommande(Game, "Freeze", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnFreezeDontMove = new BoutonDeCommande(Game, "Freeze", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort2, INTERVALLE_MAJ_STANDARD);
             BtnFreezeDontMove.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Game.Components.Add(BtnBrazzer);
@@ -253,11 +253,11 @@ namespace Projet_ASL
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
             Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnClarité = new BoutonDeCommande(Game, "Clarité", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnClarité = new BoutonDeCommande(Game, "Clarité", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort1, INTERVALLE_MAJ_STANDARD);
             BtnClarité.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnBouclierDivin = new BoutonDeCommande(Game, "Bouclier divin", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnBouclierDivin = new BoutonDeCommande(Game, "Bouclier divin", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort2, INTERVALLE_MAJ_STANDARD);
             BtnBouclierDivin.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Game.Components.Add(BtnClarité);
@@ -285,11 +285,11 @@ namespace Projet_ASL
             int positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
 
             Vector2 PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 2) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnInvisibilité = new BoutonDeCommande(Game, "Invisibilité", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnInvisibilité = new BoutonDeCommande(Game, "Invisibilité", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort1, INTERVALLE_MAJ_STANDARD);
             BtnInvisibilité.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnLancerCouteau = new BoutonDeCommande(Game, "Lancer du couteau", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Attaquer, INTERVALLE_MAJ_STANDARD);
+            BtnLancerCouteau = new BoutonDeCommande(Game, "Lancer du couteau", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Sort2, INTERVALLE_MAJ_STANDARD);
             BtnLancerCouteau.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Game.Components.Add(BtnInvisibilité);

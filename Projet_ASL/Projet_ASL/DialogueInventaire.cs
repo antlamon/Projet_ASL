@@ -82,8 +82,15 @@ namespace Projet_ASL
             Game.Components.Add(BtnPaladin);
             Game.Components.Add(BtnVoleur);
             Game.Components.Add(BtnOK);
-
             VoirBoutonInventaire(false);
+        }
+
+        public void InitialiserPersonnageParDéfaut()
+        {
+            Archer();
+            Guérisseur();
+            Guerrier();
+            Mage();
         }
 
         private void OK()
@@ -97,7 +104,7 @@ namespace Projet_ASL
             BtnArcher.ChangerCouleurActive();
             if (ClickArcher)
             {
-                Archer archer = new Archer(Game, "ArcherB", 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                Archer archer = new Archer(Game, null, 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
                 archer.DrawOrder = (int)OrdreDraw.MILIEU;
                 _player.Personnages.Add(archer);
             }
@@ -113,7 +120,7 @@ namespace Projet_ASL
             BtnGuerrier.ChangerCouleurActive();
             if (ClickGuerrier)
             {
-                Guerrier guerrier = new Guerrier(Game, "GuerrierB", 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                Guerrier guerrier = new Guerrier(Game, null, 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
                 guerrier.DrawOrder = (int)OrdreDraw.MILIEU;
                 _player.Personnages.Add(guerrier);
             }
@@ -128,7 +135,7 @@ namespace Projet_ASL
             BtnGuérisseur.ChangerCouleurActive();
             if (ClickGuérisseur)
             {
-                Guérisseur guérisseur = new Guérisseur(Game, "ArcherB", 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                Guérisseur guérisseur = new Guérisseur(Game, null, 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
                 guérisseur.DrawOrder = (int)OrdreDraw.MILIEU;
                 _player.Personnages.Add(guérisseur);
             }
@@ -143,7 +150,7 @@ namespace Projet_ASL
             BtnMage.ChangerCouleurActive();
             if (ClickMage)
             {
-                Mage mage = new Mage(Game, "Mage", 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                Mage mage = new Mage(Game, null, 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
                 mage.DrawOrder = (int)OrdreDraw.MILIEU;
                 _player.Personnages.Add(mage);
             }
@@ -158,7 +165,7 @@ namespace Projet_ASL
             BtnPaladin.ChangerCouleurActive();
             if (ClickPaladin)
             {
-                Paladin paladin = new Paladin(Game, "ArcherB", 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                Paladin paladin = new Paladin(Game, null, 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
                 paladin.DrawOrder = (int)OrdreDraw.MILIEU;
                 _player.Personnages.Add(paladin);
             }
@@ -173,7 +180,7 @@ namespace Projet_ASL
             BtnVoleur.ChangerCouleurActive();
             if (ClickVoleur)
             {
-                Voleur voleur = new Voleur(Game, "ArcherB", 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
+                Voleur voleur = new Voleur(Game, null, 0.03f, Vector3.Zero, Vector3.Zero, 0, 0, 0, 0, 1);
                 voleur.DrawOrder = (int)OrdreDraw.MILIEU;
                 _player.Personnages.Add(voleur);
             }
