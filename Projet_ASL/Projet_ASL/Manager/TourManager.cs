@@ -108,8 +108,8 @@ namespace Projet_ASL
             {
                 if (DéplacementRestant >= 0.5f)
                 {
-                    GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
-                    DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant);
+                GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
+                DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant, IndicePersonnage);
                 }
 
             }
