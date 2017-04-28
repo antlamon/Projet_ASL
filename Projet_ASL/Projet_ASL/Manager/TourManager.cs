@@ -29,11 +29,13 @@ namespace Projet_ASL
         int ancienIndicePersonnage { get; set; }
         int IndicePersonnage { get; set; }
         float DéplacementRestant { get; set; }
+        float ancienDéplacementRestant { get; set; }
         Vector3 PositionInitiale { get; set; }
         bool PeutAttaquer { get; set; }
         int TempsDepuisDernierUpdate { get; set; }
         public AOE ZoneDEffet { get; private set; }
         public AOE Portée { get; private set; }
+        Jeu Jeu { get; set; }
 
         public TourManager(Jeu jeu, ManagerNetwork networkManager)
             : base(jeu)
@@ -41,6 +43,7 @@ namespace Projet_ASL
             NetworkManager = networkManager;
             BoutonsActions = new DialogueActions(jeu, new Vector2(Game.Window.ClientBounds.Width / 3f, Game.Window.ClientBounds.Height / 7f), NetworkManager);
             Game.Components.Add(BoutonsActions);
+            Jeu = jeu;
         }
 
         /// <summary>
@@ -59,14 +62,16 @@ namespace Projet_ASL
             CréerBtnClasses();
             BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
             BoutonsActions.VoirBoutonAction(NetworkManager.TourActif);
-            ZoneDEffet = new AOE(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
-            ZoneDEffet.Visible = false;
-            ZoneDEffet.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
-            Game.Components.Add(ZoneDEffet);
-            Portée = new AOE(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
-            Portée.Visible = false;
-            Portée.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
-            Game.Components.Add(Portée);
+            //ZoneDEffet = new AOE(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
+            //ZoneDEffet.Visible = false;
+            //ZoneDEffet.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            //Game.Components.Insert(Game.Components.IndexOf(Jeu.PlancheDeJeu) + 1, ZoneDEffet);
+            //Portée = new AOE(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
+            //Portée.Visible = false;
+            //Portée.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            //Game.Components.Insert(Game.Components.IndexOf(ZoneDEffet) + 1, Portée);
+            ZoneDEffet = Jeu.Components.ElementAt(Jeu.Components.IndexOf(Jeu.AOE1)) as AOE;
+            Portée = Jeu.Components.ElementAt(Jeu.Components.IndexOf(Jeu.AOE2)) as AOE;
             base.Initialize();
         }
 
@@ -116,14 +121,18 @@ namespace Projet_ASL
                 ancienIndicePersonnage = IndicePersonnage;
                 ZoneDEffet.Visible = true;
                 ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), JoueurLocal.Personnages[IndicePersonnage].Position­);
-                ZoneDEffet.Update(gameTime);
             }
             if (!BoutonsActions.ÉtatSorts && !BoutonsActions.ÉtatAttaquer)
             {
                 if (DéplacementRestant >= 0.5f)
                 {
                     GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
-                DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant, IndicePersonnage);
+                    DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant, IndicePersonnage);
+                    if(ancienDéplacementRestant != DéplacementRestant)
+                    {
+                        ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), JoueurLocal.Personnages[IndicePersonnage].Position­);
+                        ancienDéplacementRestant = DéplacementRestant;
+                    }
                 }
 
             }
@@ -135,6 +144,8 @@ namespace Projet_ASL
                 PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
                 DéplacementRestant = DÉPLACEMENT_MAX;
                 BoutonsActions.VoirBoutonAction(false);
+                ZoneDEffet.Visible = false;
+                Portée.Visible = false;
                 TempsDepuisDernierUpdate = gameTime.TotalGameTime.Seconds;
             }
             base.Update(gameTime);

@@ -62,7 +62,7 @@ namespace Projet_ASL
         public void ChangerÉtendueEtPosition(Vector2 étendue, Vector3 position)
         {
             Delta = new Vector2(étendue.X, étendue.Y);
-            Origine = new Vector3(- Delta.X / 2, 0,Delta.Y / 2);
+            Origine = new Vector3(position.X - Delta.X / 2, 0, position.Z + Delta.Y / 2);
             InitialiserSommets();
             Position = position;
         }

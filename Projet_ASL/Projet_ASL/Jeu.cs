@@ -32,22 +32,18 @@ namespace Projet_ASL
         InputManager GestionInput { get; set; }
         États ÉtatJeu { get; set; }
         ManagerNetwork _managerNetwork;
-        //ManagerInput _managerInput;
         TourManager ManagerTour;
-        Carte PlancheDeJeu { get; set; }
+        public Carte PlancheDeJeu { get; private set; } // HAD TO : voir TourManager
         DialogueMenu MenuAccueil { get; set; }
         DialogueInventaire MenuInventaire { get; set; }
-        //DialogueActions MenuActions { get; set; }
-
+        public AOE AOE1 { get; private set; }
+        public AOE AOE2 { get; private set; }
         TexteCentré TexteConnection { get; set; }
 
         private Texture2D _texture; //For test
         private SpriteFont _font; //For test
                                   //private Mage pion2; //for test
-                                  //private Color couleur;
-
-        private int CompteurDeTours { get; set; }
-        private int CompteurPersonnage { get; set; }
+                                  //private Color couleur
 
         bool TourLocal { get; set; }
 
@@ -57,7 +53,6 @@ namespace Projet_ASL
             PériphériqueGraphique = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             _managerNetwork = new ManagerNetwork(this);
-            //_managerInput = new ManagerInput(_managerNetwork);
             PériphériqueGraphique.SynchronizeWithVerticalRetrace = false;
             PériphériqueGraphique.PreferredBackBufferHeight = 720;
             PériphériqueGraphique.PreferredBackBufferWidth = 1280;
@@ -74,9 +69,6 @@ namespace Projet_ASL
             //Vector3 positionObjet4 = new Vector3(0, -1.5f, 0);
             //Vector3 positionObjet5 = new Vector3(2, 0, 0);
             //Vector3 positionLumière = new Vector3(0, 0f, 3f);
-            CompteurDeTours = 1;
-            CompteurPersonnage = 0;
-
             Vector3 positionCaméra = new Vector3(0, 80, 20);
             Vector3 cibleCaméra = new Vector3(0, 0, 0);
             Vector2 dimensionDialogueMenu = new Vector2(Window.ClientBounds.Width / 3, Window.ClientBounds.Height);
@@ -96,6 +88,14 @@ namespace Projet_ASL
             PlancheDeJeu.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             PlancheDeJeu.Visible = false;
             Components.Add(PlancheDeJeu);
+            AOE1 = new AOE(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
+            AOE1.Visible = false;
+            AOE1.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            Components.Add(AOE1);
+            AOE2 = new AOE(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
+            AOE2.Visible = false;
+            AOE2.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            Components.Add(AOE2);
             TexteConnection = new TexteCentré(this, "En attente d'un autre joueur", "Arial20", new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), Color.Red, 0.2f);
             TexteConnection.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Components.Add(TexteConnection);
@@ -194,7 +194,6 @@ namespace Projet_ASL
                         {
                             RetourAuMenu();
                         }
-                        //_managerInput.Update(gameTime.ElapsedGameTime.Milliseconds);
                     }
                     else
                     {
