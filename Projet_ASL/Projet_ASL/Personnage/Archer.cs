@@ -9,8 +9,9 @@ namespace Projet_ASL
     public class Archer : Personnage
     {
         public const int RAYON_PLUIE_DE_FLÈCHES = 10;
-        public const int PORTÉE_PLUIE_DE_FLÈCHES = 30;
+        public const int PORTÉE_PLUIE_DE_FLÈCHES = 40;
         public const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
+        public const int PORTÉE_FLÈCHE_PERCANTE = 50;
         public const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
 
         public Archer(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
@@ -50,7 +51,7 @@ namespace Projet_ASL
             {
                 foreach (Personnage p in CiblesPotentielles)
                 {
-                    if (portée.Intersects(p.SphèreDeCollision) != null) 
+                    if (portée.Intersects(p.SphèreDeCollision) <= PORTÉE_FLÈCHE_PERCANTE) 
                     { cibles.Add(p); }
                 }
 

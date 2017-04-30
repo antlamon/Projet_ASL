@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Carte.cs" />
-    <Compile Include="CompteurTours.cs" />
+    <Compile Include="CompteurManches.cs" />
     <Compile Include="ComposantDeBase\Afficheur3D.cs" />
     <Compile Include="ComposantDeBase\AfficheurFPS.cs" />
     <Compile Include="ComposantDeBase\ArrièrePlan.cs" />
