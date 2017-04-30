@@ -113,12 +113,20 @@ namespace Projet_ASL
             ++Niveau;
         }
 
-        public void ModifierVitalité(int dégats)
+        public virtual void ModifierVitalité(int dégats)
         {
             int modificationVitalité;
             if(dégats > 0)
             {
-                modificationVitalité = (int)Math.Round((double)dégats*(1-PtsDéfense/100));
+                if (!_BouclierDivin)
+                {
+                    modificationVitalité = (int)Math.Round((double)dégats * (1 - PtsDéfense / 100));
+                }
+                else
+                {
+                    _BouclierDivin = false;
+                    modificationVitalité = 0;
+                }
             }
             else
             {

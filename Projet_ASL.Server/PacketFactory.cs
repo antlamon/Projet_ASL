@@ -28,6 +28,8 @@ namespace Projet_ASL.Server
                     return new LogoutCommand();
                 case PacketType.InputVector:
                     return new InputVectorCommand();
+                case PacketType.Dégât:
+                    return new DégâtCommand();
                 case PacketType.PersonnagePosition:
                     return new PersonnagePositionCommand();
                 case PacketType.FinDeTour:

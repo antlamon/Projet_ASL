@@ -14,6 +14,7 @@ namespace Projet_ASL
         AllPlayers,
         Input,
         InputVector,
+        Dégât,
         Message,
         Logout,
         FinDeTour

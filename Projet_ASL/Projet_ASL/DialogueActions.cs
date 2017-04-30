@@ -82,6 +82,12 @@ namespace Projet_ASL
             BtnPasserTour = new BoutonDeCommande(Game, "Passer", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, PasserTour, INTERVALLE_MAJ_STANDARD);
             BtnPasserTour.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
+            DimensionDialogue = new Vector2(Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height / 4f);
+            RectangleDestination = new Rectangle(Game.Window.ClientBounds.Width - (int)DimensionDialogue.X, Game.Window.ClientBounds.Height - (int)DimensionDialogue.Y,
+                                                 (int)DimensionDialogue.X, (int)DimensionDialogue.Y);
+            positionXBouton = RectangleDestination.Width / (NB_ZONES_DIALOGUE + 1);
+
+            PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
             BtnRetour = new BoutonDeCommande(Game, "retour", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, Retour, INTERVALLE_MAJ_STANDARD);
             BtnRetour.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
@@ -97,7 +103,11 @@ namespace Projet_ASL
 
             VoirBoutonRetour(false);
             VoirBoutonAction(false);
+
+            base.Initialize();
         }
+
+
 
         public void VoirBoutonRetour(bool x)
         {

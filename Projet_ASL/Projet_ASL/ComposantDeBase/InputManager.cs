@@ -62,6 +62,7 @@ namespace Projet_ASL
             //        DéterminerMouvementPersonnageSélectionné();
             //    }
             //}
+            base.Update(gameTime);
         }
 
         public void DéterminerIntersectionPersonnageRay()

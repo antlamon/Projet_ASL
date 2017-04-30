@@ -134,6 +134,7 @@ namespace Projet_ASL
                 }
                 BoutonsActions.VoirBoutonAction(true);
                 PeutAttaquer = true;
+                ActiverAttaque();
                 ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
                 ancienIndicePersonnage = IndicePersonnage;
             }
@@ -167,10 +168,12 @@ namespace Projet_ASL
         {
             Vector3 positionVérifiée;
             Personnage singleTargetÀAttaquer = null;
+
             if (PeutAttaquer)
             {
                 if (BoutonsActions.ÉtatSort1)
                 {
+
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
@@ -188,6 +191,7 @@ namespace Projet_ASL
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                ActiverAttaque();
                             }
                             break;
                         case TypePersonnage.GUÉRISSEUR:
@@ -243,17 +247,14 @@ namespace Projet_ASL
                             break;
                         case TypePersonnage.PALADIN:
                             GestionnaireInput.Update(gameTime);
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Paladin.PORTÉE_TORNADE_FURIEUSE);
-                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), positionVérifiée);
-                            Portée.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), PersonnageActif.Position);
-                            ZoneDEffet.Visible = true;
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Paladin.PORTÉE_CLARITÉ);
+                            Portée.ChangerÉtendueEtPosition(new Vector2(Paladin.PORTÉE_CLARITÉ * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
+                            if (singleTargetÀAttaquer != null)
                             {
-                                int dégats;
-                                Cibles = (PersonnageActif as Guerrier).TornadeFurieuse(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
+                                (PersonnageActif as Paladin).Clarité(singleTargetÀAttaquer);
                                 PeutAttaquer = false;
-                                ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
                             }
@@ -313,34 +314,28 @@ namespace Projet_ASL
                             break;
                         case TypePersonnage.MAGE:
                             GestionnaireInput.Update(gameTime);
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_TORNADE_FURIEUSE);
-                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_TORNADE_FURIEUSE * 2), positionVérifiée);
-                            Portée.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_TORNADE_FURIEUSE * 2), PersonnageActif.Position);
-                            ZoneDEffet.Visible = true;
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_FREEZE_DONT_MOVE);
+                            Portée.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_FREEZE_DONT_MOVE * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
+                            if (singleTargetÀAttaquer != null)
                             {
-                                int dégats;
-                                Cibles = (PersonnageActif as Mage).Brasier(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
+                                (PersonnageActif as Mage).FreezeDontMove(singleTargetÀAttaquer);
                                 PeutAttaquer = false;
-                                ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
                             }
                             break;
                         case TypePersonnage.PALADIN:
                             GestionnaireInput.Update(gameTime);
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guerrier.PORTÉE_TORNADE_FURIEUSE);
-                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), positionVérifiée);
-                            Portée.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), PersonnageActif.Position);
-                            ZoneDEffet.Visible = true;
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Paladin.PORTÉE_BOUCLIER_DIVIN);
+                            Portée.ChangerÉtendueEtPosition(new Vector2(Paladin.PORTÉE_BOUCLIER_DIVIN * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
+                            if (singleTargetÀAttaquer != null)
                             {
-                                int dégats;
-                                Cibles = (PersonnageActif as Guerrier).TornadeFurieuse(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
+                                (PersonnageActif as Paladin).BouclierDivin(singleTargetÀAttaquer);
                                 PeutAttaquer = false;
-                                ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
                             }
@@ -351,6 +346,12 @@ namespace Projet_ASL
                     }
                 }
             }
+        }
+
+        void ActiverAttaque()
+        {
+            BoutonsActions.BtnSorts.EstActif = PeutAttaquer;
+            BoutonsActions.BtnAttaquer.EstActif = PeutAttaquer;
         }
 
         void VérifierFinDeTour(GameTime gameTime)
