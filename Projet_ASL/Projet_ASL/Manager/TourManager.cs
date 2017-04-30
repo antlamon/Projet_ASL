@@ -192,7 +192,7 @@ namespace Projet_ASL
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
                                 ActiverAttaque();
                             }
-                            break;
+                            goto default;
                         case TypePersonnage.GUÉRISSEUR:
                             GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guérisseur.PORTÉE_SOIN_DE_ZONE);
@@ -257,6 +257,9 @@ namespace Projet_ASL
                             break;
                         case TypePersonnage.VOLEUR:
 
+                            break;
+                        default:
+                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats);
                             break;
                     }
                 }
