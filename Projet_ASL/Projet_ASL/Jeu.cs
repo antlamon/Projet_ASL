@@ -38,6 +38,7 @@ namespace Projet_ASL
         DialogueInventaire MenuInventaire { get; set; }
         public AOE AOE1 { get; private set; }
         public AOE AOE2 { get; private set; }
+        public AOE AOE3 { get; private set; }
         TexteCentré TexteConnection { get; set; }
 
         private Texture2D _texture; //For test
@@ -96,6 +97,10 @@ namespace Projet_ASL
             AOE2.Visible = false;
             AOE2.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(AOE2);
+            AOE3 = new AOE(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
+            AOE3.Visible = false;
+            AOE3.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            Components.Add(AOE3);
             TexteConnection = new TexteCentré(this, "En attente d'un autre joueur", "Arial20", new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), Color.Red, 0.2f);
             TexteConnection.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Components.Add(TexteConnection);
@@ -229,8 +234,10 @@ namespace Projet_ASL
                 {
                     Components.Remove(b);
                 }
-                Components.Remove(ManagerTour.ZoneDEffet);
-                Components.Remove(ManagerTour.Portée);
+                //Components.Remove(ManagerTour.ZoneDEffet);
+                //Components.Remove(ManagerTour.Portée);
+                //Components.Remove(ManagerTour.ZoneDéplacement);
+                // AOE1, AOE2, AOE3 ?
             }
 
         }

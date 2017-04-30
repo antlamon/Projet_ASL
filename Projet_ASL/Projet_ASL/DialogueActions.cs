@@ -313,7 +313,7 @@ namespace Projet_ASL
 
         private void Attaquer()
         {
-            ÉtatAttaquer = true;
+            ÉtatAttaquer = !ÉtatAttaquer;
         }
 
         private void Sort1()

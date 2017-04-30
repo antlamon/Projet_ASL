@@ -10,24 +10,24 @@ namespace Projet_ASL
     {
         #region Constantes Sorts
         #region Constantes Archer
-        public const int RAYON_PLUIE_DE_FLÈCHES = 10;
-        public const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
-        public const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
+        //public const int RAYON_PLUIE_DE_FLÈCHES = 10;
+        //public const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
+        //public const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
         #endregion
         #region Constantes Guérisseur 
-        public const int RAYON_SOIN_DE_ZONE = 10;
-        public const float RATIO_SOIN_DE_ZONE = 0.4f;
-        public const float RATIO_RESURRECT = 0.5f;
-        public const float RATIO_VOL_DE_VIE = 0.4f;
+        //public const int RAYON_SOIN_DE_ZONE = 10;
+        //public const float RATIO_SOIN_DE_ZONE = 0.4f;
+        //public const float RATIO_RESURRECT = 0.5f;
+        //public const float RATIO_VOL_DE_VIE = 0.4f;
         #endregion
         #region Constantes Guerrier
-        public const int RAYON_TORNADE_FURIEUSE = 10;
-        public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
+        //public const int RAYON_TORNADE_FURIEUSE = 10;
+        //public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
         #endregion
         #region Constantes Mage
-        public const int RAYON_BRASIER = 10;
-        public const float DÉGATS_FREEZE_DONT_MOVE = 0.25f;
-        public const float DÉGATS_BRASIER = 0.25f;
+        //public const int RAYON_BRASIER = 10;
+        //public const float DÉGATS_FREEZE_DONT_MOVE = 0.25f;
+        //public const float DÉGATS_BRASIER = 0.25f;
         #endregion
         #region Constantes Paladin
         #endregion
@@ -69,17 +69,17 @@ namespace Projet_ASL
         public bool _Frozen
         {
             get { return frozen; }
-            protected set { frozen = value; }
+            private set { frozen = value; }
         }
         public bool _EnFeu
         {
             get { return enFeu; }
-            protected set { enFeu = value; }
+            private set { enFeu = value; }
         }
         public bool _BouclierDivin
         {
             get { return bouclierDivin; }
-            protected set { bouclierDivin = value; }
+            private set { bouclierDivin = value; }
         }
 
         protected Personnage(Game jeu, String nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
@@ -144,23 +144,25 @@ namespace Projet_ASL
         }
         #endregion
         #region Paladin
-        public void Clarité(Personnage cible)
+
+        public void SetBouclierDivin(Personnage caster, bool bouclierDivinValue)
         {
-            EnleverDebuffs();
+            if (caster is Paladin)
+            {
+                _BouclierDivin = bouclierDivinValue;
+            }
         }
 
-        public void BouclierDivin(Personnage cible)
+        public virtual void EnleverDebuffs(Personnage caster)
         {
-            _BouclierDivin = true;
+            if (caster is Paladin)
+            {
+                _EnFeu = false;
+                _Frozen = false;
+                _BouclierDivin = false;
+            }
         }
         #endregion
-
-        public virtual void EnleverDebuffs()
-        {
-            _EnFeu = false;
-            _Frozen = false;
-            _BouclierDivin = false;
-        }
 
         public void Brasier(List<Personnage> cibles)
         {

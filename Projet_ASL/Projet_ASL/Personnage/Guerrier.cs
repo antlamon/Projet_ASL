@@ -8,6 +8,8 @@ namespace Projet_ASL
 {
     public class Guerrier : Personnage
     {
+        public const int RAYON_TORNADE_FURIEUSE = 10;
+        public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
         const int PTS_VITALITÉ_FOLIE = 1;
         const int NB_TOURS_FOLIE = 2;
         bool folie; 
@@ -28,10 +30,10 @@ namespace Projet_ASL
             return Force;
         }
 
-        public List<Personnage> TornadeFurieuse(Vector2 positionClic, out int dégats)
+        public List<Personnage> TornadeFurieuse(Vector3 position, out int dégats)
         {
             List<Personnage> cibles = new List<Personnage>();
-            BoundingSphere portée = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_TORNADE_FURIEUSE);
+            BoundingSphere portée = new BoundingSphere(position, RAYON_TORNADE_FURIEUSE);
             dégats = (int)(DÉGATS_TORNADE_FURIEUSE * Attaquer());
 
             if (this is Guerrier)
@@ -53,10 +55,13 @@ namespace Projet_ASL
             return PTS_VITALITÉ_FOLIE;
         }
 
-        public override void EnleverDebuffs()
+        public override void EnleverDebuffs(Personnage caster)
         {
-            base.EnleverDebuffs();
-            _Folie = false;
+            base.EnleverDebuffs(caster);
+            if(caster is Paladin)
+            {
+                _Folie = false;
+            }
         }
     }
 }

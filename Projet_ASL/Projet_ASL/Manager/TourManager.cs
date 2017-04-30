@@ -25,17 +25,18 @@ namespace Projet_ASL
         InputManager GestionnaireInput { get; set; }
         Player JoueurLocal { get; set; }
         Player JoueurEnnemi { get; set; }
-        List<List<BoutonDeCommande>> Boutons { get; set; }
+        Personnage PersonnageActif { get; set; }
         int ancienIndicePersonnage { get; set; }
         int IndicePersonnage { get; set; }
         float DéplacementRestant { get; set; }
         float ancienDéplacementRestant { get; set; }
-        Vector3 PositionInitiale { get; set; }
         bool PeutAttaquer { get; set; }
         int TempsDepuisDernierUpdate { get; set; }
-        public AOE ZoneDEffet { get; private set; }
-        public AOE Portée { get; private set; }
+        AOE ZoneDEffet { get; set; }
+        AOE Portée { get; set; }
+        AOE ZoneDéplacement { get; set; }
         Jeu Jeu { get; set; }
+        List<Personnage> Cibles { get; set; }
 
         public TourManager(Jeu jeu, ManagerNetwork networkManager)
             : base(jeu)
@@ -53,27 +54,19 @@ namespace Projet_ASL
         public override void Initialize()
         {
             JoueurLocal = NetworkManager.JoueurLocal;
-            //JoueurEnnemi = NetworkManager.JoueurEnnemi;
+            JoueurEnnemi = NetworkManager.JoueurEnnemi;
+            Cibles = new List<Personnage>();
             ancienIndicePersonnage = -1;
             IndicePersonnage = 0;
             TempsDepuisDernierUpdate = 0;
-            PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
             DéplacementRestant = DÉPLACEMENT_MAX;
             CréerBtnClasses();
-            BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
+            PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];
+            BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
             BoutonsActions.VoirBoutonAction(NetworkManager.TourActif);
-            //ZoneDEffet = new AOE(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
-            //ZoneDEffet.Visible = false;
-            //ZoneDEffet.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
-            //Game.Components.Insert(Game.Components.IndexOf(Jeu.PlancheDeJeu) + 1, ZoneDEffet);
-            //Portée = new AOE(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector2(20), "AOE", INTERVALLE_MAJ_STANDARD);
-            //Portée.Visible = false;
-            //Portée.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
-            //Game.Components.Insert(Game.Components.IndexOf(ZoneDEffet) + 1, Portée);
-            //ZoneDEffet = Jeu.Components.ElementAt(Jeu.Components.IndexOf(Jeu.AOE1)) as AOE;
-            // = Jeu.Components.ElementAt(Jeu.Components.IndexOf(Jeu.AOE2)) as AOE;
             ZoneDEffet = Jeu.AOE1;
             Portée = Jeu.AOE2;
+            ZoneDéplacement = Jeu.AOE3;
             base.Initialize();
         }
 
@@ -85,7 +78,7 @@ namespace Projet_ASL
 
         private void CréerBtnClasses()
         {
-            foreach(Personnage p in JoueurLocal.Personnages)
+            foreach (Personnage p in JoueurLocal.Personnages)
             {
                 switch (p.GetType().ToString())
                 {
@@ -117,45 +110,110 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
+            VérifierDébutDeTour(gameTime);
+            VérifierDéplacement();
+            VérifierSorts(gameTime);
+            VérifierFinDeTour(gameTime);
+            base.Update(gameTime);
+        }
+
+        void VérifierDébutDeTour(GameTime gameTime)
+        {
             if (ancienIndicePersonnage != IndicePersonnage && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 1)
             {
+                PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];
                 BoutonsActions.VoirBoutonAction(true);
+                PeutAttaquer = true;
+                ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
                 ancienIndicePersonnage = IndicePersonnage;
-                ZoneDEffet.Visible = true;
-                ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), JoueurLocal.Personnages[IndicePersonnage].Position­);
             }
-            if (!BoutonsActions.ÉtatSorts && !BoutonsActions.ÉtatAttaquer)
-            {
-                if (DéplacementRestant >= 0.5f)
-                {
-                    GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
-                    DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant, IndicePersonnage);
-                    if(ancienDéplacementRestant != DéplacementRestant)
-                    {
-                        ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), JoueurLocal.Personnages[IndicePersonnage].Position­);
-                        ancienDéplacementRestant = DéplacementRestant;
-                    }
-                }
+        }
 
+        void VérifierDéplacement()
+        {
+            if (!BoutonsActions.ÉtatSorts && !BoutonsActions.ÉtatAttaquer && DéplacementRestant >= 0.5f)
+            {
+                ZoneDéplacement.Visible = true;
+                GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
+                DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant, IndicePersonnage);
+                DéplacerZoneMouvement();
             }
+            else
+            {
+                ZoneDéplacement.Visible = false;
+            }
+        }
+
+        void DéplacerZoneMouvement()
+        {
+            if (ancienDéplacementRestant != DéplacementRestant)
+            {
+                ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
+                ancienDéplacementRestant = DéplacementRestant;
+            }
+        }
+
+        void VérifierSorts(GameTime gameTime)
+        {
+            if(BoutonsActions.ÉtatSort1 && PeutAttaquer)
+            {
+                switch(PersonnageActif.GetType().ToString())
+                {
+                    case TypePersonnage.ARCHER:
+                        GestionnaireInput.Update(gameTime);
+                        ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Archer.RAYON_PLUIE_DE_FLÈCHES * 2), GestionnaireInput.GetPositionSourisPlan());
+                        Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_PLUIE_DE_FLÈCHES * 2), PersonnageActif.Position);
+                        ZoneDEffet.Visible = true;
+                        Portée.Visible = true;
+                        if (GestionnaireInput.EstNouveauClicGauche())
+                        {
+                            int dégats;
+                            Cibles = (PersonnageActif as Archer).PluieDeFlèches(GestionnaireInput.GetPositionSourisPlan(), JoueurEnnemi.Personnages, out dégats);
+                            PeutAttaquer = false;
+                            ZoneDEffet.Visible = false;
+                            Portée.Visible = false;
+                            BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                        }
+                        break;
+                    case TypePersonnage.GUÉRISSEUR:
+                        break;
+                    case TypePersonnage.GUERRIER:
+                        break;
+                    case TypePersonnage.MAGE:
+                        break;
+                    case TypePersonnage.PALADIN:
+                        break;
+                    case TypePersonnage.VOLEUR:
+                        break;
+                }
+            }
+        }
+
+        void VérifierFinDeTour(GameTime gameTime)
+        {
             if (TourFini())
             {
-                NetworkManager.SendFinDeTour();
-                IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
-                BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
-                PositionInitiale = JoueurLocal.Personnages[IndicePersonnage].Position;
-                DéplacementRestant = DÉPLACEMENT_MAX;
-                BoutonsActions.VoirBoutonAction(false);
-                ZoneDEffet.Visible = false;
-                Portée.Visible = false;
+                TerminerLeTour();
                 TempsDepuisDernierUpdate = gameTime.TotalGameTime.Seconds;
             }
-            base.Update(gameTime);
         }
 
         bool TourFini()
         {
-            return BoutonsActions.ÉtatPasserTour || BoutonsActions.ÉtatAttaquer && (int)Math.Round(DéplacementRestant) <= 0;
+            return BoutonsActions.ÉtatPasserTour || !PeutAttaquer && (int)Math.Round(DéplacementRestant) <= 0;
+        }
+
+        void TerminerLeTour()
+        {
+            NetworkManager.SendFinDeTour();
+            IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
+            // Voir avec PersonnageActif...
+            BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
+            Cibles.Clear();
+            DéplacementRestant = DÉPLACEMENT_MAX;
+            BoutonsActions.VoirBoutonAction(false);
+            ZoneDEffet.Visible = false;
+            Portée.Visible = false;
         }
     }
 }

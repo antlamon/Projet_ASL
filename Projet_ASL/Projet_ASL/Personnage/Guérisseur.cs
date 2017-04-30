@@ -8,6 +8,10 @@ namespace Projet_ASL
 {
     public class Guérisseur : Personnage
     {
+        public const int RAYON_SOIN_DE_ZONE = 10;
+        public const float RATIO_SOIN_DE_ZONE = 0.4f;
+        public const float RATIO_RESURRECT = 0.5f;
+        public const float RATIO_VOL_DE_VIE = 0.4f;
         const float DÉGATS_SATAN_MODE = 0.7f;
 
         bool satanMode;
@@ -36,10 +40,10 @@ namespace Projet_ASL
             }
             return attaque;
         }
-        public List<Personnage> SoinDeZone(Vector2 positionClic, List<Personnage> CiblesPotentielles, out int dégats)
+        public List<Personnage> SoinDeZone(Vector3 positionClic, List<Personnage> CiblesPotentielles, out int dégats)
         {
             List<Personnage> cibles = new List<Personnage>();
-            BoundingSphere zone = new BoundingSphere(new Vector3(positionClic.X, 0, positionClic.Y), RAYON_SOIN_DE_ZONE);
+            BoundingSphere zone = new BoundingSphere(positionClic, RAYON_SOIN_DE_ZONE);
             dégats = (int)(RATIO_SOIN_DE_ZONE * Attaquer());
 
             foreach (Personnage p in CiblesPotentielles)
@@ -70,10 +74,13 @@ namespace Projet_ASL
             return Attaquer();
         }
 
-        public override void EnleverDebuffs()
+        public override void EnleverDebuffs(Personnage caster)
         {
-            base.EnleverDebuffs();
-            _SatanMode = false;
+            base.EnleverDebuffs(caster);
+            if (caster is Paladin)
+            {
+                _SatanMode = false;
+            }
         }
     }
 }
