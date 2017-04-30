@@ -226,9 +226,9 @@ namespace Projet_ASL
                             break;
                         case TypePersonnage.MAGE:
                             GestionnaireInput.Update(gameTime);
-                            positionVérifié = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_TORNADE_FURIEUSE);
-                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_TORNADE_FURIEUSE * 2), positionVérifié);
-                            Portée.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_TORNADE_FURIEUSE * 2), PersonnageActif.Position);
+                            positionVérifié = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_BRASIER);
+                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_BRASIER * 2), positionVérifié);
+                            Portée.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_BRASIER * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
                             Portée.Visible = true;
                             if (GestionnaireInput.EstNouveauClicGauche())
@@ -243,7 +243,7 @@ namespace Projet_ASL
                             break;
                         case TypePersonnage.PALADIN:
                             GestionnaireInput.Update(gameTime);
-                            positionVérifié = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guerrier.PORTÉE_TORNADE_FURIEUSE);
+                            positionVérifié = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Paladin.PORTÉE_TORNADE_FURIEUSE);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), positionVérifié);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
