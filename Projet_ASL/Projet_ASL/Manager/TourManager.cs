@@ -70,8 +70,10 @@ namespace Projet_ASL
             //Portée.Visible = false;
             //Portée.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             //Game.Components.Insert(Game.Components.IndexOf(ZoneDEffet) + 1, Portée);
-            ZoneDEffet = Jeu.Components.ElementAt(Jeu.Components.IndexOf(Jeu.AOE1)) as AOE;
-            Portée = Jeu.Components.ElementAt(Jeu.Components.IndexOf(Jeu.AOE2)) as AOE;
+            //ZoneDEffet = Jeu.Components.ElementAt(Jeu.Components.IndexOf(Jeu.AOE1)) as AOE;
+            // = Jeu.Components.ElementAt(Jeu.Components.IndexOf(Jeu.AOE2)) as AOE;
+            ZoneDEffet = Jeu.AOE1;
+            Portée = Jeu.AOE2;
             base.Initialize();
         }
 
