@@ -35,17 +35,20 @@ namespace Projet_ASL
                 foreach (Personnage p in CiblesPotentielles)
                 {
                     if (portée.Intersects(p.SphèreDeCollision))
-                    { cibles.Add(p); }
+                    {
+                        cibles.Add(p);
+                        p.SetEnFeu(this);
+                    }
                 }
             }
 
             return cibles;
         }
 
-        public int FreezeDontMove()
+        public int FreezeDontMove(Personnage cible)
         {
-            int dégats = (int)(DÉGATS_FREEZE_DONT_MOVE * Attaquer());
-            return dégats;
+            cible.SetFreeze(this);
+            return (int)(DÉGATS_FREEZE_DONT_MOVE * Attaquer());
         }
     }
 }

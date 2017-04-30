@@ -128,28 +128,31 @@ namespace Projet_ASL
         }
 
         #region Sorts 
-
-        #region Archer
-        
-        #endregion
-        #region Guérisseur
-        #endregion
-        #region Guerrier
-
-        #endregion
         #region Mage
-        public void Freeze()
+
+        public void SetEnFeu(Personnage caster)
         {
-            _Frozen = true;
+            if (caster is Mage)
+            {
+                _EnFeu = true;
+            }
+        }
+
+        public void SetFreeze(Personnage caster)
+        {
+            if (caster is Mage)
+            {
+                _Frozen = true;
+            }
         }
         #endregion
         #region Paladin
 
-        public void SetBouclierDivin(Personnage caster, bool bouclierDivinValue)
+        public void SetBouclierDivin(Personnage caster)
         {
             if (caster is Paladin)
             {
-                _BouclierDivin = bouclierDivinValue;
+                _BouclierDivin = true;
             }
         }
 
@@ -163,14 +166,6 @@ namespace Projet_ASL
             }
         }
         #endregion
-
-        public void Brasier(List<Personnage> cibles)
-        {
-            foreach(Personnage cible in cibles)
-            {
-                cible._EnFeu = true;
-            }
-        }
         #endregion
 
         public void ChangerVitalité(int nouvelleVitalité)
