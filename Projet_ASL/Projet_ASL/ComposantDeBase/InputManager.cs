@@ -5,12 +5,6 @@ using System;
 
 namespace Projet_ASL
 {
-    //Déplacement max (cercle, plus petit rayon chaque fois)
-    //distance parcourue max 
-    //juste bouger personnage sélectionné (tourmanager a index)
-    //méthode mettre dans tourmanager
-    // déplacement se fait dans tour manager
-
     public class InputManager : Microsoft.Xna.Framework.GameComponent
     {
         const int DÉPLACEMENT_MAX = 10;
@@ -70,6 +64,64 @@ namespace Projet_ASL
             //}
             base.Update(gameTime);
         }
+
+        public void DéterminerIntersectionPersonnageRay()
+        {
+            Ray ray = CalculateCursorRay();
+            float closestDistance = float.MaxValue;
+            //foreach(Player p in _managerNetwork.Players)
+            //{
+            foreach (Personnage perso in _managerNetwork.JoueurLocal.Personnages)
+            {
+                DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
+                if (DistanceRayon != null && DistanceRayon < closestDistance)
+                {
+                    closestDistance = (float)DistanceRayon;
+                    PersonnageChoisi = perso;
+                }
+
+            }
+            //}
+        }
+
+        #region Méthode sélection personnage à attaquer
+
+        public Personnage DéterminerSélectionPersonnageÀAttaquer()
+        {
+            Personnage personnageÀAttaquer = null;
+
+            if (EstNouveauClicGauche())
+            {
+                Ray ray = CalculateCursorRay();
+                float closestDistance = float.MaxValue;
+                foreach (Personnage perso in _managerNetwork.JoueurLocal.Personnages)
+                {
+                    DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
+                    if (DistanceRayon != null && DistanceRayon < closestDistance)
+                    {
+                        closestDistance = (float)DistanceRayon;
+                        personnageÀAttaquer = perso;
+                    }
+
+                }
+                foreach (Personnage perso in _managerNetwork.JoueurEnnemi.Personnages)
+                {
+                    DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
+                    if (DistanceRayon != null && DistanceRayon < closestDistance)
+                    {
+                        closestDistance = (float)DistanceRayon;
+                        personnageÀAttaquer = perso;
+                    }
+                }
+            }
+
+            return personnageÀAttaquer;
+        }
+
+        #endregion
+
+        #region Méthodes déplacement
+
         public void DéterminerSélectionPersonnageDéplacement(int indice)
         {
             if (EstNouveauClicGauche())
@@ -96,37 +148,6 @@ namespace Projet_ASL
             return rep;
         }
 
-        public void DéterminerSélectionPersonnage()
-        {
-            if (EstNouveauClicGauche())
-            {
-                DéterminerIntersectionPersonnageRay();
-                if (PersonnageChoisi != null)
-                {
-                    PersonnageSélectionné = true;
-                    PositionInitialePersonnage = PersonnageChoisi.Position;
-                }
-            }
-        }
-        public void DéterminerIntersectionPersonnageRay()
-        {
-            Ray ray = CalculateCursorRay();
-            float closestDistance = float.MaxValue;
-            //foreach(Player p in _managerNetwork.Players)
-            //{
-            foreach (Personnage perso in _managerNetwork.JoueurLocal.Personnages)
-            {
-                DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
-                if (DistanceRayon != null && DistanceRayon < closestDistance)
-                {
-                    closestDistance = (float)DistanceRayon;
-                    PersonnageChoisi = perso;
-                }
-
-            }
-            //}
-        }
-
         public float DéterminerMouvementPersonnageSélectionné(float déplacement_maximal, int indice)
         {
             float déplacement_restant = déplacement_maximal;
@@ -135,12 +156,8 @@ namespace Projet_ASL
                 if (EstAncienClicGauche())
                 {
                     Vector3 positionVouluePersonnage = GetPositionSourisPlan();
-                    //Vector3 Déplacement = Vector3.Subtract(PositionVouluePersonnage, PersonnageChoisi.Position);
-                    //PersonnageChoisi.Bouger(Déplacement);
-                    //envoyer nouvelle position au serveur
                     positionVouluePersonnage = VérifierDéplacementMAX(positionVouluePersonnage, PositionInitialePersonnage, déplacement_maximal);
                     positionVouluePersonnage = VérifierDéplacementCollisionPersonnage(positionVouluePersonnage, indice);
-                    //positionVouluePersonnage = VérifierDéplacementMAX(positionVouluePersonnage, PositionInitialePersonnage, déplacement_maximal);
                     _managerNetwork.SendNewPosition(positionVouluePersonnage, _managerNetwork.JoueurLocal.Personnages.FindIndex(p => p.GetType() == PersonnageChoisi.GetType()));
                 }
                 if (EstReleasedClicGauche())
@@ -155,8 +172,6 @@ namespace Projet_ASL
 
         public Vector3 VérifierDéplacementCollisionPersonnage(Vector3 positionVouluePersonnage, int indice)
         {
-            //position future est ce que va intersect averc sphere
-            // si oui bouge pu
             Vector3 positionVérifiée = positionVouluePersonnage;
             Vector3 positionDuPersonnageAvant = PersonnageChoisi.Position;
             foreach (Player p in _managerNetwork.Players)
@@ -170,20 +185,8 @@ namespace Projet_ASL
                         {
                             if (perso != _managerNetwork.JoueurLocal.Personnages[indice])
                             {
-                                //une sorte
-                                //CorrectCollisions(ref PersonnageChoisi, ref perso);
-
-                                //i try
-                                //positionVérifiée = CorrigerCollision(PersonnageChoisi, perso, positionVouluePersonnage);
-
-                                //ancien code perso bouge pu
                                 positionVérifiée = positionDuPersonnageAvant;
 
-                                //une autre sorte
-                                //positionVérifiée = new Vector3(
-                                //CheckCollision(PersonnageChoisi.Position + new Vector3(positionVouluePersonnage.X, 0, 0), perso) ? PersonnageChoisi.Position.X : positionVouluePersonnage.X,
-                                //CheckCollision(PersonnageChoisi.Position + new Vector3(0, positionVouluePersonnage.Y, 0), perso) ? PersonnageChoisi.Position.Y : positionVouluePersonnage.Y,
-                                //CheckCollision(PersonnageChoisi.Position + new Vector3(0, 0, positionVouluePersonnage.Z), perso) ? PersonnageChoisi.Position.X : positionVouluePersonnage.Z);
                             }
                         }
                     }
@@ -192,96 +195,6 @@ namespace Projet_ASL
             PersonnageChoisi.GérerPositionObjet(positionDuPersonnageAvant);
             return positionVérifiée;
         }
-
-
-
-
-
-        private static Vector3 CorrigerCollision(Personnage personnageBougé, Personnage personnageImmobile, Vector3 positionVoulue)
-        {
-            Vector3 positionVérifiée;
-            float distanceEntreLesDeux = Vector3.Distance(personnageImmobile.SphèreDeCollision.Center, personnageBougé.SphèreDeCollision.Center);
-            float distanceMinimale = personnageImmobile.SphèreDeCollision.Radius + personnageBougé.SphèreDeCollision.Radius;
-            Vector3 directionRenvoi = personnageBougé.SphèreDeCollision.Center - personnageImmobile.SphèreDeCollision.Center;
-            directionRenvoi.Normalize();
-            positionVérifiée = personnageBougé.Position + directionRenvoi;
-            //for (int i = 0; i < c1.Modèle.Meshes.Count; i++)
-            //{
-            //    // Check whether the bounding boxes of the two cubes intersect.
-            //    BoundingSphere c1BoundingSphere = c1.Modèle.Meshes[i].BoundingSphere;
-
-            //    c1BoundingSphere.Center += c1.Position + new Vector3(2, 0, 2);
-            //    c1BoundingSphere.Radius = c1BoundingSphere.Radius / 1.5f;
-
-            //    for (int j = 0; j < c2.Modèle.Meshes.Count; j++)
-            //    {
-            //        BoundingSphere c2BoundingSphere = c2.Modèle.Meshes[j].BoundingSphere;
-            //        c2BoundingSphere.Center += c2.Position;
-
-            //        Vector3 dir = c2BoundingSphere.Center - c1BoundingSphere.Center;
-            //        float center_dist_sq = Vector3.Dot(dir).dot(dir);
-            //        float min_dist = c2BoundingSphere.Radius + c1BoundingSphere.Radius;
-            //        if (center_dist_sq < min_dist * min_dist)
-            //        {
-            //            dir.Normalize();
-            //            positionVérifiée = c1.Position + dir * (float)(min_dist - Math.Sqrt(center_dist_sq));
-            //        }
-            //    }
-            //}
-            return positionVérifiée;
-        }
-
-
-        //private static bool CorrectCollisions(ref Personnage c1, ref Personnage c2)
-        //{
-        //    for (int i = 0; i < c1.Modèle.Meshes.Count; i++)
-        //    {
-        //        // Check whether the bounding boxes of the two cubes intersect.
-        //        BoundingSphere c1BoundingSphere = c1.Modèle.Meshes[i].BoundingSphere;
-
-        //        c1BoundingSphere.Center += c1.Position + new Vector3(2, 0, 2);
-        //        c1BoundingSphere.Radius = c1BoundingSphere.Radius / 1.5f;
-
-        //        for (int j = 0; j < c2.Modèle.Meshes.Count; j++)
-        //        {
-        //            BoundingSphere c2BoundingSphere = c2.Modèle.Meshes[j].BoundingSphere;
-        //            c2BoundingSphere.Center += c2.Position;
-
-        //            Vector3 dir = c2BoundingSphere.Center - c1BoundingSphere.Center;
-        //            float center_dist_sq = Vector3.Dot(dir).dot(dir);
-        //            float min_dist = c2BoundingSphere.Radius + c1BoundingSphere.Radius;
-        //            if (center_dist_sq < min_dist * min_dist)
-        //            {
-        //                dir.Normalize();
-        //                c2.Position += dir * (float) (min_dist - Math.Sqrt(center_dist_sq));
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
-
-
-        public Boolean CheckCollision(Vector3 positionVoulue, Personnage persoCollisioné)
-        {
-            return persoCollisioné.SphèreDeCollision.Contains(PersonnageChoisi.SphèreDeCollision) != ContainmentType.Disjoint;
-        }
-
-        //private Vector3 previewMove(Vector3 amount)
-        //{
-        //    // Create a rotate matrix
-        //    Matrix rotate = Matrix.CreateRotationY(CameraRotation.Y);
-        //    // Create a movement vector
-        //    Vector3 movement = new Vector3(amount.X, amount.Y, amount.Z);
-        //    movement = Vector3.Transform(movement, rotate);
-        //    // Return the value of camera position + movement vector
-
-        //    return CameraPosition + new Vector3(
-        //        Collision.CheckCollision(CameraPosition + new Vector3(movement.X, 0, 0)) ? 0 : movement.X,
-        //        Collision.CheckCollision(CameraPosition + new Vector3(0, movement.Y, 0)) ? 0 : movement.Y,
-        //        Collision.CheckCollision(CameraPosition + new Vector3(0, 0, movement.Z)) ? 0 : movement.Z);
-
-        //}
-
 
         public Vector3 VérifierDéplacementMAX(Vector3 positionVoulue, Vector3 positionInitiale, float déplacementMax)
         {
@@ -296,6 +209,9 @@ namespace Projet_ASL
             }
             return positionVérifiée;
         }
+        #endregion
+
+        #region Méthodes vérificationÉtatsSouris et clavier
 
         public bool EstClavierActivé
         {
@@ -372,7 +288,9 @@ namespace Projet_ASL
         {
             return NouvelÉtatSouris.ScrollWheelValue;
         }
+        #endregion
 
+        #region Ray et PositionSouris3D
         public Vector3 GetPositionSourisPlan()
         {
             Vector3 nearScreenPoint = new Vector3(NouvelÉtatSouris.X, NouvelÉtatSouris.Y, 0);
@@ -401,5 +319,6 @@ namespace Projet_ASL
             // and then create a new ray using nearPoint as the source.
             return new Ray(nearWorldPoint, direction);
         }
+        #endregion
     }
 }
