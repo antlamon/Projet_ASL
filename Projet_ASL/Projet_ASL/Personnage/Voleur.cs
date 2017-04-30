@@ -8,6 +8,7 @@ namespace Projet_ASL
 {
     public class Voleur : Personnage
     {
+        
         public Voleur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, dextérité, intelligence, sagesse, ptsDeVie)
         {
@@ -16,12 +17,6 @@ namespace Projet_ASL
         public override int Attaquer()
         {
             return Dextérité;
-        }
-        public override void EnleverDebuffs()
-        {
-            _EnFeu = false;
-            _Frozen = false;
-            _BouclierDivin = false;
         }
     }
 }

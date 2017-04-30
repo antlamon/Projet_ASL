@@ -16,5 +16,15 @@ namespace Projet_ASL
         {
             return Force;
         }
+
+        public void Clarité(Personnage cible)
+        {
+            cible.EnleverDebuffs(this);
+        }
+
+        public void BouclierDivin(Personnage cible)
+        {
+            cible.SetBouclierDivin(this, true);
+        }
     }
 }
