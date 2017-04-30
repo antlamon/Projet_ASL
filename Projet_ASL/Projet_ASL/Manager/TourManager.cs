@@ -130,7 +130,7 @@ namespace Projet_ASL
                 PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];
                 if (PersonnageActif is Voleur)
                 {
-                    //send invisibilité
+                    //send non-invisibilité
                 }
                 BoutonsActions.VoirBoutonAction(true);
                 PeutAttaquer = true;
