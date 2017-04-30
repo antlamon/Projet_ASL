@@ -54,7 +54,6 @@ namespace Projet_ASL
                 { cibles.Add(p); }
             }
 
-
             return cibles;
         }
 
