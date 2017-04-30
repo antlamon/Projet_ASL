@@ -9,7 +9,9 @@ namespace Projet_ASL
     public class Guérisseur : Personnage
     {
         public const int RAYON_SOIN_DE_ZONE = 10;
+        public const int PORTÉE_SOIN_DE_ZONE = 40;
         public const float RATIO_SOIN_DE_ZONE = 0.4f;
+        public const int PORTÉE_RESURRECT = 20;
         public const float RATIO_RESURRECT = 0.5f;
         public const float RATIO_VOL_DE_VIE = 0.4f;
         const float DÉGATS_SATAN_MODE = 0.7f;
