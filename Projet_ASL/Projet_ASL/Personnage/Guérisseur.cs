@@ -60,7 +60,7 @@ namespace Projet_ASL
         public int Résurrection(Personnage cible)
         {
             int dégats = 0;
-
+            _SatanMode = true;
             if (cible.EstMort)
             {
                 dégats = (int)(RATIO_RESURRECT * Attaquer());

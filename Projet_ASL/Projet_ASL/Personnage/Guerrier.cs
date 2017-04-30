@@ -48,11 +48,11 @@ namespace Projet_ASL
             return cibles;
         }
 
-        public int Folie(out int nbToursFolie)
+        public int Folie()
         {
             _Folie = true;
-            nbToursFolie = NB_TOURS_FOLIE;
-            return PTS_VITALITÉ_FOLIE;
+            ChangerVitalité(PTS_VITALITÉ_FOLIE);
+            return NB_TOURS_FOLIE;
         }
 
         public override void EnleverDebuffs(Personnage caster)

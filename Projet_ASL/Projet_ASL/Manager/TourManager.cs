@@ -168,12 +168,12 @@ namespace Projet_ASL
         {
             Vector3 positionVérifiée;
             Personnage singleTargetÀAttaquer = null;
+            int dégats = 0;
 
             if (PeutAttaquer)
             {
                 if (BoutonsActions.ÉtatSort1)
                 {
-
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
@@ -185,7 +185,6 @@ namespace Projet_ASL
                             Portée.Visible = true;
                             if (GestionnaireInput.EstNouveauClicGauche())
                             {
-                                int dégats;
                                 Cibles = (PersonnageActif as Archer).PluieDeFlèches(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
@@ -203,7 +202,6 @@ namespace Projet_ASL
                             Portée.Visible = true;
                             if (GestionnaireInput.EstNouveauClicGauche())
                             {
-                                int dégats;
                                 Cibles = (PersonnageActif as Guérisseur).SoinDeZone(positionVérifiée, JoueurLocal.Personnages, out dégats);
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
@@ -220,7 +218,6 @@ namespace Projet_ASL
                             Portée.Visible = true;
                             if (GestionnaireInput.EstNouveauClicGauche())
                             {
-                                int dégats;
                                 Cibles = (PersonnageActif as Guerrier).TornadeFurieuse(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
@@ -237,7 +234,6 @@ namespace Projet_ASL
                             Portée.Visible = true;
                             if (GestionnaireInput.EstNouveauClicGauche())
                             {
-                                int dégats;
                                 Cibles = (PersonnageActif as Mage).Brasier(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
@@ -275,24 +271,21 @@ namespace Projet_ASL
                             Portée.Visible = true;
                             if (GestionnaireInput.EstNouveauClicGauche())
                             {
-                                int dégats;
                                 Cibles = (PersonnageActif as Archer).FlèchePercante(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
                             }
-                            break;
+                            goto default;
                         case TypePersonnage.GUÉRISSEUR:
                             GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guérisseur.PORTÉE_RESURRECT);
-                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_SOIN_DE_ZONE * 2), positionVérifiée);
-                            Portée.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_SOIN_DE_ZONE * 2), PersonnageActif.Position);
-                            ZoneDEffet.Visible = true;
+                            Portée.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_RESURRECT * 2), PersonnageActif.Position);
                             Portée.Visible = true;
                             singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
                             if (singleTargetÀAttaquer != null)
                             {
-                                int dégats = (PersonnageActif as Guérisseur).Résurrection(singleTargetÀAttaquer);
+                                dégats = (PersonnageActif as Guérisseur).Résurrection(singleTargetÀAttaquer);
                                 Cibles.Add(singleTargetÀAttaquer);
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
@@ -304,8 +297,7 @@ namespace Projet_ASL
                             singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
                             if (GestionnaireInput.EstNouveauClicGauche())
                             {
-                                int dégats;
-                                Cibles = (PersonnageActif as Guerrier).TornadeFurieuse(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
+                                (PersonnageActif as Guerrier).Folie();
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
@@ -341,7 +333,9 @@ namespace Projet_ASL
                             }
                             break;
                         case TypePersonnage.VOLEUR:
-
+                            break;
+                        default:
+                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats);
                             break;
                     }
                 }
