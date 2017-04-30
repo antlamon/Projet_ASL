@@ -16,7 +16,7 @@ namespace Projet_ASL
 
         public override int Attaquer()
         {
-            return Dextérité;
+            return Dextérité + Force;
         }
     }
 }

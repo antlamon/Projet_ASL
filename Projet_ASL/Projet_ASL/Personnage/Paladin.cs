@@ -17,7 +17,7 @@ namespace Projet_ASL
         }
         public override int Attaquer()
         {
-            return Force;
+            return Force + Sagesse;
         }
 
         public void Clarité(Personnage cible)
