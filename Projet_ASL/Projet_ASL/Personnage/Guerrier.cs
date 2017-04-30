@@ -8,7 +8,7 @@ namespace Projet_ASL
 {
     public class Guerrier : Personnage
     {
-        public const int RAYON_TORNADE_FURIEUSE = 10;
+        public const int PORTÉE_TORNADE_FURIEUSE = 10;
         public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
         const int PTS_VITALITÉ_FOLIE = 1;
         const int NB_TOURS_FOLIE = 2;
@@ -30,19 +30,19 @@ namespace Projet_ASL
             return Force;
         }
 
-        public List<Personnage> TornadeFurieuse(Vector3 position, out int dégats)
+        public List<Personnage> TornadeFurieuse(Vector3 position, List<Personnage> CiblesPotentielles, out int dégats)
         {
             List<Personnage> cibles = new List<Personnage>();
-            BoundingSphere portée = new BoundingSphere(position, RAYON_TORNADE_FURIEUSE);
+            BoundingSphere portée = new BoundingSphere(position, PORTÉE_TORNADE_FURIEUSE);
             dégats = (int)(DÉGATS_TORNADE_FURIEUSE * Attaquer());
 
             if (this is Guerrier)
             {
-                //foreach(Personnage p in Personnages)
-                //{
-                //    if(portée.Intersects(p.SphèreDeCollision))
-                //    { cibles.Add(p); }
-                //}
+                foreach (Personnage p in CiblesPotentielles)
+                {
+                    if (portée.Intersects(p.SphèreDeCollision))
+                    { cibles.Add(p); }
+                }
             }
 
             return cibles;
