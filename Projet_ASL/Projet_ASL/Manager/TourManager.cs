@@ -119,7 +119,6 @@ namespace Projet_ASL
                 VérifierSorts(gameTime);
                 VérifierFinDeTour(gameTime);
             }
-            base.Update(gameTime);
         }
 
         void VérifierDébutDeTour(GameTime gameTime)
@@ -208,6 +207,7 @@ namespace Projet_ASL
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                goto default;
                             }
                             break;
                         case TypePersonnage.GUERRIER:
@@ -257,7 +257,23 @@ namespace Projet_ASL
                             }
                             break;
                         case TypePersonnage.VOLEUR:
-
+                            GestionnaireInput.Update(gameTime);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Voleur.PORTÉE_INVISIBILITÉ);
+                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(2), positionVérifiée);
+                            Portée.ChangerÉtendueEtPosition(new Vector2(Voleur.PORTÉE_INVISIBILITÉ* 2), PersonnageActif.Position);
+                            ZoneDEffet.Visible = true;
+                            Portée.Visible = true;
+                            if (GestionnaireInput.EstNouveauClicGauche())
+                            {
+                                NetworkManager.SendNewPosition(positionVérifiée, JoueurLocal.Personnages.FindIndex(p => p is Voleur));
+                                ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), positionVérifiée);
+                                NetworkManager.SendInvisibilité(true);
+                                PeutAttaquer = false;
+                                ZoneDEffet.Visible = false;
+                                Portée.Visible = false;
+                                BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                ActiverAttaque();
+                            }
                             break;
                         default:
                             NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats);

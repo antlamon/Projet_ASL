@@ -124,6 +124,9 @@ namespace Projet_ASL
                     case PacketType.Dégât:
                         ReadDégât(inc);
                         break;
+                    case PacketType.Invisibilité:
+                        ReadInvisibilité(inc);
+                        break;
                     case PacketType.AllPlayers:
                         ReceiveAllPlayers(inc);
                         break;
@@ -168,8 +171,10 @@ namespace Projet_ASL
 
         private void ReadDégât(NetIncomingMessage inc)
         {
-            Player player = Players.Find(p => p.Username == inc.ReadString());
-            for(int i = 0; i < inc.ReadInt32(); ++i)
+            string name = inc.ReadString();
+            int count = inc.ReadInt32();
+            Player player = Players.Find(p => p.Username == name);
+            for(int i = 0; i < count; ++i)
             {
                 player.Personnages[inc.ReadInt32()].ChangerVitalité(inc.ReadInt32());
             }
@@ -257,7 +262,7 @@ namespace Projet_ASL
             {
                 var outMessage = _client.CreateMessage();
                 outMessage.Write((byte)PacketType.Dégât);
-                outMessage.Write(dégât > 0 ? Players.First(p => p.Username != Username).Username : Username);
+                outMessage.Write(dégât > 0 ? Players.Find(p => p.Username != Username).Username : Username);
                 outMessage.Write(dégât);
                 outMessage.Write(PersonnagesTouchés.Count);
                 foreach(Personnage p in PersonnagesTouchés)
@@ -294,6 +299,24 @@ namespace Projet_ASL
             outMessage.Write(indexPersonnage);
             _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
 
+        }
+
+        public void SendInvisibilité(bool visible)
+        {
+            var outMessage = _client.CreateMessage();
+            outMessage.Write((byte)PacketType.Invisibilité);
+            outMessage.Write(Username);
+            outMessage.Write(visible);
+            _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        private void ReadInvisibilité(NetIncomingMessage inc)
+        {
+            string name = inc.ReadString();
+            if(Username != name)
+            {
+                JoueurEnnemi.Personnages.Find(p => p is Voleur).Visible = !inc.ReadBoolean();
+            }
         }
 
         public void SendMesage(string message)

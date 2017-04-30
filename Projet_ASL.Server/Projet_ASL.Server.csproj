@@ -74,6 +74,7 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\InputCommand.cs" />
     <Compile Include="Commands\InputVectorCommand.cs" />
+    <Compile Include="Commands\InvisibleCommand.cs" />
     <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="Commands\LogoutCommand.cs" />
     <Compile Include="Commands\MessageCommand.cs" />

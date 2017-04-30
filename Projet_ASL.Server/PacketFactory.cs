@@ -30,6 +30,8 @@ namespace Projet_ASL.Server
                     return new InputVectorCommand();
                 case PacketType.Dégât:
                     return new DégâtCommand();
+                case PacketType.Invisibilité:
+                    return new InvisibleCommand();
                 case PacketType.PersonnagePosition:
                     return new PersonnagePositionCommand();
                 case PacketType.FinDeTour:

@@ -11,13 +11,13 @@ namespace Projet_ASL
         public const int PORTÉE_TORNADE_FURIEUSE = 10;
         public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
         const int PTS_VITALITÉ_FOLIE = 1;
-        const int NB_TOURS_FOLIE = 2;
+        public const int NB_TOURS_FOLIE = 2;
         bool folie; 
 
         public bool _Folie
         {
             get { return folie; }
-            private set { folie = value; }
+            private set { folie = value; }//#{get;set;}?
         }
 
         public Guerrier(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)

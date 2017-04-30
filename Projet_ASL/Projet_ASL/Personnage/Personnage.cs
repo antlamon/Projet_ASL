@@ -53,7 +53,7 @@ namespace Projet_ASL
         public int Sagesse { get; protected set; }
         public int PtsDéfense
         {
-            get { return Armure.GetDéfense(); }
+            get { return 0; }
         }
         public bool EstMort
         {
