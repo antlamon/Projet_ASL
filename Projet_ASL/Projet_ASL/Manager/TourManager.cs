@@ -128,12 +128,13 @@ namespace Projet_ASL
             {
                 TourTerminé = false;
                 PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];
-                if(PersonnageActif is Voleur)
+                if (PersonnageActif is Voleur)
                 {
                     PersonnageActif.Visible = true;
                 }
                 BoutonsActions.VoirBoutonAction(true);
                 PeutAttaquer = true;
+                ActiverAttaque();
                 ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
                 ancienIndicePersonnage = IndicePersonnage;
             }
@@ -165,8 +166,8 @@ namespace Projet_ASL
 
         void VérifierSorts(GameTime gameTime)
         {
-            if(PeutAttaquer)
-           {
+            if (PeutAttaquer)
+            {
                 if (BoutonsActions.ÉtatSort1)
                 {
                     switch (PersonnageActif.GetType().ToString())
@@ -186,6 +187,7 @@ namespace Projet_ASL
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                ActiverAttaque();
                             }
                             break;
                         case TypePersonnage.GUÉRISSEUR:
@@ -221,6 +223,12 @@ namespace Projet_ASL
                     }
                 }
             }
+        }
+
+        void ActiverAttaque()
+        {
+            BoutonsActions.BtnSorts.EstActif = PeutAttaquer;
+            BoutonsActions.BtnAttaquer.EstActif = PeutAttaquer;
         }
 
         void VérifierFinDeTour(GameTime gameTime)

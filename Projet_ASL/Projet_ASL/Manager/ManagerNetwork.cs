@@ -121,6 +121,9 @@ namespace Projet_ASL
                     case PacketType.PersonnagePosition:
                         ReadPositionPersonnage(inc);
                         break;
+                    case PacketType.Dégât:
+                        ReadDégât(inc);
+                        break;
                     case PacketType.AllPlayers:
                         ReceiveAllPlayers(inc);
                         break;
@@ -160,6 +163,15 @@ namespace Projet_ASL
             for (int n = 0; n < count; n++)
             {
                 ReadPlayer(inc);
+            }
+        }
+
+        private void ReadDégât(NetIncomingMessage inc)
+        {
+            Player player = Players.Find(p => p.Username == inc.ReadString());
+            for(int i = 0; i < inc.ReadInt32(); ++i)
+            {
+                player.Personnages[inc.ReadInt32()].ChangerVitalité(inc.ReadInt32());
             }
         }
 
@@ -213,30 +225,47 @@ namespace Projet_ASL
             Personnage p = null;
             if (type == TypePersonnage.ARCHER)
             {
-                p = new Archer(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Archer(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 10, 30, 10, 10, ptsVie);
             }
             if (type == TypePersonnage.GUÉRISSEUR)
             {
-                p = new Guérisseur(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Guérisseur(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 10, 10, 10, 30, ptsVie);
             }
             if (type == TypePersonnage.GUERRIER)
             {
-                p = new Guerrier(Jeu, allié ? "GuerrierB" : "GuerrierR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Guerrier(Jeu, allié ? "GuerrierB" : "GuerrierR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 30, 10, 10, 10, ptsVie);
             }
             if (type == TypePersonnage.MAGE)
             {
-                p = new Mage(Jeu, allié ? "MageB" : "MageR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Mage(Jeu, allié ? "MageB" : "MageR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 10, 10, 30, 10, ptsVie);
             }
             if (type == TypePersonnage.PALADIN)
             {
-                p = new Paladin(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Paladin(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 15, 10, 10, 15, ptsVie);
             }
             if (type == TypePersonnage.VOLEUR)
             {
-                p = new Voleur(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 0, 0, 0, 0, ptsVie);
+                p = new Voleur(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX == -40 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 15, 15, 10, 10, ptsVie);
             }
             p.DrawOrder = (int)OrdreDraw.MILIEU;
             return p;
+        }
+
+        public void sendDégât(List<Personnage> PersonnagesTouchés, int dégât)
+        {
+            if(PersonnagesTouchés.Count != 0 || dégât == 0)
+            {
+                var outMessage = _client.CreateMessage();
+                outMessage.Write((byte)PacketType.Dégât);
+                outMessage.Write(dégât > 0 ? Players.First(p => p.Username != Username).Username : Username);
+                outMessage.Write(dégât);
+                outMessage.Write(PersonnagesTouchés.Count);
+                foreach(Personnage p in PersonnagesTouchés)
+                {
+                    outMessage.Write(ObtenirType(p));
+                }
+                _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
+            }
         }
 
         public void SendInput(Keys key)
