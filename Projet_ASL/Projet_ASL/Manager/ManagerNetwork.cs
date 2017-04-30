@@ -251,7 +251,7 @@ namespace Projet_ASL
             return p;
         }
 
-        public void sendDégât(List<Personnage> PersonnagesTouchés, int dégât)
+        public void SendDégât(List<Personnage> PersonnagesTouchés, int dégât)
         {
             if(PersonnagesTouchés.Count != 0 || dégât == 0)
             {
