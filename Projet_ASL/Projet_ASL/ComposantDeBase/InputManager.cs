@@ -95,7 +95,7 @@ namespace Projet_ASL
             return rep;
         }
 
-        public void DéterminerSélectionPersonnage()
+        public bool DéterminerSélectionPersonnage()
         {
             if (EstNouveauClicGauche())
             {
@@ -106,6 +106,7 @@ namespace Projet_ASL
                     PositionInitialePersonnage = PersonnageChoisi.Position;
                 }
             }
+            return PersonnageChoisi != null;
         }
         public void DéterminerIntersectionPersonnageRay()
         {
