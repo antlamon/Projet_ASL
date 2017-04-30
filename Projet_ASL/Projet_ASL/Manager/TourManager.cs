@@ -37,6 +37,7 @@ namespace Projet_ASL
         AOE ZoneDéplacement { get; set; }
         Jeu Jeu { get; set; }
         List<Personnage> Cibles { get; set; }
+        bool TourTerminé { get; set; }
 
         public TourManager(Jeu jeu, ManagerNetwork networkManager)
             : base(jeu)
@@ -67,6 +68,7 @@ namespace Projet_ASL
             ZoneDEffet = Jeu.AOE1;
             Portée = Jeu.AOE2;
             ZoneDéplacement = Jeu.AOE3;
+            TourTerminé = false;
             base.Initialize();
         }
 
@@ -111,9 +113,12 @@ namespace Projet_ASL
         public override void Update(GameTime gameTime)
         {
             VérifierDébutDeTour(gameTime);
-            VérifierDéplacement();
-            VérifierSorts(gameTime);
-            VérifierFinDeTour(gameTime);
+            if (!TourTerminé)
+            {
+                VérifierDéplacement();
+                VérifierSorts(gameTime);
+                VérifierFinDeTour(gameTime);
+            }
             base.Update(gameTime);
         }
 
@@ -121,26 +126,31 @@ namespace Projet_ASL
         {
             if (ancienIndicePersonnage != IndicePersonnage && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 1)
             {
+                TourTerminé = false;
                 PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];
+                if(PersonnageActif is Voleur)
+                {
+                    PersonnageActif.Visible = true;
+                }
                 BoutonsActions.VoirBoutonAction(true);
                 PeutAttaquer = true;
                 ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
                 ancienIndicePersonnage = IndicePersonnage;
             }
+            else
+            {
+                ZoneDéplacement.Visible = false;
+            }
         }
 
         void VérifierDéplacement()
         {
-            if (!BoutonsActions.ÉtatSorts && !BoutonsActions.ÉtatAttaquer && DéplacementRestant >= 0.5f)
+            if (!BoutonsActions.ÉtatSort1 && !BoutonsActions.ÉtatSort2 && !BoutonsActions.ÉtatAttaquer && DéplacementRestant >= 0.5f)
             {
                 ZoneDéplacement.Visible = true;
                 GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
                 DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant, IndicePersonnage);
                 DéplacerZoneMouvement();
-            }
-            else
-            {
-                ZoneDéplacement.Visible = false;
             }
         }
 
@@ -155,36 +165,60 @@ namespace Projet_ASL
 
         void VérifierSorts(GameTime gameTime)
         {
-            if(BoutonsActions.ÉtatSort1 && PeutAttaquer)
-            {
-                switch(PersonnageActif.GetType().ToString())
+            if(PeutAttaquer)
+           {
+                if (BoutonsActions.ÉtatSort1)
                 {
-                    case TypePersonnage.ARCHER:
-                        GestionnaireInput.Update(gameTime);
-                        ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Archer.RAYON_PLUIE_DE_FLÈCHES * 2), GestionnaireInput.GetPositionSourisPlan());
-                        Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_PLUIE_DE_FLÈCHES * 2), PersonnageActif.Position);
-                        ZoneDEffet.Visible = true;
-                        Portée.Visible = true;
-                        if (GestionnaireInput.EstNouveauClicGauche())
-                        {
-                            int dégats;
-                            Cibles = (PersonnageActif as Archer).PluieDeFlèches(GestionnaireInput.GetPositionSourisPlan(), JoueurEnnemi.Personnages, out dégats);
-                            PeutAttaquer = false;
-                            ZoneDEffet.Visible = false;
-                            Portée.Visible = false;
-                            BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
-                        }
-                        break;
-                    case TypePersonnage.GUÉRISSEUR:
-                        break;
-                    case TypePersonnage.GUERRIER:
-                        break;
-                    case TypePersonnage.MAGE:
-                        break;
-                    case TypePersonnage.PALADIN:
-                        break;
-                    case TypePersonnage.VOLEUR:
-                        break;
+                    switch (PersonnageActif.GetType().ToString())
+                    {
+                        case TypePersonnage.ARCHER:
+                            GestionnaireInput.Update(gameTime);
+                            Vector3 positionVérifié = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Archer.PORTÉE_PLUIE_DE_FLÈCHES - Archer.RAYON_PLUIE_DE_FLÈCHES);
+                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Archer.RAYON_PLUIE_DE_FLÈCHES * 2), positionVérifié);
+                            Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_PLUIE_DE_FLÈCHES * 2), PersonnageActif.Position);
+                            ZoneDEffet.Visible = true;
+                            Portée.Visible = true;
+                            if (GestionnaireInput.EstNouveauClicGauche())
+                            {
+                                int dégats;
+                                Cibles = (PersonnageActif as Archer).PluieDeFlèches(positionVérifié, JoueurEnnemi.Personnages, out dégats);
+                                PeutAttaquer = false;
+                                ZoneDEffet.Visible = false;
+                                Portée.Visible = false;
+                                BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                            }
+                            break;
+                        case TypePersonnage.GUÉRISSEUR:
+                            break;
+                        case TypePersonnage.GUERRIER:
+                            break;
+                        case TypePersonnage.MAGE:
+                            break;
+                        case TypePersonnage.PALADIN:
+                            break;
+                        case TypePersonnage.VOLEUR:
+
+                            break;
+                    }
+                }
+                if (BoutonsActions.ÉtatSort2)
+                {
+                    switch (PersonnageActif.GetType().ToString())
+                    {
+                        case TypePersonnage.ARCHER:
+                            break;
+                        case TypePersonnage.GUÉRISSEUR:
+                            break;
+                        case TypePersonnage.GUERRIER:
+                            break;
+                        case TypePersonnage.MAGE:
+                            break;
+                        case TypePersonnage.PALADIN:
+                            break;
+                        case TypePersonnage.VOLEUR:
+
+                            break;
+                    }
                 }
             }
         }
@@ -214,6 +248,8 @@ namespace Projet_ASL
             BoutonsActions.VoirBoutonAction(false);
             ZoneDEffet.Visible = false;
             Portée.Visible = false;
+            ZoneDéplacement.Visible = false;
+            TourTerminé = true;
         }
     }
 }

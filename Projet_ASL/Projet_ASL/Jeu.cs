@@ -228,6 +228,9 @@ namespace Projet_ASL
             MenuAccueil.VoirBoutonMenu(true);
             PlancheDeJeu.Visible = false;
             TexteConnection.Visible = false;
+            AOE1.Visible = false;
+            AOE2.Visible = false;
+            AOE3.Visible = false;
             if (ManagerTour != null)
             {
                 foreach (BoutonDeCommande b in ManagerTour.BoutonsActions.Boutons)

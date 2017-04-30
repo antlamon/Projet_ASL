@@ -282,16 +282,16 @@ namespace Projet_ASL
         //}
 
 
-        public Vector3 VérifierDéplacementMAX(Vector3 positionVouluePersonnage, Vector3 positionInitiale, float déplacementMax)
+        public Vector3 VérifierDéplacementMAX(Vector3 positionVoulue, Vector3 positionInitiale, float déplacementMax)
         {
             Vector3 positionVérifiée;
-            if (Vector3.Distance(positionInitiale, positionVouluePersonnage) <= déplacementMax)
+            if (Vector3.Distance(positionInitiale, positionVoulue) <= déplacementMax)
             {
-                positionVérifiée = positionVouluePersonnage;
+                positionVérifiée = positionVoulue;
             }
             else
             {
-                positionVérifiée = déplacementMax * Vector3.Normalize(positionVouluePersonnage - positionInitiale) + positionInitiale;
+                positionVérifiée = déplacementMax * Vector3.Normalize(positionVoulue - positionInitiale) + positionInitiale;
             }
             return positionVérifiée;
         }
