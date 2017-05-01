@@ -144,10 +144,6 @@ namespace Projet_ASL
                 ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
                 ancienIndicePersonnage = IndicePersonnage;
             }
-            else
-            {
-                ZoneDéplacement.Visible = false;
-            }
         }
 
         void VérifierDéplacement()
@@ -158,6 +154,10 @@ namespace Projet_ASL
                 GestionnaireInput.DéterminerSélectionPersonnageDéplacement(IndicePersonnage);
                 DéplacementRestant = GestionnaireInput.DéterminerMouvementPersonnageSélectionné(DéplacementRestant, IndicePersonnage);
                 DéplacerZoneMouvement();
+            }
+            else
+            {
+                ZoneDéplacement.Visible = false;
             }
         }
 
