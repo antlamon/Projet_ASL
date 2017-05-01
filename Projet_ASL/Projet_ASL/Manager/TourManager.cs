@@ -112,12 +112,19 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            VérifierDébutDeTour(gameTime);
-            if (!TourTerminé)
+            if (!JoueurLocal.Personnages[IndicePersonnage].EstMort)
             {
-                VérifierDéplacement();
-                VérifierSorts(gameTime);
-                VérifierFinDeTour(gameTime);
+                VérifierDébutDeTour(gameTime);
+                if (!TourTerminé)
+                {
+                    VérifierDéplacement();
+                    VérifierSorts(gameTime);
+                    VérifierFinDeTour(gameTime);
+                }
+            }
+            else
+            {
+                IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
             }
         }
 
