@@ -117,6 +117,7 @@
     <Compile Include="Personnage\Personnage.cs" />
     <Compile Include="Personnage\TypePersonnage.cs" />
     <Compile Include="Personnage\Voleur.cs" />
+    <Compile Include="Personnage\ÉtatSpécial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Manager\TourManager.cs" />

@@ -127,6 +127,9 @@ namespace Projet_ASL
                     case PacketType.Invisibilité:
                         ReadInvisibilité(inc);
                         break;
+                    case PacketType.ÉtatSpécial:
+                        ReadÉtatsSpéciaux(inc);
+                        break;
                     case PacketType.AllPlayers:
                         ReceiveAllPlayers(inc);
                         break;
@@ -256,13 +259,13 @@ namespace Projet_ASL
             return p;
         }
 
-        public void SendDégât(List<Personnage> PersonnagesTouchés, int dégât)
+        public void SendDégât(List<Personnage> PersonnagesTouchés, int dégât, bool allié)
         {
             if(PersonnagesTouchés.Count != 0 || dégât == 0)
             {
                 var outMessage = _client.CreateMessage();
                 outMessage.Write((byte)PacketType.Dégât);
-                outMessage.Write(dégât > 0 ? Players.Find(p => p.Username != Username).Username : Username);
+                outMessage.Write(allié ? Username : JoueurEnnemi.Username);
                 outMessage.Write(dégât);
                 outMessage.Write(PersonnagesTouchés.Count);
                 foreach(Personnage p in PersonnagesTouchés)
@@ -270,6 +273,48 @@ namespace Projet_ASL
                     outMessage.Write(ObtenirType(p));
                 }
                 _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
+            }
+        }
+
+        public void SendÉtatsSpéciaux(Personnage cible, bool allié, List<string> nomÉtat, List<bool> estActif)
+        {
+            var outMessage = _client.CreateMessage();
+            outMessage.Write((byte)PacketType.ÉtatSpécial);
+            outMessage.Write(allié ? Username : JoueurEnnemi.Username);
+            outMessage.Write(ObtenirType(cible));
+            outMessage.Write(nomÉtat.Count);
+            for(int i = 0; i < nomÉtat.Count; ++i)
+            {
+                outMessage.Write(nomÉtat[i]);
+                outMessage.Write(estActif[i]);
+            }
+            _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        private void ReadÉtatsSpéciaux(NetIncomingMessage inc)
+        {
+            string name = inc.ReadString();
+            int index = inc.ReadInt32();
+            Personnage personnage = Players.Find(p => p.Username == name).Personnages[index];
+            int compteur = inc.ReadInt32();
+            for (int i = 0; i < compteur; ++i)
+            {
+                string nomÉtat = inc.ReadString();
+                switch (nomÉtat)
+                {
+                    case ÉtatSpécial.EN_FEU:
+                        personnage.SetEnFeu(inc.ReadBoolean());
+                        break;
+                    case ÉtatSpécial.BOUCLIER_DIVIN:
+                        personnage.SetBouclierDivin(inc.ReadBoolean());
+                        break;
+                    case ÉtatSpécial.FREEZE:
+                        personnage.SetFreeze(inc.ReadBoolean());
+                        break;
+                    case ÉtatSpécial.FOLIE:
+                        (personnage as Guerrier).SetFolie(inc.ReadBoolean());
+                        break;
+                }
             }
         }
 

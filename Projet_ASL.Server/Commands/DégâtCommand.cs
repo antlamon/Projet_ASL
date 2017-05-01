@@ -23,11 +23,31 @@ namespace Projet_ASL.Server.Commands
             {
                 string type = inc.ReadString();
                 int index = player.Personnages.FindIndex(p => p.GetType().ToString() == type);
-                player.Personnages[index].ModifierVitalité(dégât);
+                if (player.Personnages[index]._BouclierDivin)
+                {
+                    player.Personnages[index].ModifierVitalité(dégât);
+                    SendBouclierDivinDésactivé(name, index, server);
+                }
+                else
+                {
+                    player.Personnages[index].ModifierVitalité(dégât);
+                }
+
                 outMessage.Write(index);
                 outMessage.Write(player.Personnages[index].PtsDeVie);
             }
             server.SendToAll(outMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        void SendBouclierDivinDésactivé(string username, int index, NetServer server)
+        {
+            var messageBouclierDivin = server.CreateMessage();
+            messageBouclierDivin.Write(username);
+            messageBouclierDivin.Write(index);
+            messageBouclierDivin.Write(1);
+            messageBouclierDivin.Write(ÉtatSpécial.BOUCLIER_DIVIN);
+            messageBouclierDivin.Write(false);
+            server.SendToAll(messageBouclierDivin, NetDeliveryMethod.ReliableOrdered);
         }
     }
 }

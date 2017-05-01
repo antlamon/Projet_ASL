@@ -135,30 +135,21 @@ namespace Projet_ASL
         #region Sorts 
         #region Mage
 
-        public void SetEnFeu(Personnage caster)
+        public void SetEnFeu(bool persoEnFeu)
         {
-            if (caster is Mage)
-            {
-                _EnFeu = true;
-            }
+            _EnFeu = persoEnFeu;
         }
 
-        public void SetFreeze(Personnage caster)
+        public void SetFreeze(bool persoFrozen)
         {
-            if (caster is Mage)
-            {
-                _Frozen = true;
-            }
+            _Frozen = persoFrozen;
         }
         #endregion
         #region Paladin
 
-        public void SetBouclierDivin(Personnage caster)
+        public void SetBouclierDivin(bool bouclierActif)
         {
-            if (caster is Paladin)
-            {
-                _BouclierDivin = true;
-            }
+            _BouclierDivin = bouclierActif;
         }
 
         public virtual void EnleverDebuffs(Personnage caster)

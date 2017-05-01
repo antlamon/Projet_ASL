@@ -214,7 +214,7 @@ namespace Projet_ASL
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
-                                goto default;
+                                NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, true);
                             }
                             break;
                         case TypePersonnage.GUERRIER:
@@ -257,7 +257,7 @@ namespace Projet_ASL
                             singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
                             if (singleTargetÀAttaquer != null)
                             {
-                                (PersonnageActif as Paladin).Clarité(singleTargetÀAttaquer);
+                                //(PersonnageActif as Paladin).Clarité(singleTargetÀAttaquer);
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
@@ -283,7 +283,7 @@ namespace Projet_ASL
                             }
                             break;
                         default:
-                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats);
+                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, false);
                             break;
                     }
                 }
@@ -324,7 +324,7 @@ namespace Projet_ASL
                             singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
                             if (GestionnaireInput.EstNouveauClicGauche())
                             {
-                                (PersonnageActif as Guerrier).Folie();
+                                //(PersonnageActif as Guerrier).SetFolie();
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
@@ -353,7 +353,7 @@ namespace Projet_ASL
                             singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
                             if (singleTargetÀAttaquer != null)
                             {
-                                (PersonnageActif as Paladin).BouclierDivin(singleTargetÀAttaquer);
+                                //(PersonnageActif as Paladin).BouclierDivin(singleTargetÀAttaquer);
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
@@ -362,7 +362,7 @@ namespace Projet_ASL
                         case TypePersonnage.VOLEUR:
                             break;
                         default:
-                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats);
+                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, false);
                             break;
                     }
                 }

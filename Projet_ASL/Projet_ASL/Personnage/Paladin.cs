@@ -20,14 +20,14 @@ namespace Projet_ASL
             return Force + Sagesse;
         }
 
-        public void Clarité(Personnage cible)
-        {
-            cible.EnleverDebuffs(this);
-        }
+        //public void Clarité(Personnage cible)
+        //{
+        //    cible.EnleverDebuffs(this);
+        //}
 
-        public void BouclierDivin(Personnage cible)
-        {
-            cible.SetBouclierDivin(this);
-        }
+        //public void BouclierDivin(Personnage cible)
+        //{
+        //    cible.SetBouclierDivin(this);
+        //}
     }
 }

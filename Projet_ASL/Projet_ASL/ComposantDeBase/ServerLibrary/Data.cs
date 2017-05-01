@@ -16,6 +16,7 @@ namespace Projet_ASL
         InputVector,
         Dégât,
         Invisibilité,
+        ÉtatSpécial,
         Message,
         Logout,
         FinDeTour
