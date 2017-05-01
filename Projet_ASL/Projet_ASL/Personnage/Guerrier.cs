@@ -12,13 +12,8 @@ namespace Projet_ASL
         public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
         const int PTS_VITALITÉ_FOLIE = 1;
         public const int NB_TOURS_FOLIE = 2;
-        bool folie; 
 
-        public bool _Folie
-        {
-            get { return folie; }
-            private set { folie = value; }//#{get;set;}?
-        }
+        public bool _Folie { get; private set; }
 
         public Guerrier(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, dextérité, intelligence, sagesse, ptsDeVie)
@@ -48,17 +43,19 @@ namespace Projet_ASL
             return cibles;
         }
 
-        public int Folie()
+        public void SetFolie(bool estFou)
         {
-            _Folie = true;
-            ChangerVitalité(PTS_VITALITÉ_FOLIE);
-            return NB_TOURS_FOLIE;
+            _Folie = estFou;
+            if (_Folie)
+            {
+                ChangerVitalité(PTS_VITALITÉ_FOLIE);
+            }
         }
 
         public override void EnleverDebuffs(Personnage caster)
         {
             base.EnleverDebuffs(caster);
-            if(caster is Paladin)
+            if (caster is Paladin)
             {
                 _Folie = false;
             }
