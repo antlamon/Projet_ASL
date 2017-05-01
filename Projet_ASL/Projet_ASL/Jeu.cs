@@ -57,6 +57,7 @@ namespace Projet_ASL
             PériphériqueGraphique.SynchronizeWithVerticalRetrace = false;
             PériphériqueGraphique.PreferredBackBufferHeight = 720;
             PériphériqueGraphique.PreferredBackBufferWidth = 1280;
+            Window.AllowUserResizing = true;
             IsFixedTimeStep = false;
             IsMouseVisible = true;
         }

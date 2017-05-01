@@ -8,6 +8,7 @@ namespace Projet_ASL
 {
     public abstract class Personnage : ObjetDeDémo
     {
+        const int PTS_VIE_MAX = 100;
         #region Constantes Sorts
         #region Constantes Archer
         //public const int RAYON_PLUIE_DE_FLÈCHES = 10;
@@ -40,11 +41,7 @@ namespace Projet_ASL
             get { return ptsDeVie; }
             protected set
             {
-                if (value < 0)
-                {
-                    ptsDeVie = 0;
-                }
-                else ptsDeVie = value;
+                ptsDeVie = value > 0 ? value < PTS_VIE_MAX ? value : PTS_VIE_MAX : 0;
             }
         }
         public int Dextérité { get; protected set; }
@@ -83,7 +80,7 @@ namespace Projet_ASL
         }
 
         protected Personnage(Game jeu, String nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
-            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, 1f/60f)
+            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, 1f / 60f)
         {
             Dextérité = dextérité;
             Force = force;
@@ -116,7 +113,7 @@ namespace Projet_ASL
         public virtual void ModifierVitalité(int dégats)
         {
             int modificationVitalité;
-            if(dégats > 0)
+            if (dégats > 0)
             {
                 if (!_BouclierDivin)
                 {
