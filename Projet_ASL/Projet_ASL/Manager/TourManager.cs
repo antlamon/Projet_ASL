@@ -112,12 +112,19 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            VérifierDébutDeTour(gameTime);
-            if (!TourTerminé)
+            if (!JoueurLocal.Personnages[IndicePersonnage].EstMort)
             {
-                VérifierDéplacement();
-                VérifierSorts(gameTime);
-                VérifierFinDeTour(gameTime);
+                VérifierDébutDeTour(gameTime);
+                if (!TourTerminé)
+                {
+                    VérifierDéplacement();
+                    VérifierSorts(gameTime);
+                    VérifierFinDeTour(gameTime);
+                }
+            }
+            else
+            {
+                IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
             }
         }
 
@@ -195,8 +202,8 @@ namespace Projet_ASL
                             break;
                         case TypePersonnage.GUÉRISSEUR:
                             GestionnaireInput.Update(gameTime);
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guérisseur.PORTÉE_SOIN_DE_ZONE);
-                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_SOIN_DE_ZONE * 2), positionVérifiée);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guérisseur.PORTÉE_SOIN_DE_ZONE - Guérisseur.RAYON_SOIN_DE_ZONE);
+                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guérisseur.RAYON_SOIN_DE_ZONE * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_SOIN_DE_ZONE * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
                             Portée.Visible = true;
@@ -212,24 +219,24 @@ namespace Projet_ASL
                             break;
                         case TypePersonnage.GUERRIER:
                             GestionnaireInput.Update(gameTime);
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guerrier.PORTÉE_TORNADE_FURIEUSE);
-                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), positionVérifiée);
+                            //positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guerrier.PORTÉE_TORNADE_FURIEUSE);
+                            //ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), PersonnageActif.Position);
-                            ZoneDEffet.Visible = true;
+                            //ZoneDEffet.Visible = true;
                             Portée.Visible = true;
                             if (GestionnaireInput.EstNouveauClicGauche())
                             {
-                                Cibles = (PersonnageActif as Guerrier).TornadeFurieuse(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
+                                Cibles = (PersonnageActif as Guerrier).TornadeFurieuse(PersonnageActif.Position, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
-                                ZoneDEffet.Visible = false;
+                                //ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
                             }
                             break;
                         case TypePersonnage.MAGE:
                             GestionnaireInput.Update(gameTime);
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_BRASIER);
-                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_BRASIER * 2), positionVérifiée);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_BRASIER - Mage.RAYON_BRASIER);
+                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Mage.RAYON_BRASIER * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_BRASIER * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
                             Portée.Visible = true;
