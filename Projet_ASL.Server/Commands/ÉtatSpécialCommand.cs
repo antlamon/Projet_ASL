@@ -13,6 +13,7 @@ namespace Projet_ASL.Server.Commands
         {
             var outMessage = server.CreateMessage();
             string name = inc.ReadString();
+            outMessage.Write((byte)PacketType.ÉtatSpécial);
             outMessage.Write(name);
             player = players.Find(p => p.Username == name);
             string type = inc.ReadString();

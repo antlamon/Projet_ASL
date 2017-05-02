@@ -32,6 +32,8 @@ namespace Projet_ASL.Server
                     return new DégâtCommand();
                 case PacketType.Invisibilité:
                     return new InvisibleCommand();
+                case PacketType.ÉtatSpécial:
+                    return new ÉtatSpécialCommand();
                 case PacketType.PersonnagePosition:
                     return new PersonnagePositionCommand();
                 case PacketType.FinDeTour:
