@@ -105,6 +105,7 @@ namespace Projet_ASL
         }
 
         public abstract int Attaquer();
+        public abstract int GetPortéeAttaque();
         public virtual void MonterDeNiveau()
         {
             ++Niveau;

@@ -8,6 +8,7 @@ namespace Projet_ASL
 {
     public class Guérisseur : Personnage
     {
+        const int PORTÉE_ATTAQUE = 20;
         public const int RAYON_SOIN_DE_ZONE = 10;
         public const int PORTÉE_SOIN_DE_ZONE = 40;
         public const float RATIO_SOIN_DE_ZONE = 0.4f;
@@ -42,6 +43,12 @@ namespace Projet_ASL
             }
             return attaque;
         }
+
+        public override int GetPortéeAttaque()
+        {
+            return PORTÉE_ATTAQUE;
+        }
+
         public List<Personnage> SoinDeZone(Vector3 positionClic, List<Personnage> CiblesPotentielles, out int dégats)
         {
             List<Personnage> cibles = new List<Personnage>();

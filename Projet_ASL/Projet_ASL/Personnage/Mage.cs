@@ -8,6 +8,7 @@ namespace Projet_ASL
 {
     public class Mage : Personnage
     {
+        const int PORTÉE_ATTAQUE = 20;
         public const int RAYON_BRASIER = 10;
         public const int PORTÉE_BRASIER = 40;
         public const float DÉGATS_BRASIER = 0.25f;
@@ -22,6 +23,11 @@ namespace Projet_ASL
         public override int Attaquer()
         {
             return Intelligence;
+        }
+
+        public override int GetPortéeAttaque()
+        {
+            return PORTÉE_ATTAQUE;
         }
 
         public List<Personnage> Brasier(Vector3 positionClic, List<Personnage> CiblesPotentielles, out int dégats)

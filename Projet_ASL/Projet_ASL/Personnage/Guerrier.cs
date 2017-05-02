@@ -8,6 +8,7 @@ namespace Projet_ASL
 {
     public class Guerrier : Personnage
     {
+        const int PORTÉE_ATTAQUE = 5;
         public const int PORTÉE_TORNADE_FURIEUSE = 10;
         public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
         const int PTS_VITALITÉ_FOLIE = 1;
@@ -23,6 +24,12 @@ namespace Projet_ASL
         public override int Attaquer()
         {
             return Force;
+        }
+
+
+        public override int GetPortéeAttaque()
+        {
+            return PORTÉE_ATTAQUE;
         }
 
         public List<Personnage> TornadeFurieuse(Vector3 position, List<Personnage> CiblesPotentielles, out int dégats)

@@ -8,11 +8,12 @@ namespace Projet_ASL
 {
     public class Archer : Personnage
     {
+        const int PORTÉE_ATTAQUE = 20;
         public const int RAYON_PLUIE_DE_FLÈCHES = 10;
         public const int PORTÉE_PLUIE_DE_FLÈCHES = 40;
-        public const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
+        const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
         public const int PORTÉE_FLÈCHE_PERCANTE = 50;
-        public const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
+        const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
 
         public Archer(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, dextérité, intelligence, sagesse, ptsDeVie)
@@ -23,6 +24,12 @@ namespace Projet_ASL
         {
             return Dextérité;
         }
+
+        public override int GetPortéeAttaque()
+        {
+            return PORTÉE_ATTAQUE;
+        }
+
         public List<Personnage> PluieDeFlèches(Vector3 positionClic, List<Personnage> CiblesPotentielles, out int dégats)
         {
             List<Personnage> cibles = new List<Personnage>();

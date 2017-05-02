@@ -8,6 +8,7 @@ namespace Projet_ASL
 {
     public class Paladin : Personnage
     {
+        const int PORTÉE_ATTAQUE = 5;
         public const int PORTÉE_CLARITÉ = 15;
         public const int PORTÉE_BOUCLIER_DIVIN = 15;
 
@@ -18,6 +19,11 @@ namespace Projet_ASL
         public override int Attaquer()
         {
             return Force + Sagesse;
+        }
+
+        public override int GetPortéeAttaque()
+        {
+            return PORTÉE_ATTAQUE;
         }
 
         //public void Clarité(Personnage cible)
