@@ -286,11 +286,6 @@ namespace Projet_ASL
                             break;
                     }
                 }
-                else
-                {
-                    ZoneDEffet.Visible = false;
-                    Portée.Visible = false;
-                }
                 if (BoutonsActions.ÉtatSort2)
                 {
                     bool ciblealliée = false;
@@ -369,11 +364,6 @@ namespace Projet_ASL
                             break;
                     }
                 }
-                else
-                {
-                    ZoneDEffet.Visible = false;
-                    Portée.Visible = false;
-                }
                 if (BoutonsActions.ÉtatAttaquer)
                 {
                     GestionnaireInput.Update(gameTime);
@@ -397,7 +387,7 @@ namespace Projet_ASL
                         NetworkManager.SendDégât(Cibles, dégats, ciblealliée);
                     }
                 }
-                else
+                if(!BoutonsActions.ÉtatAttaquer && !BoutonsActions.ÉtatSort1 && !BoutonsActions.ÉtatSort2)
                 {
                     ZoneDEffet.Visible = false;
                     Portée.Visible = false;
