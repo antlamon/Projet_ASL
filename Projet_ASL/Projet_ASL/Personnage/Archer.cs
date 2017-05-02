@@ -62,8 +62,11 @@ namespace Projet_ASL
                     { cibles.Add(p); }
                 }
 
-                cibles.OrderBy(cible => cible.Position - Position); // À vérifier pour les distances
-                cibles.RemoveRange(2, cibles.Count - 2);
+                if(cibles.Count != 0)
+                {
+                    cibles.OrderBy(cible => cible.Position - Position); // À vérifier pour les distances
+                    cibles.RemoveRange(2, cibles.Count - 2);
+                }
             }
 
             return cibles;
