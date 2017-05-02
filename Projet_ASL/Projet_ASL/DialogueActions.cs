@@ -329,11 +329,13 @@ namespace Projet_ASL
         private void Sort1()
         {
             ÉtatSort1 = true;
+            ÉtatSort2 = false;
         }
 
         private void Sort2()
         {
             ÉtatSort2 = true;
+            ÉtatSort1 = false;
         }
 
         private void Sorts()

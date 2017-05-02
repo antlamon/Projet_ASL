@@ -15,9 +15,9 @@ namespace Projet_ASL.Server.Commands
 {
     class LoginCommand : ICommand
     {
-        const int POSITION_X_DEPART = 40;
+        const int POSITION_X_DEPART = 10;
         const int POSITION_Z_DEPART = -15;
-        const int VIE_MAX = 100;
+        const int VIE_MAX = 30;
 
         public void Run(NetServer server, NetIncomingMessage inc, Player player, List<Player> players)
         {

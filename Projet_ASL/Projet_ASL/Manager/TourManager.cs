@@ -125,6 +125,7 @@ namespace Projet_ASL
             else
             {
                 IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
+                BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
             }
         }
 
@@ -181,7 +182,7 @@ namespace Projet_ASL
                 if (BoutonsActions.ÉtatSort1)
                 {
                     bool ciblealliée = false;
-                    GestionnaireInput.Update(gameTime);
+                    //GestionnaireInput.Update(gameTime);
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
@@ -289,7 +290,7 @@ namespace Projet_ASL
                 if (BoutonsActions.ÉtatSort2)
                 {
                     bool ciblealliée = false;
-                    GestionnaireInput.Update(gameTime);
+                    //GestionnaireInput.Update(gameTime);
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
@@ -308,16 +309,39 @@ namespace Projet_ASL
                         case TypePersonnage.GUÉRISSEUR:
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_RESURRECT * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurLocal.Personnages);
-                            if (singleTargetÀAttaquer != null && (int)(singleTargetÀAttaquer.Position - PersonnageActif.Position).Length() <= Guérisseur.PORTÉE_RESURRECT)
+                            if ((PersonnageActif as Guérisseur)._SatanMode)
                             {
-                                dégats = (PersonnageActif as Guérisseur).Résurrection(singleTargetÀAttaquer);
-                                Cibles.Add(singleTargetÀAttaquer);
-                                ciblealliée = true;
-                                PeutAttaquer = false;
-                                Portée.Visible = false;
-                                BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
-                                NetworkManager.SendDégât(Cibles.FindAll(cible => cible.EstMort), dégats, ciblealliée);
+                                singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurEnnemi.Personnages);
+                                if (singleTargetÀAttaquer != null && (int)(singleTargetÀAttaquer.Position - PersonnageActif.Position).Length() <= Guérisseur.PORTÉE_RESURRECT)
+                                {
+                                    int vieVolée;
+                                    dégats = (PersonnageActif as Guérisseur).VolDeVie(out vieVolée);
+                                    ciblealliée = true;
+                                    Cibles.Add(PersonnageActif);
+                                    NetworkManager.SendDégât(Cibles, vieVolée, ciblealliée);
+                                    Cibles.Clear();
+
+                                    Cibles.Add(singleTargetÀAttaquer);
+                                    ciblealliée = false;
+                                    PeutAttaquer = false;
+                                    Portée.Visible = false;
+                                    BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                    goto default;
+                                }
+                            }
+                            else
+                            {
+                                singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurLocal.Personnages);
+                                if (singleTargetÀAttaquer != null && (int)(singleTargetÀAttaquer.Position - PersonnageActif.Position).Length() <= Guérisseur.PORTÉE_RESURRECT)
+                                {
+                                    dégats = (PersonnageActif as Guérisseur).Résurrection(singleTargetÀAttaquer);
+                                    Cibles.Add(singleTargetÀAttaquer);
+                                    ciblealliée = true;
+                                    PeutAttaquer = false;
+                                    Portée.Visible = false;
+                                    BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                    NetworkManager.SendDégât(Cibles.FindAll(cible => cible.EstMort), dégats, ciblealliée);
+                                }
                             }
                             break;
                         case TypePersonnage.GUERRIER:
@@ -366,11 +390,12 @@ namespace Projet_ASL
                 }
                 if (BoutonsActions.ÉtatAttaquer)
                 {
-                    GestionnaireInput.Update(gameTime);
+                    //GestionnaireInput.Update(gameTime);  plus nécessaire puisqu'on utilise de clic droit
+
                     bool ciblealliée = false;
                     Portée.ChangerÉtendueEtPosition(new Vector2(PersonnageActif.GetPortéeAttaque() * 2), PersonnageActif.Position);
                     Portée.Visible = true;
-                    if (PersonnageActif is Guérisseur)
+                    if (PersonnageActif is Guérisseur && !(PersonnageActif as Guérisseur)._SatanMode)
                     {
                         singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurLocal.Personnages);
                         ciblealliée = true;
@@ -386,7 +411,7 @@ namespace Projet_ASL
                         PeutAttaquer = false;
                         BoutonsActions.Attaquer();
                         dégats = PersonnageActif.Attaquer();
-                        NetworkManager.SendDégât(Cibles, dégats, ciblealliée);
+                        NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, ciblealliée);
                     }
                 }
                 if(!BoutonsActions.ÉtatAttaquer && !BoutonsActions.ÉtatSort1 && !BoutonsActions.ÉtatSort2)

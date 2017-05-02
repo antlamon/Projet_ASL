@@ -36,10 +36,14 @@ namespace Projet_ASL
 
         public override int Attaquer()
         {
-            int attaque = -Sagesse;
+            int attaque;
             if(_SatanMode)
             {
                 attaque = (int)(DÉGATS_SATAN_MODE * Sagesse);
+            }
+            else
+            {
+                attaque = -Sagesse;
             }
             return attaque;
         }
@@ -67,12 +71,11 @@ namespace Projet_ASL
         public int Résurrection(Personnage cible)
         {
             int dégats = 0;
-            _SatanMode = true;
             if (cible.EstMort)
             {
                 dégats = (int)(RATIO_RESURRECT * Attaquer());
             }
-
+            _SatanMode = true;
             return dégats;
         }
 
