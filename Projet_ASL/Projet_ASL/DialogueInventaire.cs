@@ -72,7 +72,7 @@ namespace Projet_ASL
             BtnVoleur.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             PositionBouton = new Vector2(Game.Window.ClientBounds.Width - 20, Game.Window.ClientBounds.Height - 20);
-            BtnOK = new BoutonDeCommande(Game, "Ok", "Arial20", "BoutonRouge", "BoutonBleu", PositionBouton, true, OK, INTERVALLE_MAJ_STANDARD);
+            BtnOK = new BoutonDeCommande(Game, "Ok", "Arial20", "BoutonRouge", "BoutonRouge", PositionBouton, true, OK, INTERVALLE_MAJ_STANDARD);
             BtnOK.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Game.Components.Add(BtnArcher);

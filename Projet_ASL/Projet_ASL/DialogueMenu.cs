@@ -42,16 +42,16 @@ namespace Projet_ASL
             Police = Game.Content.Load<SpriteFont>("Fonts/" + "Arial20");
 
             Vector2 positionBouton = new Vector2(RectangleDestination.X + RectangleDestination.Width / 2f, (NB_ZONES_DIALOGUE - 2) * hauteurBouton);
-            BtnJouer = new BoutonDeCommande(Game, "Jouer", "Arial20", "BoutonRouge", "BoutonBleu", positionBouton, true, Jouer, INTERVALLE_MAJ_STANDARD);
+            BtnJouer = new BoutonDeCommande(Game, "Jouer", "Arial20", "BoutonRouge", "BoutonRouge", positionBouton, true, Jouer, INTERVALLE_MAJ_STANDARD);
             BtnJouer.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             positionBouton = new Vector2(RectangleDestination.X + RectangleDestination.Width / 2f, (NB_ZONES_DIALOGUE - 1) * hauteurBouton);
-            BtnInventaire = new BoutonDeCommande(Game, "Inventaire", "Arial20", "BoutonRouge", "BoutonBleu", positionBouton, true, Inventaire, INTERVALLE_MAJ_STANDARD);
+            BtnInventaire = new BoutonDeCommande(Game, "Inventaire", "Arial20", "BoutonRouge", "BoutonRouge", positionBouton, true, Inventaire, INTERVALLE_MAJ_STANDARD);
             BtnInventaire.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             Vector2 dimensionBouton = Police.MeasureString("Quitter");
             positionBouton = new Vector2(dimensionBouton.X / 2, Game.Window.ClientBounds.Height - dimensionBouton.Y / 2);
-            BtnQuitter = new BoutonDeCommande(Game, "Quitter", "Arial20", "BoutonRouge", "BoutonBleu", positionBouton, true, Quitter, INTERVALLE_MAJ_STANDARD);
+            BtnQuitter = new BoutonDeCommande(Game, "Quitter", "Arial20", "BoutonRouge", "BoutonRouge", positionBouton, true, Quitter, INTERVALLE_MAJ_STANDARD);
             BtnQuitter.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
 
             dimensionBouton = Police.MeasureString("Jeu de bataille");
@@ -60,7 +60,7 @@ namespace Projet_ASL
 
             dimensionBouton = Police.MeasureString("Retour au menu");
             positionBouton = new Vector2(Game.Window.ClientBounds.Width - dimensionBouton.X / 2, Game.Window.ClientBounds.Height - dimensionBouton.Y / 2);
-            BtnRetour = new BoutonDeCommande(Game, "Retour au menu", "Arial20", "BoutonRouge", "BoutonBleu", positionBouton, true, Retour, INTERVALLE_MAJ_STANDARD);
+            BtnRetour = new BoutonDeCommande(Game, "Retour au menu", "Arial20", "BoutonRouge", "BoutonRouge", positionBouton, true, Retour, INTERVALLE_MAJ_STANDARD);
             BtnRetour.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             BtnRetour.Enabled = false;
             BtnRetour.Visible = false;

@@ -109,25 +109,27 @@ namespace Projet_ASL
                         OnClick();
                         ImageBouton = ImageEnfoncée;
                     }
-                    //else
-                    //{
-                    //    if (!GestionInput.EstAncienClicGauche())
-                    //    {
-                    //        if (GestionInput.EstAncienClicDroit())
-                    //        {
-                    //            MiseÀJour(gameTime);
-                    //            ImageBouton = ImageEnfoncée;
-                    //        }
-                    //        else
-                    //        {
-                    //            ImageBouton = ImageNormale;
-                    //        }
-                    //    }
-                    //}
+                    else
+                    {
+                        ImageBouton = ImageNormale;
+                        //if (!GestionInput.EstAncienClicGauche())
+                        //{
+                        //    if (GestionInput.EstAncienClicDroit())
+                        //    {
+                        //        MiseÀJour(gameTime);
+                        //        ImageBouton = ImageEnfoncée;
+                        //    }
+                        //    else
+                        //    {
+                        //        ImageBouton = ImageNormale;
+                        //    }
+                        //}
+                    }
                 }
                 else
                 {
                     CouleurTexte = COULEUR_PAR_DÉFAUT;
+                    ImageBouton = ImageNormale;
                 }
             }
         }
