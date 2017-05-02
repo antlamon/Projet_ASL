@@ -42,7 +42,7 @@ namespace Projet_ASL
         BoutonDeCommande BtnClarité { get; set; }
         BoutonDeCommande BtnInvisibilité { get; set; }
         BoutonDeCommande BtnLancerCouteau { get; set; }
-        BoutonDeCommande BtnRetour { get; set; }
+        public BoutonDeCommande BtnRetour { get; private set; }
         #endregion
 
         public DialogueActions(Game jeu, Vector2 dimensionDialogue, ManagerNetwork managerNetwork)

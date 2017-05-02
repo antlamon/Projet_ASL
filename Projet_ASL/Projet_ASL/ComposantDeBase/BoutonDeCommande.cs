@@ -109,21 +109,21 @@ namespace Projet_ASL
                         OnClick();
                         ImageBouton = ImageEnfoncée;
                     }
-                    else
-                    {
-                        if (!GestionInput.EstAncienClicGauche())
-                        {
-                            if (GestionInput.EstAncienClicDroit())
-                            {
-                                MiseÀJour(gameTime);
-                                ImageBouton = ImageEnfoncée;
-                            }
-                            else
-                            {
-                                ImageBouton = ImageNormale;
-                            }
-                        }
-                    }
+                    //else
+                    //{
+                    //    if (!GestionInput.EstAncienClicGauche())
+                    //    {
+                    //        if (GestionInput.EstAncienClicDroit())
+                    //        {
+                    //            MiseÀJour(gameTime);
+                    //            ImageBouton = ImageEnfoncée;
+                    //        }
+                    //        else
+                    //        {
+                    //            ImageBouton = ImageNormale;
+                    //        }
+                    //    }
+                    //}
                 }
                 else
                 {

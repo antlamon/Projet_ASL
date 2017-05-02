@@ -37,7 +37,6 @@ namespace Projet_ASL
                     if (portée.Intersects(p.SphèreDeCollision))
                     {
                         cibles.Add(p);
-                        p.SetEnFeu(this);
                     }
                 }
             }
@@ -47,7 +46,6 @@ namespace Projet_ASL
 
         public int FreezeDontMove(Personnage cible)
         {
-            cible.SetFreeze(this);
             return (int)(DÉGATS_FREEZE_DONT_MOVE * Attaquer());
         }
     }

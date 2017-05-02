@@ -214,21 +214,18 @@ namespace Projet_ASL
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                ActiverAttaque();
                                 NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, true);
                             }
                             break;
                         case TypePersonnage.GUERRIER:
                             GestionnaireInput.Update(gameTime);
-                            //positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guerrier.PORTÉE_TORNADE_FURIEUSE);
-                            //ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), PersonnageActif.Position);
-                            //ZoneDEffet.Visible = true;
                             Portée.Visible = true;
                             if (GestionnaireInput.EstNouveauClicGauche())
                             {
                                 Cibles = (PersonnageActif as Guerrier).TornadeFurieuse(PersonnageActif.Position, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
-                                //ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
                             }
