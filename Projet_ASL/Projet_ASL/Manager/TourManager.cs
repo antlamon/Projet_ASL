@@ -381,8 +381,10 @@ namespace Projet_ASL
                     }
                     if (singleTarget¿Attaquer != null && (int)(singleTarget¿Attaquer.Position - PersonnageActif.Position).Length() <= PersonnageActif.GetPortÈeAttaque())
                     {
+                        Cibles.Add(singleTarget¿Attaquer);
                         PortÈe.Visible = false;
                         PeutAttaquer = false;
+                        BoutonsActions.Attaquer();
                         dÈgats = PersonnageActif.Attaquer();
                         NetworkManager.SendDÈg‚t(Cibles, dÈgats, ciblealliÈe);
                     }

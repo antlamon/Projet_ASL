@@ -321,7 +321,7 @@ namespace Projet_ASL
         }
         #endregion
 
-        private void Attaquer()
+        public void Attaquer()
         {
             ÉtatAttaquer = !ÉtatAttaquer;
         }
