@@ -51,7 +51,7 @@ namespace Projet_ASL
         public List<Personnage> FlèchePercante(Vector3 positionClic, List<Personnage> CiblesPotentielles, out int dégats)
         {
             List<Personnage> cibles = new List<Personnage>();
-            Ray portée = new Ray(Position, Position - positionClic); // positionClic - Position?
+            Ray portée = new Ray(Position, positionClic - Position);
             dégats = (int)(DÉGATS_FLÈCHE_PERCANTE * Attaquer());
 
             if (this is Archer)
@@ -64,7 +64,7 @@ namespace Projet_ASL
 
                 if(cibles.Count != 0)
                 {
-                    cibles.OrderBy(cible => cible.Position - Position); // À vérifier pour les distances
+                    cibles.OrderBy(cible => (cible.Position - Position).Length()); // À vérifier pour les distances
                     cibles.RemoveRange(2, cibles.Count - 2);
                 }
             }
