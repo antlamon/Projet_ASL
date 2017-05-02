@@ -180,94 +180,98 @@ namespace Projet_ASL
             {
                 if (BoutonsActions.ÉtatSort1)
                 {
+                    bool ciblealliée = false;
+                    GestionnaireInput.Update(gameTime);
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
-                            GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Archer.PORTÉE_PLUIE_DE_FLÈCHES - Archer.RAYON_PLUIE_DE_FLÈCHES);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Archer.RAYON_PLUIE_DE_FLÈCHES * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_PLUIE_DE_FLÈCHES * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            if (GestionnaireInput.EstNouveauClicDroit())
                             {
                                 Cibles = (PersonnageActif as Archer).PluieDeFlèches(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
-                                ActiverAttaque();
                                 goto default;
                             }
                             break;
                         case TypePersonnage.GUÉRISSEUR:
-                            GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guérisseur.PORTÉE_SOIN_DE_ZONE - Guérisseur.RAYON_SOIN_DE_ZONE);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guérisseur.RAYON_SOIN_DE_ZONE * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_SOIN_DE_ZONE * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            if (GestionnaireInput.EstNouveauClicDroit())
                             {
                                 Cibles = (PersonnageActif as Guérisseur).SoinDeZone(positionVérifiée, JoueurLocal.Personnages, out dégats);
+                                ciblealliée = true;
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
-                                ActiverAttaque();
-                                NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, true);
+                                goto default;
                             }
                             break;
                         case TypePersonnage.GUERRIER:
-                            GestionnaireInput.Update(gameTime);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guerrier.PORTÉE_TORNADE_FURIEUSE * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            if (GestionnaireInput.EstNouveauClicDroit())
                             {
                                 Cibles = (PersonnageActif as Guerrier).TornadeFurieuse(PersonnageActif.Position, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                goto default;
                             }
                             break;
                         case TypePersonnage.MAGE:
-                            GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_BRASIER - Mage.RAYON_BRASIER);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Mage.RAYON_BRASIER * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_BRASIER * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            if (GestionnaireInput.EstNouveauClicDroit())
                             {
                                 Cibles = (PersonnageActif as Mage).Brasier(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                foreach(Personnage cible in Cibles)
+                                {
+                                    NetworkManager.SendÉtatsSpéciaux(cible, ciblealliée, new List<string>() { ÉtatSpécial.EN_FEU }, new List<bool> { true });
+                                }
+                                goto default;
                             }
                             break;
                         case TypePersonnage.PALADIN:
-                            GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Paladin.PORTÉE_CLARITÉ);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Paladin.PORTÉE_CLARITÉ * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
+                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurLocal.Personnages);
                             if (singleTargetÀAttaquer != null)
                             {
-                                //(PersonnageActif as Paladin).Clarité(singleTargetÀAttaquer);
+                                ciblealliée = true;
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                List<string> nomsÉtats = new List<string>() { ÉtatSpécial.EN_FEU, ÉtatSpécial.FOLIE, ÉtatSpécial.FREEZE };
+                                List<bool> valeursÉtats = new List<bool>() { false, false, false };
+                                NetworkManager.SendÉtatsSpéciaux(singleTargetÀAttaquer, ciblealliée, nomsÉtats, valeursÉtats);
                             }
                             break;
                         case TypePersonnage.VOLEUR:
-                            GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Voleur.PORTÉE_INVISIBILITÉ);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Voleur.PORTÉE_INVISIBILITÉ* 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            if (GestionnaireInput.EstNouveauClicDroit())
                             {
                                 NetworkManager.SendNewPosition(positionVérifiée, JoueurLocal.Personnages.FindIndex(p => p is Voleur));
                                 ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), positionVérifiée);
@@ -276,94 +280,96 @@ namespace Projet_ASL
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
-                                ActiverAttaque();
                             }
                             break;
                         default:
-                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, false);
+                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, ciblealliée);
                             break;
                     }
                 }
                 if (BoutonsActions.ÉtatSort2)
                 {
+                    bool ciblealliée = false;
+                    GestionnaireInput.Update(gameTime);
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
-                            GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Archer.PORTÉE_FLÈCHE_PERCANTE);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_FLÈCHE_PERCANTE * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            if (GestionnaireInput.EstNouveauClicDroit())
                             {
                                 Cibles = (PersonnageActif as Archer).FlèchePercante(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                goto default;
                             }
-                            goto default;
+                            break;
                         case TypePersonnage.GUÉRISSEUR:
-                            GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guérisseur.PORTÉE_RESURRECT);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_RESURRECT * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
+                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurLocal.Personnages);
                             if (singleTargetÀAttaquer != null)
                             {
                                 dégats = (PersonnageActif as Guérisseur).Résurrection(singleTargetÀAttaquer);
                                 Cibles.Add(singleTargetÀAttaquer);
+                                ciblealliée = true;
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                NetworkManager.SendDégât(Cibles.FindAll(cible => cible.EstMort), dégats, ciblealliée);
                             }
                             break;
                         case TypePersonnage.GUERRIER:
-                            GestionnaireInput.Update(gameTime);
-                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
-                            if (GestionnaireInput.EstNouveauClicGauche())
+                            if (GestionnaireInput.EstNouveauClicDroit())
                             {
-                                //(PersonnageActif as Guerrier).SetFolie();
+                                ciblealliée = true;
                                 PeutAttaquer = false;
-                                ZoneDEffet.Visible = false;
-                                Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                NetworkManager.SendÉtatsSpéciaux(PersonnageActif, ciblealliée, new List<string>() { ÉtatSpécial.FOLIE }, new List<bool>() { true });
                             }
                             break;
                         case TypePersonnage.MAGE:
-                            GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_FREEZE_DONT_MOVE);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_FREEZE_DONT_MOVE * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
+                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurEnnemi.Personnages);
                             if (singleTargetÀAttaquer != null)
                             {
-                                (PersonnageActif as Mage).FreezeDontMove(singleTargetÀAttaquer);
+                                dégats = (PersonnageActif as Mage).FreezeDontMove(singleTargetÀAttaquer);
+                                Cibles.Add(singleTargetÀAttaquer);
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                NetworkManager.SendÉtatsSpéciaux(singleTargetÀAttaquer, ciblealliée, new List<string>() { ÉtatSpécial.FREEZE }, new List<bool>() { true });
+                                goto default;
                             }
                             break;
                         case TypePersonnage.PALADIN:
-                            GestionnaireInput.Update(gameTime);
                             positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Paladin.PORTÉE_BOUCLIER_DIVIN);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Paladin.PORTÉE_BOUCLIER_DIVIN * 2), PersonnageActif.Position);
                             Portée.Visible = true;
-                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer();
+                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurLocal.Personnages);
                             if (singleTargetÀAttaquer != null)
                             {
-                                //(PersonnageActif as Paladin).BouclierDivin(singleTargetÀAttaquer);
+                                ciblealliée = true;
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                NetworkManager.SendÉtatsSpéciaux(singleTargetÀAttaquer, ciblealliée, new List<string>() { ÉtatSpécial.BOUCLIER_DIVIN }, new List<bool>() { true });
                             }
                             break;
                         case TypePersonnage.VOLEUR:
                             break;
                         default:
-                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, false);
+                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, ciblealliée);
                             break;
                     }
                 }
             }
+            ActiverAttaque();
         }
 
         void ActiverAttaque()

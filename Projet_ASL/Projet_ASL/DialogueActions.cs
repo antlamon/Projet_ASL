@@ -354,7 +354,7 @@ namespace Projet_ASL
                         VoirBoutonsGuérisseur(true);
                     }
                     break;
-                case TypePersonnage.GUERRIER:
+                case TypePersonnage.GUERRIER:   
                     VoirBoutonsGuerrier(true);
                     break;
                 case TypePersonnage.MAGE:

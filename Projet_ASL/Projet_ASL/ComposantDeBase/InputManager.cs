@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
+using System.Collections.Generic;
 
 
 namespace Projet_ASL
@@ -85,15 +85,15 @@ namespace Projet_ASL
 
         #region Méthode sélection personnage à attaquer
 
-        public Personnage DéterminerSélectionPersonnageÀAttaquer()
+        public Personnage DéterminerSélectionPersonnageÀAttaquer(List<Personnage> PersonnagesSélectionnables)
         {
             Personnage personnageÀAttaquer = null;
 
-            if (EstNouveauClicGauche())
+            if (EstNouveauClicDroit())
             {
                 Ray ray = CalculateCursorRay();
                 float closestDistance = float.MaxValue;
-                foreach (Personnage perso in _managerNetwork.JoueurLocal.Personnages)
+                foreach (Personnage perso in PersonnagesSélectionnables)
                 {
                     DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
                     if (DistanceRayon != null && DistanceRayon < closestDistance)
@@ -102,15 +102,6 @@ namespace Projet_ASL
                         personnageÀAttaquer = perso;
                     }
 
-                }
-                foreach (Personnage perso in _managerNetwork.JoueurEnnemi.Personnages)
-                {
-                    DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
-                    if (DistanceRayon != null && DistanceRayon < closestDistance)
-                    {
-                        closestDistance = (float)DistanceRayon;
-                        personnageÀAttaquer = perso;
-                    }
                 }
             }
 
