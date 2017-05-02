@@ -332,7 +332,7 @@ namespace Projet_ASL
                             else
                             {
                                 singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurLocal.Personnages);
-                                if (singleTargetÀAttaquer != null && (int)(singleTargetÀAttaquer.Position - PersonnageActif.Position).Length() <= Guérisseur.PORTÉE_RESURRECT)
+                                if (singleTargetÀAttaquer != null && (int)(singleTargetÀAttaquer.Position - PersonnageActif.Position).Length() <= Guérisseur.PORTÉE_RESURRECT && singleTargetÀAttaquer.EstMort)
                                 {
                                     dégats = (PersonnageActif as Guérisseur).Résurrection(singleTargetÀAttaquer);
                                     Cibles.Add(singleTargetÀAttaquer);
@@ -340,7 +340,7 @@ namespace Projet_ASL
                                     PeutAttaquer = false;
                                     Portée.Visible = false;
                                     BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
-                                    NetworkManager.SendDégât(Cibles.FindAll(cible => cible.EstMort), dégats, ciblealliée);
+                                    NetworkManager.SendDégât(Cibles, dégats, ciblealliée);
                                 }
                             }
                             break;
