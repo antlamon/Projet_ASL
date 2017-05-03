@@ -146,7 +146,6 @@ namespace Projet_ASL
         {
             GérerClavier();
             GérerTransition(gameTime);
-            Window.Title = TourLocal.ToString();
             base.Update(gameTime);
         }
 

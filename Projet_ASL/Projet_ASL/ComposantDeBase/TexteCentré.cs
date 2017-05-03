@@ -22,6 +22,7 @@ namespace Projet_ASL
         SpriteFont PoliceDeCaractères { get; set; }
         SpriteBatch GestionSprites { get; set; }
         RessourcesManager<SpriteFont> GestionnaireDeFonts { get; set; }
+        Rectangle DimensionFenêtre { get; set; }
 
         public TexteCentré(Game jeu, string texteÀAfficher, string nomFont, Rectangle zoneAffichage,
                            Color couleurTexte, float marge)
@@ -42,6 +43,7 @@ namespace Projet_ASL
             GestionnaireDeFonts = Game.Services.GetService(typeof(RessourcesManager<SpriteFont>)) as RessourcesManager<SpriteFont>;
             PoliceDeCaractères = GestionnaireDeFonts.Find(NomFont);
             ModifierTexte(TexteÀAfficher);
+            DimensionFenêtre = Game.Window.ClientBounds;
         }
 
         public void ModifierTexte(string texteÀAfficher)
@@ -52,6 +54,15 @@ namespace Projet_ASL
             float échelleVerticale = MathHelper.Max(MathHelper.Min(ZoneAffichage.Height * PourcentageZoneAffichable, dimensionTexte.Y), ZoneAffichage.Height * PourcentageZoneAffichable) / dimensionTexte.Y;
             Échelle = MathHelper.Min(échelleHorizontale, échelleVerticale);
             Origine = dimensionTexte / 2;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (DimensionFenêtre != Game.Window.ClientBounds)
+            {
+                PositionAffichage = new Vector2(PositionAffichage.X * Game.Window.ClientBounds.Width / DimensionFenêtre.Width, PositionAffichage.Y * Game.Window.ClientBounds.Height / DimensionFenêtre.Height);
+                DimensionFenêtre = Game.Window.ClientBounds;
+            }
         }
 
         public override void Draw(GameTime gameTime)

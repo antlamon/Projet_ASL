@@ -126,7 +126,7 @@ namespace Projet_ASL
             Boutons.Add(BtnPluieDeFlèches);
 
             PositionBouton = new Vector2(RectangleDestination.X + (NB_ZONES_DIALOGUE - 1) * positionXBouton, RectangleDestination.Y + RectangleDestination.Height / 2f);
-            BtnFlèchePercante = new BoutonDeCommande(Game, "Flèche perçante", "Arial20", "BoutonRouge", "BoutonRouge", PositionBouton, true, Sort2, INTERVALLE_MAJ_STANDARD);
+            BtnFlèchePercante = new BoutonDeCommande(Game, "Flèche rebondissante", "Arial20", "BoutonRouge", "BoutonRouge", PositionBouton, true, Sort2, INTERVALLE_MAJ_STANDARD);
             BtnFlèchePercante.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Boutons.Add(BtnFlèchePercante);
 
