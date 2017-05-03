@@ -51,24 +51,26 @@ namespace Projet_ASL
         public List<Personnage> FlèchePercante(Vector3 positionClic, List<Personnage> CiblesPotentielles, out int dégats)
         {
             List<Personnage> cibles = new List<Personnage>();
-            //Vector3 direction = positionClic - Position;
-            //direction.
-            Ray portée = new Ray(Position, positionClic - Position);
+            Vector3 direction = positionClic - Position;
+            Vector3 directionPerpNormaliséeMin = Vector3.Normalize(new Vector3(direction.Z, 0, -direction.X));
+            Vector3 directionPerpNormaliséeMax = Vector3.Normalize(new Vector3(-direction.Z, 0, direction.X));
+
+            Vector3 pointMin = new Vector3(positionClic.X + directionPerpNormaliséeMin.X, 0, positionClic.Z + directionPerpNormaliséeMin.Z);
+            Vector3 pointMax = new Vector3(Position.X + directionPerpNormaliséeMax.X, 1, Position.Z + directionPerpNormaliséeMax.Z);
+            BoundingBox portée = new BoundingBox(pointMin, pointMax);
+            //Ray portée = new Ray(Position, positionClic - Position);
             dégats = (int)(DÉGATS_FLÈCHE_PERCANTE * Attaquer());
 
-            if (this is Archer)
+            foreach (Personnage p in CiblesPotentielles)
             {
-                foreach (Personnage p in CiblesPotentielles)
-                {
-                    if (p.SphèreDeCollision.Intersects(portée) <= PORTÉE_FLÈCHE_PERCANTE) 
-                    { cibles.Add(p); }
-                }
+                if (p.SphèreDeCollision.Intersects(portée))
+                { cibles.Add(p); }
+            }
 
-                if(cibles.Count != 0)
-                {
-                    cibles.OrderBy(cible => (cible.Position - Position).Length());
-                    cibles.RemoveRange(2, cibles.Count - 2);
-                }
+            if (cibles.Count != 0)
+            {
+                cibles.OrderBy(cible => (cible.Position - Position).Length());
+                cibles.RemoveRange(2, cibles.Count - 2);
             }
 
             return cibles;
