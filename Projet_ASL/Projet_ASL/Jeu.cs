@@ -60,6 +60,7 @@ namespace Projet_ASL
             Window.AllowUserResizing = true;
             IsFixedTimeStep = false;
             IsMouseVisible = true;
+            Window.Title = "Jeu de Bataille";
         }
 
 
@@ -148,7 +149,6 @@ namespace Projet_ASL
         protected override void Update(GameTime gameTime)
         {
             GérerClavier();
-            Window.Title = CaméraJeu.Position.ToString();
             GérerTransition(gameTime);
             base.Update(gameTime);
         }
