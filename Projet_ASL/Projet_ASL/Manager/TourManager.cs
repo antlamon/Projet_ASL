@@ -326,12 +326,20 @@ namespace Projet_ASL
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Archer.PORTÉE_FLÈCHE_PERCANTE);
-                            Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_FLÈCHE_PERCANTE * 2), PersonnageActif.Position);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Archer.PORTÉE_FLÈCHE_REBONDISSANTE);
+                            Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_FLÈCHE_REBONDISSANTE * 2), PersonnageActif.Position);
+                            ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Archer.RAYON_FLÈCHE_REBONDISSANTE * 2), positionVérifiée);
                             Portée.Visible = true;
-                            if (GestionnaireInput.EstNouveauClicDroit())
+                            ZoneDEffet.Visible = true;
+                            singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurEnnemi.Personnages);
+                            if (singleTargetÀAttaquer != null && (int)(singleTargetÀAttaquer.Position - PersonnageActif.Position).Length() <= Archer.PORTÉE_FLÈCHE_REBONDISSANTE)
                             {
-                                Cibles = (PersonnageActif as Archer).FlèchePercante(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
+                                Cibles.Add(singleTargetÀAttaquer);
+                                Personnage deuxièmeCible = (PersonnageActif as Archer).FlècheRebondissante(singleTargetÀAttaquer, JoueurEnnemi.Personnages.FindAll(p => p != singleTargetÀAttaquer && !p.EstMort), out dégats);
+                                if(deuxièmeCible != null)
+                                {
+                                    Cibles.Add(deuxièmeCible);
+                                }
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);

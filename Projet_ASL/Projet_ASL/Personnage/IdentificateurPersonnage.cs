@@ -22,6 +22,7 @@ namespace Projet_ASL
         private int PtsViePersonnage { get; set; }
         private int PtsVieMax { get; set; }
         public TexteCentré AfficheurPtsVie { get; private set; }
+        Rectangle DimensionFenêtre { get; set; }
 
 
         public IdentificateurPersonnage(Game jeu, Personnage personnage)
@@ -126,6 +127,11 @@ namespace Projet_ASL
                 PtsViePersonnage = PersonnageÀIdentifier.PtsDeVie;
                 AfficheurPtsVie.ModifierTexte(":" + PtsViePersonnage.ToString() + "/" + PtsVieMax.ToString());
             }
+            if(DimensionFenêtre != Game.Window.ClientBounds)
+            {
+                Position = new Vector2(Position.X * Game.Window.ClientBounds.Width / DimensionFenêtre.Width, Position.Y * Game.Window.ClientBounds.Height / DimensionFenêtre.Height);
+                DimensionFenêtre = Game.Window.ClientBounds;
+            }
         }
 
         protected override void LoadContent()
@@ -135,6 +141,7 @@ namespace Projet_ASL
             Image = GestionnaireDeTextures.Find(NomImage);
             RectangleSource = new Rectangle(0, 0, Image.Width, Image.Height);
             CalculerÉchelle();
+            DimensionFenêtre = Game.Window.ClientBounds;
         }
 
         public override void Draw(GameTime gameTime)
