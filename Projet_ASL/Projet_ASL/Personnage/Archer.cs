@@ -60,17 +60,23 @@ namespace Projet_ASL
             BoundingBox portée = new BoundingBox(pointMin, pointMax);
             //Ray portée = new Ray(Position, positionClic - Position);
             dégats = (int)(DÉGATS_FLÈCHE_PERCANTE * Attaquer());
+            bool intersection = false;
 
+            //SphèreDeCollision.Intersects()
             foreach (Personnage p in CiblesPotentielles)
             {
-                if (p.SphèreDeCollision.Intersects(portée))
-                { cibles.Add(p); }
+                intersection = portée.Intersects(p.SphèreDeCollision);
+                if(intersection)
+                {
+                    cibles.Add(p);
+                }
             }
 
             if (cibles.Count != 0)
             {
                 cibles.OrderBy(cible => (cible.Position - Position).Length());
                 cibles.RemoveRange(2, cibles.Count - 2);
+                int allo = cibles.Capacity;
             }
 
             return cibles;

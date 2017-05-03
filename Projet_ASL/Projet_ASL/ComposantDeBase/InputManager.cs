@@ -164,8 +164,6 @@ namespace Projet_ASL
         {
             Vector3 positionVérifiée = positionVouluePersonnage;
             Vector3 positionDuPersonnageAvant = PersonnageChoisi.Position;
-            foreach (Player p in _managerNetwork.Players)
-            {
                 foreach (Personnage perso in _managerNetwork.JoueurLocal.Personnages)
                 {
                     if (Vector3.Distance(PersonnageChoisi.Position, perso.Position) < 3)
@@ -181,7 +179,21 @@ namespace Projet_ASL
                         }
                     }
                 }
-            }
+                foreach (Personnage perso in _managerNetwork.JoueurEnnemi.Personnages)
+                {
+                    if (Vector3.Distance(PersonnageChoisi.Position, perso.Position) < 3)
+                    {
+                        PersonnageChoisi.GérerPositionObjet(positionVouluePersonnage);
+                        if (PersonnageChoisi.SphèreDeCollision.Contains(perso.SphèreDeCollision) != ContainmentType.Disjoint)
+                        {
+                            if (perso != _managerNetwork.JoueurLocal.Personnages[indice])
+                            {
+                                positionVérifiée = positionDuPersonnageAvant;
+
+                            }
+                        }
+                    }
+                }
             PersonnageChoisi.GérerPositionObjet(positionDuPersonnageAvant);
             return positionVérifiée;
         }
