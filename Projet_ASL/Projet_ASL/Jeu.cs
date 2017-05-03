@@ -204,6 +204,8 @@ namespace Projet_ASL
                     {
                         CompteurManches.RéinitialiserCompteur();
                         ÉtatJeu = États.FIN_DE_JEU;
+                        TexteConnection.ModifierTexte(_managerNetwork.JoueurLocal.Personnages.Exists(p => !p.EstMort) ? "VICTOIRE" : "DÉFAITE");
+                        TexteConnection.Visible = true;
                     }
                     break;
                 case États.INVENTAIRE:
@@ -216,7 +218,12 @@ namespace Projet_ASL
                     }
                     break;
                 case États.FIN_DE_JEU:
-                    ÉtatJeu = États.MENU;
+                    _managerNetwork.Update();
+                    if (MenuAccueil.ÉtatRetourMenu || _managerNetwork.Players.Count == 0)
+                    {
+                        RetourAuMenu();
+                    }
+
                     break;
             }
         }
@@ -228,6 +235,7 @@ namespace Projet_ASL
             MenuAccueil.VoirBoutonMenu(true);
             PlancheDeJeu.Visible = false;
             TexteConnection.Visible = false;
+            TexteConnection.ModifierTexte("En attente d'un autre joueur");
             AOE1.Visible = false;
             AOE2.Visible = false;
             AOE3.Visible = false;
@@ -237,10 +245,6 @@ namespace Projet_ASL
                 {
                     Components.Remove(b);
                 }
-                //Components.Remove(ManagerTour.ZoneDEffet);
-                //Components.Remove(ManagerTour.Portée);
-                //Components.Remove(ManagerTour.ZoneDéplacement);
-                // AOE1, AOE2, AOE3 ?
             }
 
         }

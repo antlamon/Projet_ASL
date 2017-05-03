@@ -17,16 +17,7 @@ namespace Projet_ASL
         const float RATIO_VOL_DE_VIE = 0.4f;
         const float DÉGATS_SATAN_MODE = 0.7f;
 
-        bool satanMode;
-
-        public bool _SatanMode
-        {
-            get { return satanMode; }
-            private set
-            {
-                satanMode = value;
-            }
-        }
+        public bool _SatanMode { get; set; }
 
         public Guérisseur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, dextérité, intelligence, sagesse, ptsDeVie)

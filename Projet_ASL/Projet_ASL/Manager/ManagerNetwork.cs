@@ -16,9 +16,9 @@ namespace Projet_ASL
     public class ManagerNetwork
     {
         private NetClient _client;
-        public List<Player> Players { get; set; }
+        public List<Player> Players { get; private set; }
 
-        public string Username { get; set; }
+        public string Username { get; private set; }
 
         public bool Active { get; set; }
         public bool TourActif { get; set; }
@@ -137,7 +137,7 @@ namespace Projet_ASL
                         RemoveDisconnectedPlayer(inc);
                         break;
                     case PacketType.FinDeTour:
-                        ChangerDeTour();
+                        ChangerDeTour(inc);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -145,9 +145,12 @@ namespace Projet_ASL
             }
         }
 
-        private void ChangerDeTour()
+        private void ChangerDeTour(NetIncomingMessage inc)
         {
-            TourActif = !TourActif;
+            if(inc.ReadString() != Username)
+            {
+                TourActif = !TourActif;
+            }
         }
 
         private void ReadPositionPersonnage(NetIncomingMessage inc)
@@ -335,6 +338,7 @@ namespace Projet_ASL
         {
             var outMessge = _client.CreateMessage();
             outMessge.Write((byte)PacketType.FinDeTour);
+            outMessge.Write(Username);
             _client.SendMessage(outMessge, NetDeliveryMethod.ReliableOrdered);
         }
 

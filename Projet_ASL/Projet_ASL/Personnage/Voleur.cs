@@ -10,7 +10,7 @@ namespace Projet_ASL
     {
         const int PORTÉE_ATTAQUE = 5;
         public const int PORTÉE_INVISIBILITÉ = 25;
-        public const int PORTÉE_LANCER_COUTEAU = 20;
+        public const int PORTÉE_LANCER_COUTEAU = 15;
         const float DÉGÂTS_LANCER_COUTEAU = 0.7f;
 
         public Voleur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)

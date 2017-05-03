@@ -123,7 +123,7 @@ namespace Projet_ASL
 
         void VérifierDébutDeTour(GameTime gameTime)
         {
-            if (ancienIndicePersonnage != IndicePersonnage && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 0.1f)
+            if (ancienIndicePersonnage != IndicePersonnage)// && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 0.1f)
             {
                 PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];
                 VérifierÉtatsSpéciaux();
@@ -166,6 +166,7 @@ namespace Projet_ASL
                 {
                     NetworkManager.SendÉtatsSpéciaux(PersonnageActif, true, new List<string>() { ÉtatSpécial.FOLIE }, new List<bool>() { false });
                     NetworkManager.SendDégât(new List<Personnage>() { PersonnageActif }, PersonnageActif.PtsDeVie, true);
+                    PersonnageActif.ChangerVitalité(0);
                 }
             }
             if (PersonnageActif is Voleur)
@@ -453,15 +454,6 @@ namespace Projet_ASL
                     {
                         singleTargetÀAttaquer = GestionnaireInput.DéterminerSélectionPersonnageÀAttaquer(JoueurLocal.Personnages);
                         ciblealliée = true;
-                        if (singleTargetÀAttaquer != null && (int)(singleTargetÀAttaquer.Position - PersonnageActif.Position).Length() <= PersonnageActif.GetPortéeAttaque())
-                        {
-                            Cibles.Add(singleTargetÀAttaquer);
-                            Portée.Visible = false;
-                            PeutAttaquer = false;
-                            BoutonsActions.Attaquer();
-                            dégats = PersonnageActif.Attaquer();
-                            NetworkManager.SendDégât(Cibles.FindAll(cible => !cible.EstMort), dégats, ciblealliée);
-                        }
                     }
                     else
                     {
@@ -519,6 +511,7 @@ namespace Projet_ASL
             Portée.Visible = false;
             ZoneDéplacement.Visible = false;
             TourTerminé = true;
+            NetworkManager.TourActif = false;
         }
     }
 }

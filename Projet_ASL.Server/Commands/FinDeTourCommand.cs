@@ -13,6 +13,7 @@ namespace Projet_ASL.Server.Commands
         {
             var outMessage = server.CreateMessage();
             outMessage.Write((byte)PacketType.FinDeTour);
+            outMessage.Write(inc.ReadString());
             server.SendToAll(outMessage, NetDeliveryMethod.ReliableOrdered);
         }
     }
