@@ -135,7 +135,7 @@ namespace Projet_ASL
 
         void VérifierDébutDeTour(GameTime gameTime)
         {
-            if (ancienIndicePersonnage != IndicePersonnage && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 1)
+            if (ancienIndicePersonnage != IndicePersonnage && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 0.1f)
             {
                 TourTerminé = false;
                 PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];

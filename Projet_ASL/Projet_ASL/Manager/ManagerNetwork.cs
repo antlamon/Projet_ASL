@@ -300,22 +300,23 @@ namespace Projet_ASL
             for (int i = 0; i < compteur; ++i)
             {
                 string nomÉtat = inc.ReadString();
+                bool valeurÉtat = inc.ReadBoolean();
                 switch (nomÉtat)
                 {
                     case ÉtatSpécial.EN_FEU:
-                        personnage.SetEnFeu(inc.ReadBoolean());
+                        personnage.SetEnFeu(valeurÉtat);
                         break;
                     case ÉtatSpécial.BOUCLIER_DIVIN:
-                        personnage.SetBouclierDivin(inc.ReadBoolean());
+                        personnage.SetBouclierDivin(valeurÉtat);
                         break;
                     case ÉtatSpécial.FREEZE:
-                        personnage.SetFreeze(inc.ReadBoolean());
+                        personnage.SetFreeze(valeurÉtat);
                         break;
                     case ÉtatSpécial.FOLIE:
-                        (personnage as Guerrier).SetFolie(inc.ReadBoolean());
+                        (personnage as Guerrier).SetFolie(valeurÉtat);
                         break;
                     case ÉtatSpécial.SATAN:
-                        (personnage as Guérisseur).SetSatan(inc.ReadBoolean());
+                        (personnage as Guérisseur).SetSatan(valeurÉtat);
                         break;
                 }
             }
