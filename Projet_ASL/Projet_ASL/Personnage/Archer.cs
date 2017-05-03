@@ -9,12 +9,12 @@ namespace Projet_ASL
     public class Archer : Personnage
     {
         const int PORTÉE_ATTAQUE = 20;
-        public const int RAYON_PLUIE_DE_FLÈCHES = 15;
-        public const int PORTÉE_PLUIE_DE_FLÈCHES = 10;
+        public const int RAYON_PLUIE_DE_FLÈCHES = 8;
+        public const int PORTÉE_PLUIE_DE_FLÈCHES = 45;
         const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
         //public const int PORTÉE_FLÈCHE_PERCANTE = 100;
         //const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
-        public const int PORTÉE_FLÈCHE_REBONDISSANTE = 20;
+        public const int PORTÉE_FLÈCHE_REBONDISSANTE = 25;
         public const int RAYON_FLÈCHE_REBONDISSANTE = 15;
         const float DÉGÂTS_FLÈCHE_REBONDISSANTE = 0.65f;
 
