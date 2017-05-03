@@ -60,7 +60,7 @@ namespace Projet_ASL
             Window.AllowUserResizing = true;
             IsFixedTimeStep = false;
             IsMouseVisible = true;
-            Window.Title = "Jeu de bataille";
+            Window.Title = "Jeu de Bataille";
         }
 
 

@@ -64,7 +64,7 @@ namespace Projet_ASL
             {
                 outmsg.Write(ObtenirType(p));
             }
-            _client.Connect("localhost", 5013, outmsg);
+            _client.Connect("172.22.150.100", 5013, outmsg);
             return EsablishInfo();
         }
 
@@ -251,7 +251,7 @@ namespace Projet_ASL
 
             if (ObtenirType(p) == TypePersonnage.VOLEUR)
             {
-                IdentificateurEffet icôneEffetInvisible = new IdentificateurEffet(Jeu, p, ÉtatSpécial.INVISIBLE, identificateur.Position, 3);
+                IdentificateurEffet icôneEffetInvisible = new IdentificateurEffet(Jeu, p, ÉtatSpécial.INVISIBLE, identificateur.Position, 4);
                 icôneEffetInvisible.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
                 Jeu.Components.Add(icôneEffetInvisible);
                 icôneEffetInvisible.Visible = false;
@@ -259,7 +259,7 @@ namespace Projet_ASL
 
             if (ObtenirType(p) == TypePersonnage.GUÉRISSEUR)
             {
-                IdentificateurEffet icôneEffetSatan = new IdentificateurEffet(Jeu, p, ÉtatSpécial.SATAN, identificateur.Position, 3);
+                IdentificateurEffet icôneEffetSatan = new IdentificateurEffet(Jeu, p, ÉtatSpécial.SATAN, identificateur.Position, 4);
                 icôneEffetSatan.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
                 Jeu.Components.Add(icôneEffetSatan);
                 icôneEffetSatan.Visible = false;
@@ -267,11 +267,15 @@ namespace Projet_ASL
 
             if (ObtenirType(p) == TypePersonnage.GUERRIER)
             {
-                IdentificateurEffet icôneEffetFolie = new IdentificateurEffet(Jeu, p, ÉtatSpécial.FOLIE, identificateur.Position, 3);
+                IdentificateurEffet icôneEffetFolie = new IdentificateurEffet(Jeu, p, ÉtatSpécial.FOLIE, identificateur.Position, 4);
                 icôneEffetFolie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
                 Jeu.Components.Add(icôneEffetFolie);
                 icôneEffetFolie.Visible = false;
             }
+            IdentificateurEffet icôneEffetBouclierDivin = new IdentificateurEffet(Jeu, p, ÉtatSpécial.BOUCLIER_DIVIN, identificateur.Position, 3);
+            icôneEffetBouclierDivin.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Jeu.Components.Add(icôneEffetBouclierDivin);
+            icôneEffetBouclierDivin.Visible = false;
         }
 
         private Personnage ReadPersonnage(NetIncomingMessage inc, string username)

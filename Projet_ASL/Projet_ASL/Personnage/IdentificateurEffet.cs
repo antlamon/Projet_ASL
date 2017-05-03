@@ -11,8 +11,8 @@ namespace Projet_ASL
     {
         const int NB_CASES = 90;
 
-        const int NB_EFFETS_NORMAL = 3;
-        const int NB_EFFETS_SPÉCIAL = 4;
+        const int NB_EFFETS_NORMAL = 4;
+        const int NB_EFFETS_SPÉCIAL = 5;
          
         public string NomImage { get; private set; }
         public Vector2 Position { get; protected set; } 
