@@ -10,15 +10,16 @@ namespace Projet_ASL
     {
         const int PORTÉE_ATTAQUE = 5;
         public const int PORTÉE_TORNADE_FURIEUSE = 10;
-        public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
+        const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
         const int PTS_VITALITÉ_FOLIE = 1;
-        public const int NB_TOURS_FOLIE = 2;
-
+        const int NB_TOURS_FOLIE = 2;
+        public int CptFolie { get; set; }
         public bool _Folie { get; private set; }
 
         public Guerrier(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, dextérité, intelligence, sagesse, ptsDeVie)
         {
+            CptFolie = 0;
         }
 
         public override int Attaquer()
@@ -64,6 +65,7 @@ namespace Projet_ASL
             _Folie = estFou;
             if (_Folie)
             {
+                CptFolie = NB_TOURS_FOLIE;
                 ChangerVitalité(PTS_VITALITÉ_FOLIE);
             }
         }

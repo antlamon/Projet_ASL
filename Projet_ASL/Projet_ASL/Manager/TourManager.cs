@@ -112,42 +112,65 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if (!JoueurLocal.Personnages[IndicePersonnage].EstMort && !JoueurLocal.Personnages[IndicePersonnage]._Frozen)
-            {
                 VérifierDébutDeTour(gameTime);
                 if (!TourTerminé)
                 {
                     VérifierDéplacement();
-                    VérifierAttaqueEtSorts(gameTime);
+                    VérifierAttaqueEtSorts();
                     VérifierFinDeTour(gameTime);
                 }
-            }
-            else
-            {
-                if (JoueurLocal.Personnages[IndicePersonnage]._Frozen)
-                {
-                    NetworkManager.SendÉtatsSpéciaux(JoueurLocal.Personnages[IndicePersonnage], true, new List<string>() { ÉtatSpécial.FREEZE }, new List<bool>() { false });
-                }
-                IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
-                BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
-            }
         }
 
         void VérifierDébutDeTour(GameTime gameTime)
         {
             if (ancienIndicePersonnage != IndicePersonnage && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 0.1f)
             {
-                TourTerminé = false;
                 PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];
-                if (PersonnageActif is Voleur)
+                VérifierÉtatsSpéciaux();
+                if (!JoueurLocal.Personnages[IndicePersonnage].EstMort && !JoueurLocal.Personnages[IndicePersonnage]._Frozen)
                 {
-                    NetworkManager.SendInvisibilité(false);
+                    TourTerminé = false;
+                    BoutonsActions.VoirBoutonAction(true);
+                    PeutAttaquer = true;
+                    ActiverAttaque();
+                    ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
+                    ancienIndicePersonnage = IndicePersonnage;
                 }
-                BoutonsActions.VoirBoutonAction(true);
-                PeutAttaquer = true;
-                ActiverAttaque();
-                ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
-                ancienIndicePersonnage = IndicePersonnage;
+                else
+                {
+                    if (JoueurLocal.Personnages[IndicePersonnage]._Frozen)
+                    {
+                        NetworkManager.SendÉtatsSpéciaux(JoueurLocal.Personnages[IndicePersonnage], true, new List<string>() { ÉtatSpécial.FREEZE }, new List<bool>() { false });
+                    }
+                    IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
+                    BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
+                }
+            }
+        }
+
+        void VérifierÉtatsSpéciaux()
+        {
+            if (PersonnageActif._EnFeu)
+            {
+                NetworkManager.SendDégât(new List<Personnage>() { PersonnageActif }, Mage.DÉGATS_TICK_BRASIER, true);
+                --PersonnageActif.CptEnFeu;
+                if (PersonnageActif.CptEnFeu == 0)
+                {
+                    NetworkManager.SendÉtatsSpéciaux(PersonnageActif, true, new List<string>() { ÉtatSpécial.EN_FEU }, new List<bool>() { false });
+                }
+            }
+            if (PersonnageActif is Guerrier && (PersonnageActif as Guerrier)._Folie)
+            {
+                --(PersonnageActif as Guerrier).CptFolie;
+                if ((PersonnageActif as Guerrier).CptFolie == 0)
+                {
+                    NetworkManager.SendÉtatsSpéciaux(PersonnageActif, true, new List<string>() { ÉtatSpécial.FOLIE }, new List<bool>() { false });
+                    NetworkManager.SendDégât(new List<Personnage>() { PersonnageActif }, PersonnageActif.PtsDeVie, true);
+                }
+            }
+            if (PersonnageActif is Voleur)
+            {
+                NetworkManager.SendInvisibilité(false);
             }
         }
 
@@ -175,7 +198,7 @@ namespace Projet_ASL
             }
         }
 
-        void VérifierAttaqueEtSorts(GameTime gameTime)
+        void VérifierAttaqueEtSorts()
         {
             if (PeutAttaquer)
             {
