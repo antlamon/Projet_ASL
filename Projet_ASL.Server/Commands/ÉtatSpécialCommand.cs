@@ -47,6 +47,11 @@ namespace Projet_ASL.Server.Commands
                         outMessage.Write(ÉtatSpécial.FOLIE);
                         outMessage.Write((personnage as Guerrier)._Folie);
                         break;
+                    case ÉtatSpécial.SATAN:
+                        (personnage as Guérisseur).SetSatan(inc.ReadBoolean());
+                        outMessage.Write(ÉtatSpécial.FOLIE);
+                        outMessage.Write((personnage as Guérisseur)._SatanMode);
+                        break;
                 }
             }
             server.SendToAll(outMessage, NetDeliveryMethod.ReliableOrdered);

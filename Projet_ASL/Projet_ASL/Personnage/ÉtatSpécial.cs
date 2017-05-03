@@ -11,5 +11,6 @@ namespace Projet_ASL
         public const string FREEZE = "Frozen";
         public const string BOUCLIER_DIVIN = "BouclierDivin";
         public const string FOLIE = "Folie";
+        public const string SATAN = "Satan";
     }
 }

@@ -260,8 +260,13 @@ namespace Projet_ASL
                                 PeutAttaquer = false;
                                 Portée.Visible = false;
                                 BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
-                                List<string> nomsÉtats = new List<string>() { ÉtatSpécial.EN_FEU, ÉtatSpécial.FOLIE, ÉtatSpécial.FREEZE };
-                                List<bool> valeursÉtats = new List<bool>() { false, false, false };
+                                List<string> nomsÉtats = new List<string>() { ÉtatSpécial.EN_FEU, ÉtatSpécial.FREEZE };
+                                List<bool> valeursÉtats = new List<bool>() { false, false };
+                                if(singleTargetÀAttaquer is Guerrier)
+                                {
+                                    nomsÉtats.Add(ÉtatSpécial.FOLIE);
+                                    valeursÉtats.Add(false);
+                                }
                                 NetworkManager.SendÉtatsSpéciaux(singleTargetÀAttaquer, ciblealliée, nomsÉtats, valeursÉtats);
                             }
                             break;
@@ -340,6 +345,7 @@ namespace Projet_ASL
                                     PeutAttaquer = false;
                                     Portée.Visible = false;
                                     BoutonsActions.RéinitialiserDialogueActions(PersonnageActif);
+                                    NetworkManager.SendÉtatsSpéciaux(PersonnageActif, ciblealliée, new List<string>() { ÉtatSpécial.SATAN }, new List<bool>() { true });
                                     NetworkManager.SendDégât(Cibles, dégats, ciblealliée);
                                 }
                             }

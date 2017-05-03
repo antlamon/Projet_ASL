@@ -37,7 +37,7 @@ namespace Projet_ASL
         public override int Attaquer()
         {
             int attaque;
-            if(_SatanMode)
+            if (_SatanMode)
             {
                 attaque = (int)(DÉGATS_SATAN_MODE * Sagesse);
             }
@@ -71,27 +71,20 @@ namespace Projet_ASL
         public int Résurrection(Personnage cible)
         {
             int dégats = 0;
-            if (cible.EstMort)
-            {
-                dégats = (int)(RATIO_RESURRECT * Attaquer());
-            }
+            dégats = (int)(RATIO_RESURRECT * Attaquer());
             _SatanMode = true;
             return dégats;
+        }
+
+        public void SetSatan(bool estSatan)
+        {
+            _SatanMode = estSatan;
         }
 
         public int VolDeVie(out int vieVolée)
         {
             vieVolée = -(int)(RATIO_VOL_DE_VIE * Attaquer());
             return Attaquer();
-        }
-
-        public override void EnleverDebuffs(Personnage caster)
-        {
-            base.EnleverDebuffs(caster);
-            if (caster is Paladin)
-            {
-                _SatanMode = false;
-            }
         }
     }
 }

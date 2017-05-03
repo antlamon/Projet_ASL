@@ -314,6 +314,9 @@ namespace Projet_ASL
                     case ÉtatSpécial.FOLIE:
                         (personnage as Guerrier).SetFolie(inc.ReadBoolean());
                         break;
+                    case ÉtatSpécial.SATAN:
+                        (personnage as Guérisseur).SetSatan(inc.ReadBoolean());
+                        break;
                 }
             }
         }
