@@ -215,7 +215,55 @@ namespace Projet_ASL
                     IdentificateurPersonnage identificateur = new IdentificateurPersonnage(Jeu, p);
                     identificateur.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
                     Jeu.Components.Add(identificateur);
+                    AjouterIcôneEffet(Jeu, p);
+
                 }
+            }
+        }
+
+        const string FEU = "Enfeu";
+        const string MORT = "EstMort";
+        const string FROZEN = "Frozen";
+        const string INVISIBLE = "Invisible";
+        const string SATAN = "SatanMode";
+        const string FOLIE = "Folie";
+
+        private void AjouterIcôneEffet(Game jeu, Personnage p)
+        {
+            ClasseQueTonyVeutSupprimer icôneEffetFeu = new ClasseQueTonyVeutSupprimer(Jeu, p, FEU, 1);
+            icôneEffetFeu.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Jeu.Components.Add(icôneEffetFeu);
+            //icôneEffetFeu.Visible = false;
+
+            ClasseQueTonyVeutSupprimer icôneEffetMort = new ClasseQueTonyVeutSupprimer(Jeu, p, MORT, 2);
+            icôneEffetMort.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Jeu.Components.Add(icôneEffetMort);
+            //icôneEffetMort.Visible = false;
+
+            ClasseQueTonyVeutSupprimer icôneEffetFrozen = new ClasseQueTonyVeutSupprimer(Jeu, p, FROZEN, 3);
+            icôneEffetFrozen.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Jeu.Components.Add(icôneEffetFrozen);
+            //icôneEffetFrozen.Visible = false;
+
+            ClasseQueTonyVeutSupprimer icôneEffetInvisible = new ClasseQueTonyVeutSupprimer(Jeu, p, INVISIBLE, 4);
+            icôneEffetInvisible.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Jeu.Components.Add(icôneEffetInvisible);
+            //icôneEffetInvisible.Visible = false;
+
+            if (p.GetType().ToString() == TypePersonnage.GUÉRISSEUR)
+            {
+                ClasseQueTonyVeutSupprimer icôneEffetSatan = new ClasseQueTonyVeutSupprimer(Jeu, p, SATAN, 5);
+                icôneEffetSatan.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+                Jeu.Components.Add(icôneEffetSatan);
+                //icôneEffetSatan.Visible = false;
+            }
+
+            if (p.GetType().ToString() == TypePersonnage.GUERRIER)
+            {
+                ClasseQueTonyVeutSupprimer icôneEffetFolie = new ClasseQueTonyVeutSupprimer(Jeu, p, FOLIE, 5);
+                icôneEffetFolie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+                Jeu.Components.Add(icôneEffetFolie);
+                //icôneEffetFolie.Visible = false;
             }
         }
 
