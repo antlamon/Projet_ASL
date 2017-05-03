@@ -29,6 +29,9 @@ namespace Projet_ASL
         InputManager GestionInput { get; set; }
         float IntervalleMAJ { get; set; }
         float TempsÉcouléDepuisMAJ { get; set; }
+        Rectangle DimensionFenêtre { get; set; }
+        Vector2 Dimension { get; set; }
+        Vector2 DimensionChaîne { get; set; }
 
         FonctionÉvénementielle OnClick { get; set; }
 
@@ -70,13 +73,12 @@ namespace Projet_ASL
         public override void Initialize()
         {
             TempsÉcouléDepuisMAJ = 0;
+            DimensionFenêtre = Game.Window.ClientBounds;
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            Vector2 dimensionChaîne;
-            Vector2 dimension;
             base.LoadContent();
 
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
@@ -88,12 +90,19 @@ namespace Projet_ASL
 
             ImageBouton = ImageNormale;
 
-            dimensionChaîne = PoliceDeCaractères.MeasureString(Texte);
-            dimension = dimensionChaîne * 1.10f;
-            Position = Position - dimension / 2;
-            PositionChaîne = new Vector2(Position.X + dimension.X / 2, Position.Y + dimension.Y / 2);
-            OrigineChaîne = new Vector2(dimensionChaîne.X / 2, dimensionChaîne.Y / 2);
-            RectangleDestination = new Rectangle((int)Position.X, (int)Position.Y, (int)dimension.X, (int)dimension.Y);
+            DimensionChaîne = PoliceDeCaractères.MeasureString(Texte);
+            Dimension = DimensionChaîne * 1.10f;
+            Position = Position - Dimension / 2;
+            PositionChaîne = new Vector2(Position.X + Dimension.X / 2, Position.Y + Dimension.Y / 2);
+            OrigineChaîne = new Vector2(DimensionChaîne.X / 2, DimensionChaîne.Y / 2);
+            RectangleDestination = new Rectangle((int)Position.X, (int)Position.Y, (int)Dimension.X, (int)Dimension.Y);
+        }
+
+        private void DéfinirPositionChaîne()
+        {
+            PositionChaîne = new Vector2(Position.X + Dimension.X / 2, Position.Y + Dimension.Y / 2);
+            OrigineChaîne = new Vector2(DimensionChaîne.X / 2, DimensionChaîne.Y / 2);
+            RectangleDestination = new Rectangle((int)Position.X, (int)Position.Y, (int)Dimension.X, (int)Dimension.Y);
         }
 
         public override void Update(GameTime gameTime)
@@ -130,6 +139,12 @@ namespace Projet_ASL
                 {
                     CouleurTexte = COULEUR_PAR_DÉFAUT;
                     ImageBouton = ImageNormale;
+                }
+                if(DimensionFenêtre != Game.Window.ClientBounds)
+                {
+                    Position = new Vector2(Position.X * Game.Window.ClientBounds.Width / DimensionFenêtre.Width, Position.Y * Game.Window.ClientBounds.Height / DimensionFenêtre.Height);
+                    DéfinirPositionChaîne();
+                    DimensionFenêtre = Game.Window.ClientBounds;
                 }
             }
         }
