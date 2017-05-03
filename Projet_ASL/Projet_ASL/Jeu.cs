@@ -71,7 +71,7 @@ namespace Projet_ASL
             //Vector3 positionObjet4 = new Vector3(0, -1.5f, 0);
             //Vector3 positionObjet5 = new Vector3(2, 0, 0);
             //Vector3 positionLumière = new Vector3(0, 0f, 3f);
-            Vector3 positionCaméra = new Vector3(0, 80, 20);
+            Vector3 positionCaméra = new Vector3(0, 55, 15);
             Vector3 cibleCaméra = new Vector3(0, 0, 0);
             Vector2 dimensionDialogueMenu = new Vector2(Window.ClientBounds.Width / 3, Window.ClientBounds.Height);
             Vector2 dimensionDialogueInventaire = new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height);
@@ -86,6 +86,9 @@ namespace Projet_ASL
             AfficheurFPS afficheurFPS = new AfficheurFPS(this, "Arial20", Color.Gold, INTERVALLE_CALCUL_FPS);
             afficheurFPS.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Components.Add(afficheurFPS);
+            ArrièrePlanDéroulant ArrièrePlan = new ArrièrePlanDéroulant(this, "WoodForest", INTERVALLE_MAJ_STANDARD);
+            ArrièrePlan.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
+            Components.Add(ArrièrePlan);
             PlancheDeJeu = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
             PlancheDeJeu.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             PlancheDeJeu.Visible = false;
@@ -145,6 +148,7 @@ namespace Projet_ASL
         protected override void Update(GameTime gameTime)
         {
             GérerClavier();
+            Window.Title = CaméraJeu.Position.ToString();
             GérerTransition(gameTime);
             base.Update(gameTime);
         }

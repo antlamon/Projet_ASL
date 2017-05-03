@@ -288,27 +288,27 @@ namespace Projet_ASL
             Personnage p = null;
             if (type == TypePersonnage.ARCHER)
             {
-                p = new Archer(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX < 0 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 10, 30, 10, 10, ptsVie);
+                p = new Archer(Jeu, allié ? "ArcherAllié" : "ArcherEnnemi", 0.04f, posX < 0 ? new Vector3(0, MathHelper.Pi / 2, 0) : new Vector3(0, -MathHelper.Pi / 2, 0), new Vector3(posX, 0, posZ), 10, 30, 10, 10, ptsVie);
             }
             if (type == TypePersonnage.GUÉRISSEUR)
             {
-                p = new Guérisseur(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX < 0 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 10, 10, 10, 30, ptsVie);
+                p = new Guérisseur(Jeu, allié ? "GuérisseurAllié" : "GuérisseurEnnemi", 0.04f, posX < 0 ? new Vector3(0, MathHelper.Pi / 2, 0) : new Vector3(0, -MathHelper.Pi / 2, 0), new Vector3(posX, 0, posZ), 10, 10, 10, 30, ptsVie);
             }
             if (type == TypePersonnage.GUERRIER)
             {
-                p = new Guerrier(Jeu, allié ? "GuerrierB" : "GuerrierR", 0.0075f, posX < 0 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 30, 10, 10, 10, ptsVie);
+                p = new Guerrier(Jeu, allié ? "GuerrierAllié" : "GuerrierEnnemi", 0.04f, posX < 0 ? new Vector3(0, MathHelper.Pi / 2, 0) : new Vector3(0, -MathHelper.Pi / 2, 0), new Vector3(posX, 0, posZ), 30, 10, 10, 10, ptsVie);
             }
             if (type == TypePersonnage.MAGE)
             {
-                p = new Mage(Jeu, allié ? "MageB" : "MageR", 0.0075f, posX < 0 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 10, 10, 30, 10, ptsVie);
+                p = new Mage(Jeu, allié ? "MageAllié" : "MageEnnemi", 0.04f, posX < 0 ? new Vector3(0, MathHelper.Pi / 2, 0) : new Vector3(0, -MathHelper.Pi / 2, 0), new Vector3(posX, 0, posZ), 10, 10, 30, 10, ptsVie);
             }
             if (type == TypePersonnage.PALADIN)
             {
-                p = new Paladin(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX < 0 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 15, 10, 10, 15, ptsVie);
+                p = new Paladin(Jeu, allié ? "PaladinAllié" : "PaladinEnnemi", 0.04f, posX < 0 ? new Vector3(0, MathHelper.Pi / 2, 0) : new Vector3(0, -MathHelper.Pi / 2, 0), new Vector3(posX, 0, posZ), 15, 10, 10, 15, ptsVie);
             }
             if (type == TypePersonnage.VOLEUR)
             {
-                p = new Voleur(Jeu, allié ? "ArcherB" : "ArcherR", 0.0075f, posX < 0 ? Vector3.Zero : new Vector3(0, MathHelper.Pi, 0), new Vector3(posX, 0, posZ), 15, 15, 10, 10, ptsVie);
+                p = new Voleur(Jeu, allié ? "VoleurAllié" : "VoleurEnnemi", 0.04f, posX < 0 ? new Vector3(0, MathHelper.Pi / 2, 0) : new Vector3(0, -MathHelper.Pi / 2, 0), new Vector3(posX, 0, posZ), 15, 15, 10, 10, ptsVie);
             }
             p.DrawOrder = (int)OrdreDraw.MILIEU;
             return p;
