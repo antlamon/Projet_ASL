@@ -109,7 +109,7 @@
     <Compile Include="Manager\ManagerInput.cs" />
     <Compile Include="Manager\ManagerNetwork.cs" />
     <Compile Include="Personnage\Archer.cs" />
-    <Compile Include="Personnage\ClasseQueTonyVeutSupprimer.cs" />
+    <Compile Include="Personnage\IdentificateurEffet.cs" />
     <Compile Include="Personnage\Guerrier.cs" />
     <Compile Include="Personnage\Guérisseur.cs" />
     <Compile Include="Personnage\IdentificateurPersonnage.cs" />

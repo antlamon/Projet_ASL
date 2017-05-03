@@ -155,8 +155,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\SatanMode.jpg">
-      <Name>SatanMode</Name>
+    <Compile Include="Textures\Satan.jpg">
+      <Name>Satan</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

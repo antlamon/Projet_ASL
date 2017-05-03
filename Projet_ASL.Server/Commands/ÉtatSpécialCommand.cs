@@ -49,7 +49,7 @@ namespace Projet_ASL.Server.Commands
                         break;
                     case ÉtatSpécial.SATAN:
                         (personnage as Guérisseur).SetSatan(inc.ReadBoolean());
-                        outMessage.Write(ÉtatSpécial.FOLIE);
+                        outMessage.Write(ÉtatSpécial.SATAN);
                         outMessage.Write((personnage as Guérisseur)._SatanMode);
                         break;
                 }

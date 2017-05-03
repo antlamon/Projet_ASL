@@ -237,8 +237,16 @@ namespace Projet_ASL
                             Portée.Visible = true;
                             if (GestionnaireInput.EstNouveauClicDroit())
                             {
-                                Cibles = (PersonnageActif as Guérisseur).SoinDeZone(positionVérifiée, JoueurLocal.Personnages, out dégats);
-                                ciblealliée = true;
+                                if((PersonnageActif as Guérisseur)._SatanMode)
+                                {
+                                    Cibles = (PersonnageActif as Guérisseur).SoinDeZone(positionVérifiée, JoueurEnnemi.Personnages, out dégats);
+                                    ciblealliée = false;
+                                }
+                                else
+                                {
+                                    Cibles = (PersonnageActif as Guérisseur).SoinDeZone(positionVérifiée, JoueurLocal.Personnages, out dégats);
+                                    ciblealliée = true;
+                                }
                                 PeutAttaquer = false;
                                 ZoneDEffet.Visible = false;
                                 Portée.Visible = false;
@@ -511,7 +519,6 @@ namespace Projet_ASL
             Portée.Visible = false;
             ZoneDéplacement.Visible = false;
             TourTerminé = true;
-            NetworkManager.TourActif = false;
         }
     }
 }

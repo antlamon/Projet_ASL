@@ -12,5 +12,7 @@ namespace Projet_ASL
         public const string BOUCLIER_DIVIN = "BouclierDivin";
         public const string FOLIE = "Folie";
         public const string SATAN = "Satan";
+        public const string INVISIBLE = "Invisible";
+        public const string MORT = "EstMort";
     }
 }

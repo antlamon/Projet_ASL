@@ -182,7 +182,14 @@ namespace Projet_ASL
             Player player = Players.Find(p => p.Username == name);
             for(int i = 0; i < count; ++i)
             {
-                player.Personnages[inc.ReadInt32()].ChangerVitalité(inc.ReadInt32());
+                int index = inc.ReadInt32();
+                bool ancienMort = player.Personnages[index].EstMort;
+                player.Personnages[index].ChangerVitalité(inc.ReadInt32());
+                if (ancienMort != player.Personnages[index].EstMort)
+                {
+                    (Jeu.Components.First(c => c is IdentificateurEffet && (c as IdentificateurEffet).PersonnageÀIdentifier == player.Personnages[index] && (c as IdentificateurEffet).NomImage == ÉtatSpécial.MORT) as DrawableGameComponent).Visible = player.Personnages[index].EstMort;
+
+                }
             }
         }
 
@@ -218,55 +225,52 @@ namespace Projet_ASL
                     IdentificateurPersonnage identificateur = new IdentificateurPersonnage(Jeu, p);
                     identificateur.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
                     Jeu.Components.Add(identificateur);
-                    AjouterIcôneEffet(Jeu, p);
+                    AjouterIcôneEffet(Jeu, p, identificateur);
 
                 }
             }
         }
 
-        const string FEU = "Enfeu";
-        const string MORT = "EstMort";
-        const string FROZEN = "Frozen";
-        const string INVISIBLE = "Invisible";
-        const string SATAN = "SatanMode";
-        const string FOLIE = "Folie";
 
-        private void AjouterIcôneEffet(Game jeu, Personnage p)
+        private void AjouterIcôneEffet(Game jeu, Personnage p, IdentificateurPersonnage identificateur)
         {
-            ClasseQueTonyVeutSupprimer icôneEffetFeu = new ClasseQueTonyVeutSupprimer(Jeu, p, FEU, 1);
+            IdentificateurEffet icôneEffetFeu = new IdentificateurEffet(Jeu, p, ÉtatSpécial.EN_FEU, identificateur.Position, 0);
             icôneEffetFeu.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Jeu.Components.Add(icôneEffetFeu);
-            //icôneEffetFeu.Visible = false;
+            icôneEffetFeu.Visible = false;
 
-            ClasseQueTonyVeutSupprimer icôneEffetMort = new ClasseQueTonyVeutSupprimer(Jeu, p, MORT, 2);
+            IdentificateurEffet icôneEffetMort = new IdentificateurEffet(Jeu, p, ÉtatSpécial.MORT, identificateur.Position, 1);
             icôneEffetMort.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Jeu.Components.Add(icôneEffetMort);
-            //icôneEffetMort.Visible = false;
+            icôneEffetMort.Visible = false;
 
-            ClasseQueTonyVeutSupprimer icôneEffetFrozen = new ClasseQueTonyVeutSupprimer(Jeu, p, FROZEN, 3);
+            IdentificateurEffet icôneEffetFrozen = new IdentificateurEffet(Jeu, p, ÉtatSpécial.FREEZE, identificateur.Position, 2);
             icôneEffetFrozen.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Jeu.Components.Add(icôneEffetFrozen);
-            //icôneEffetFrozen.Visible = false;
+            icôneEffetFrozen.Visible = false;
 
-            ClasseQueTonyVeutSupprimer icôneEffetInvisible = new ClasseQueTonyVeutSupprimer(Jeu, p, INVISIBLE, 4);
-            icôneEffetInvisible.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
-            Jeu.Components.Add(icôneEffetInvisible);
-            //icôneEffetInvisible.Visible = false;
-
-            if (p.GetType().ToString() == TypePersonnage.GUÉRISSEUR)
+            if (ObtenirType(p) == TypePersonnage.VOLEUR)
             {
-                ClasseQueTonyVeutSupprimer icôneEffetSatan = new ClasseQueTonyVeutSupprimer(Jeu, p, SATAN, 5);
-                icôneEffetSatan.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
-                Jeu.Components.Add(icôneEffetSatan);
-                //icôneEffetSatan.Visible = false;
+                IdentificateurEffet icôneEffetInvisible = new IdentificateurEffet(Jeu, p, ÉtatSpécial.INVISIBLE, identificateur.Position, 3);
+                icôneEffetInvisible.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+                Jeu.Components.Add(icôneEffetInvisible);
+                icôneEffetInvisible.Visible = false;
             }
 
-            if (p.GetType().ToString() == TypePersonnage.GUERRIER)
+            if (ObtenirType(p) == TypePersonnage.GUÉRISSEUR)
             {
-                ClasseQueTonyVeutSupprimer icôneEffetFolie = new ClasseQueTonyVeutSupprimer(Jeu, p, FOLIE, 5);
+                IdentificateurEffet icôneEffetSatan = new IdentificateurEffet(Jeu, p, ÉtatSpécial.SATAN, identificateur.Position, 3);
+                icôneEffetSatan.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+                Jeu.Components.Add(icôneEffetSatan);
+                icôneEffetSatan.Visible = false;
+            }
+
+            if (ObtenirType(p) == TypePersonnage.GUERRIER)
+            {
+                IdentificateurEffet icôneEffetFolie = new IdentificateurEffet(Jeu, p, ÉtatSpécial.FOLIE, identificateur.Position, 3);
                 icôneEffetFolie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
                 Jeu.Components.Add(icôneEffetFolie);
-                //icôneEffetFolie.Visible = false;
+                icôneEffetFolie.Visible = false;
             }
         }
 
@@ -356,18 +360,23 @@ namespace Projet_ASL
                 {
                     case ÉtatSpécial.EN_FEU:
                         personnage.SetEnFeu(valeurÉtat);
+                        (Jeu.Components.First(c => c is IdentificateurEffet && (c as IdentificateurEffet).PersonnageÀIdentifier == personnage && (c as IdentificateurEffet).NomImage == ÉtatSpécial.EN_FEU) as DrawableGameComponent).Visible = valeurÉtat;
                         break;
                     case ÉtatSpécial.BOUCLIER_DIVIN:
                         personnage.SetBouclierDivin(valeurÉtat);
+                        (Jeu.Components.First(c => c is IdentificateurEffet && (c as IdentificateurEffet).PersonnageÀIdentifier == personnage && (c as IdentificateurEffet).NomImage == ÉtatSpécial.BOUCLIER_DIVIN) as DrawableGameComponent).Visible = valeurÉtat;
                         break;
                     case ÉtatSpécial.FREEZE:
                         personnage.SetFreeze(valeurÉtat);
+                        (Jeu.Components.First(c => c is IdentificateurEffet && (c as IdentificateurEffet).PersonnageÀIdentifier == personnage && (c as IdentificateurEffet).NomImage == ÉtatSpécial.FREEZE) as DrawableGameComponent).Visible = valeurÉtat;
                         break;
                     case ÉtatSpécial.FOLIE:
                         (personnage as Guerrier).SetFolie(valeurÉtat);
+                        (Jeu.Components.First(c => c is IdentificateurEffet && (c as IdentificateurEffet).PersonnageÀIdentifier == personnage && (c as IdentificateurEffet).NomImage == ÉtatSpécial.FOLIE) as DrawableGameComponent).Visible = valeurÉtat;
                         break;
                     case ÉtatSpécial.SATAN:
                         (personnage as Guérisseur).SetSatan(valeurÉtat);
+                        (Jeu.Components.First(c => c is IdentificateurEffet && (c as IdentificateurEffet).PersonnageÀIdentifier == personnage && (c as IdentificateurEffet).NomImage == ÉtatSpécial.SATAN) as DrawableGameComponent).Visible = valeurÉtat;
                         break;
                 }
             }
@@ -384,6 +393,7 @@ namespace Projet_ASL
 
         public void SendFinDeTour()
         {
+            TourActif = false;
             var outMessge = _client.CreateMessage();
             outMessge.Write((byte)PacketType.FinDeTour);
             outMessge.Write(Username);
@@ -416,7 +426,10 @@ namespace Projet_ASL
             string name = inc.ReadString();
             if(Username != name)
             {
-                JoueurEnnemi.Personnages.Find(p => p is Voleur).Visible = !inc.ReadBoolean();
+                Personnage personnage = JoueurEnnemi.Personnages.Find(p => p is Voleur);
+                personnage.Visible = !inc.ReadBoolean();
+                (Jeu.Components.First(c => c is IdentificateurEffet && (c as IdentificateurEffet).PersonnageÀIdentifier == personnage && (c as IdentificateurEffet).NomImage == ÉtatSpécial.INVISIBLE) as DrawableGameComponent).Visible = !personnage.Visible;
+
             }
         }
 
@@ -455,7 +468,17 @@ namespace Projet_ASL
                     IdentificateurPersonnage identificateur = Jeu.Components.First(id => id is IdentificateurPersonnage && (id as IdentificateurPersonnage).PersonnageÀIdentifier == p) as IdentificateurPersonnage;
                     Jeu.Components.Remove(identificateur);
                     Jeu.Components.Remove(identificateur.AfficheurPtsVie);
+                    
                 }
+            }
+            List<IdentificateurEffet> effetÀSupprimer = new List<IdentificateurEffet>();
+            foreach(GameComponent c in Jeu.Components)
+            {
+                if (c is IdentificateurEffet) { effetÀSupprimer.Add(c as IdentificateurEffet); }
+            }
+            foreach(IdentificateurEffet c in effetÀSupprimer)
+            {
+                Jeu.Components.Remove(c);
             }
             RéinitialiserListePlayer();
         }
