@@ -60,7 +60,7 @@ namespace Projet_ASL
         {
             if (DimensionFenêtre != Game.Window.ClientBounds)
             {
-                PositionAffichage = new Vector2(PositionAffichage.X * Game.Window.ClientBounds.X / DimensionFenêtre.X, PositionAffichage.Y * Game.Window.ClientBounds.Y / DimensionFenêtre.Y);
+                PositionAffichage = new Vector2(PositionAffichage.X * Game.Window.ClientBounds.Width / DimensionFenêtre.Width, PositionAffichage.Y * Game.Window.ClientBounds.Height / DimensionFenêtre.Height);
                 DimensionFenêtre = Game.Window.ClientBounds;
             }
         }
