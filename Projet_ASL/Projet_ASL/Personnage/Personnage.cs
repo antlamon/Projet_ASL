@@ -9,32 +9,7 @@ namespace Projet_ASL
     public abstract class Personnage : ObjetDeDémo
     {
         const int PTS_VIE_MAX = 100;
-        #region Constantes Sorts
-        #region Constantes Archer
-        //public const int RAYON_PLUIE_DE_FLÈCHES = 10;
-        //public const float DÉGATS_PLUIE_DE_FLÈCHES = 0.5f;
-        //public const float DÉGATS_FLÈCHE_PERCANTE = 0.7f;
-        #endregion
-        #region Constantes Guérisseur 
-        //public const int RAYON_SOIN_DE_ZONE = 10;
-        //public const float RATIO_SOIN_DE_ZONE = 0.4f;
-        //public const float RATIO_RESURRECT = 0.5f;
-        //public const float RATIO_VOL_DE_VIE = 0.4f;
-        #endregion
-        #region Constantes Guerrier
-        //public const int RAYON_TORNADE_FURIEUSE = 10;
-        //public const float DÉGATS_TORNADE_FURIEUSE = 0.75f;
-        #endregion
-        #region Constantes Mage
-        //public const int RAYON_BRASIER = 10;
-        //public const float DÉGATS_FREEZE_DONT_MOVE = 0.25f;
-        //public const float DÉGATS_BRASIER = 0.25f;
-        #endregion
-        #region Constantes Paladin
-        #endregion
-        #region Constantes Voleur 
-        #endregion
-        #endregion
+        const int NB_TOURS_EN_FEU = 3;
         int ptsDeVie;
         public int PtsDeVie
         {
@@ -73,6 +48,7 @@ namespace Projet_ASL
             get { return enFeu; }
             private set { enFeu = value; }
         }
+        public int CptEnFeu { get; set; }
         public bool _BouclierDivin
         {
             get { return bouclierDivin; }
@@ -88,6 +64,7 @@ namespace Projet_ASL
             Sagesse = sagesse;
             PtsDeVie = ptsDeVie;
             Niveau = 1;
+            CptEnFeu = 0;
         }
 
         public Arme ModifierArme(Arme nouvelleArme)
@@ -133,12 +110,12 @@ namespace Projet_ASL
             PtsDeVie -= modificationVitalité;
         }
 
-        #region Sorts 
         #region Mage
 
         public void SetEnFeu(bool persoEnFeu)
         {
             _EnFeu = persoEnFeu;
+            if (_EnFeu) { CptEnFeu = NB_TOURS_EN_FEU; }
         }
 
         public void SetFreeze(bool persoFrozen)
@@ -147,22 +124,10 @@ namespace Projet_ASL
         }
         #endregion
         #region Paladin
-
         public void SetBouclierDivin(bool bouclierActif)
         {
             _BouclierDivin = bouclierActif;
         }
-
-        public virtual void EnleverDebuffs(Personnage caster)
-        {
-            if (caster is Paladin)
-            {
-                _EnFeu = false;
-                _Frozen = false;
-                _BouclierDivin = false;
-            }
-        }
-        #endregion
         #endregion
 
         public void ChangerVitalité(int nouvelleVitalité)

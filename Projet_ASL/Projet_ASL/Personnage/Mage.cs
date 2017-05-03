@@ -11,9 +11,10 @@ namespace Projet_ASL
         const int PORTÉE_ATTAQUE = 20;
         public const int RAYON_BRASIER = 10;
         public const int PORTÉE_BRASIER = 40;
-        public const float DÉGATS_BRASIER = 0.25f;
+        const float DÉGATS_BRASIER = 0.25f;
+        public const int DÉGATS_TICK_BRASIER = 5;
         public const int PORTÉE_FREEZE_DONT_MOVE = 40;
-        public const float DÉGATS_FREEZE_DONT_MOVE = 0.25f;
+        const float DÉGATS_FREEZE_DONT_MOVE = 0.25f;
 
         public Mage(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, int force, int dextérité, int intelligence, int sagesse, int ptsDeVie)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, dextérité, intelligence, sagesse, ptsDeVie)
