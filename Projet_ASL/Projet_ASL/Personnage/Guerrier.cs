@@ -50,6 +50,15 @@ namespace Projet_ASL
             return cibles;
         }
 
+        public override void ModifierVitalité(int dégats)
+        {
+            base.ModifierVitalité(dégats);
+            if (_Folie && PtsDeVie == 0)
+            {
+                PtsDeVie = PTS_VITALITÉ_FOLIE;
+            }
+        }
+
         public void SetFolie(bool estFou)
         {
             _Folie = estFou;

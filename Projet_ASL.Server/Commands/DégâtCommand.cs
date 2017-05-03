@@ -42,6 +42,7 @@ namespace Projet_ASL.Server.Commands
         void SendBouclierDivinDésactivé(string username, int index, NetServer server)
         {
             var messageBouclierDivin = server.CreateMessage();
+            messageBouclierDivin.Write((byte)PacketType.ÉtatSpécial);
             messageBouclierDivin.Write(username);
             messageBouclierDivin.Write(index);
             messageBouclierDivin.Write(1);
