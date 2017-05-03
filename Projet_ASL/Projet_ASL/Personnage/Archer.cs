@@ -51,6 +51,8 @@ namespace Projet_ASL
         public List<Personnage> FlèchePercante(Vector3 positionClic, List<Personnage> CiblesPotentielles, out int dégats)
         {
             List<Personnage> cibles = new List<Personnage>();
+            //Vector3 direction = positionClic - Position;
+            //direction.
             Ray portée = new Ray(Position, positionClic - Position);
             dégats = (int)(DÉGATS_FLÈCHE_PERCANTE * Attaquer());
 
@@ -58,13 +60,13 @@ namespace Projet_ASL
             {
                 foreach (Personnage p in CiblesPotentielles)
                 {
-                    if (portée.Intersects(p.SphèreDeCollision) <= PORTÉE_FLÈCHE_PERCANTE) 
+                    if (p.SphèreDeCollision.Intersects(portée) <= PORTÉE_FLÈCHE_PERCANTE) 
                     { cibles.Add(p); }
                 }
 
                 if(cibles.Count != 0)
                 {
-                    cibles.OrderBy(cible => (cible.Position - Position).Length()); // À vérifier pour les distances
+                    cibles.OrderBy(cible => (cible.Position - Position).Length());
                     cibles.RemoveRange(2, cibles.Count - 2);
                 }
             }

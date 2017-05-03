@@ -112,7 +112,7 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if (!JoueurLocal.Personnages[IndicePersonnage].EstMort)
+            if (!JoueurLocal.Personnages[IndicePersonnage].EstMort && !JoueurLocal.Personnages[IndicePersonnage]._Frozen)
             {
                 VérifierDébutDeTour(gameTime);
                 if (!TourTerminé)
@@ -124,6 +124,10 @@ namespace Projet_ASL
             }
             else
             {
+                if(JoueurLocal.Personnages[IndicePersonnage]._Frozen)
+                {
+                    NetworkManager.SendÉtatsSpéciaux(JoueurLocal.Personnages[IndicePersonnage], true, new List<string>() { ÉtatSpécial.FREEZE }, new List<bool>() { false });
+                }
                 IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
                 BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
             }
