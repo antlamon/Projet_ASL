@@ -8,7 +8,7 @@ namespace Projet_ASL
 {
     public abstract class Personnage : ObjetDeDémo
     {
-        public const int PTS_VIE_MAX = 50;
+        public const int PTS_VIE_MAX = 10;
         const int NB_TOURS_EN_FEU = 3;
         int ptsDeVie;
         public int PtsDeVie

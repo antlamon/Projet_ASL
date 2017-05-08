@@ -141,6 +141,7 @@ namespace Projet_ASL
                     if (JoueurLocal.Personnages[IndicePersonnage]._Frozen)
                     {
                         NetworkManager.SendÉtatsSpéciaux(JoueurLocal.Personnages[IndicePersonnage], true, new List<string>() { ÉtatSpécial.FREEZE }, new List<bool>() { false });
+                        NetworkManager.SendFinDeTour();
                     }
                     IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
                     BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
