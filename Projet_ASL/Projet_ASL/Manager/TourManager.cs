@@ -146,6 +146,7 @@ namespace Projet_ASL
                     }
                     IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
                     BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
+                    BoutonsActions.VoirBoutonAction(false);
                 }
             }
         }
