@@ -138,7 +138,10 @@ namespace Projet_ASL
                 }
                 else
                 {
-
+                    if(JoueurLocal.Personnages.FindAll(p=>!p.EstMort).Count == 1)
+                    {
+                        Game.Window.Title = "survivant";
+                    }
                     if (JoueurLocal.Personnages[IndicePersonnage]._Frozen)
                     {
                         NetworkManager.SendÉtatsSpéciaux(JoueurLocal.Personnages[IndicePersonnage], true, new List<string>() { ÉtatSpécial.FREEZE }, new List<bool>() { false });
@@ -506,7 +509,7 @@ namespace Projet_ASL
 
         bool TourFini()
         {
-            return BoutonsActions.ÉtatPasserTour || !PeutAttaquer && (int)Math.Round(DéplacementRestant) <= 0;
+            return PersonnageActif.EstMort || BoutonsActions.ÉtatPasserTour || !PeutAttaquer && (int)Math.Round(DéplacementRestant) <= 0;
         }
 
         void TerminerLeTour()
