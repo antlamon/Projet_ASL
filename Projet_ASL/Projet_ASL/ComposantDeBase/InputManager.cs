@@ -69,8 +69,6 @@ namespace Projet_ASL
         {
             Ray ray = CalculateCursorRay();
             float closestDistance = float.MaxValue;
-            //foreach(Player p in _managerNetwork.Players)
-            //{
             foreach (Personnage perso in _managerNetwork.JoueurLocal.Personnages)
             {
                 DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
@@ -81,7 +79,6 @@ namespace Projet_ASL
                 }
 
             }
-            //}
         }
 
         #region Méthode sélection personnage à attaquer
@@ -162,20 +159,20 @@ namespace Projet_ASL
 
         public Vector3 VérifierDéplacementCollisionPersonnage(Vector3 positionVouluePersonnage, int indice)
         {
+            BoundingSphere test = new BoundingSphere(positionVouluePersonnage, 2);
+            Vector3 anciennePosition = PersonnageChoisi.Position;
             Vector3 positionVérifiéeFinale = positionVouluePersonnage;
-            Vector3 positionDuPersonnageAvant = PersonnageChoisi.Position;
 
             foreach (Personnage perso in _managerNetwork.JoueurLocal.Personnages)
             {
                 PersonnageChoisi.GérerPositionObjet(positionVouluePersonnage);
                 if (Vector3.Distance(PersonnageChoisi.Position, perso.Position) < 10)
                 {
-                    if (PersonnageChoisi.SphèreDeCollision.Intersects(perso.SphèreDeCollision))
+                    if (test.Intersects(perso.SphèreDeCollision))
                     {
                         if (perso != _managerNetwork.JoueurLocal.Personnages[indice])
                         {
-                            positionVérifiéeFinale = positionDuPersonnageAvant;
-
+                            positionVérifiéeFinale = anciennePosition;
                         }
                     }
                 }
@@ -185,13 +182,13 @@ namespace Projet_ASL
                 PersonnageChoisi.GérerPositionObjet(positionVouluePersonnage);
                 if (Vector3.Distance(PersonnageChoisi.Position, perso.Position) < 10)
                 {
-                    if (PersonnageChoisi.SphèreDeCollision.Intersects(perso.SphèreDeCollision))
+                    if (test.Intersects(perso.SphèreDeCollision))
                     {
-                        positionVérifiéeFinale = positionDuPersonnageAvant;
+                        positionVérifiéeFinale = anciennePosition;
                     }
                 }
             }
-            PersonnageChoisi.GérerPositionObjet(positionDuPersonnageAvant);
+            PersonnageChoisi.GérerPositionObjet(positionVérifiéeFinale);
             return positionVérifiéeFinale;
         }
 
