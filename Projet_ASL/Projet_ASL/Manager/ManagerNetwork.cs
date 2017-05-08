@@ -1,9 +1,4 @@
-﻿//------------------------------------------------------
-// 
-// Copyright - (c) - 2014 - Mille Boström 
-//
-// Youtube channel - https://www.youtube.com/user/Maloooon
-//------------------------------------------------------
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +45,11 @@ namespace Projet_ASL
             Players.Clear();
         }
 
+        /// <summary>
+        /// Établir la connection avec le serveur
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public bool Start(Player player)
         {
             var random = new Random();
@@ -64,16 +64,25 @@ namespace Projet_ASL
             {
                 outmsg.Write(ObtenirType(p));
             }
-            _client.Connect("172.17.106.115", 5013, outmsg);
-            return EsablishInfo();
+            _client.Connect("localhost", 5013, outmsg);
+            return SeConnecterServeur();
         }
 
+        /// <summary>
+        /// Obtenir le type d'un personnage sous forme de string
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public string ObtenirType(Personnage p)
         {
             return p.GetType().ToString();
         }
 
-        private bool EsablishInfo()
+        /// <summary>
+        /// Permet de se connecter au serveur et de récupérer les personnages connectés
+        /// </summary>
+        /// <returns>Connection établit</returns>
+        private bool SeConnecterServeur()
         {
             var time = DateTime.Now;
             NetIncomingMessage inc;
@@ -106,6 +115,9 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Vérifie les messages envoyés par le serveur
+        /// </summary>
         public void Update()
         {
             NetIncomingMessage inc;
@@ -145,6 +157,10 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Détermine si c'est le tour du client ou non
+        /// </summary>
+        /// <param name="inc"></param>
         private void ChangerDeTour(NetIncomingMessage inc)
         {
             if(inc.ReadString() != Username)
@@ -153,6 +169,10 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Lit et change la position d'un personnage
+        /// </summary>
+        /// <param name="inc">message du serveur</param>
         private void ReadPositionPersonnage(NetIncomingMessage inc)
         {
             string username = inc.ReadString();
@@ -160,11 +180,19 @@ namespace Projet_ASL
             player.Personnages[inc.ReadInt32()].GérerPositionObjet(new Vector3(inc.ReadFloat(), 0, inc.ReadFloat()));
         }
 
+        /// <summary>
+        /// Déconnecte le client du serveur en supprimant les personnages des game components
+        /// </summary>
+        /// <param name="inc">message du serveur</param>
         private void RemoveDisconnectedPlayer(NetIncomingMessage inc)
         {
             DéconnectionServeur();
         }
 
+        /// <summary>
+        /// Récupère tous les personnages présents sur le serveur
+        /// </summary>
+        /// <param name="inc">message du serveur</param>
         private void ReceiveAllPlayers(NetIncomingMessage inc)
         {
             var count = inc.ReadInt32();
@@ -175,6 +203,10 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Lit et modifie la vitalité des personnages touchés par une attaque ou un soin
+        /// </summary>
+        /// <param name="inc">message du serveur</param>
         private void ReadDégât(NetIncomingMessage inc)
         {
             string name = inc.ReadString();
@@ -193,6 +225,11 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Récupère les données d'un joueur connecté au serveur, soit les personnages et leur position et leur vitalité 
+        /// er instancie le joueur s'il n'est pas dans la liste de joueur du client
+        /// </summary>
+        /// <param name="inc"></param>
         private void ReadPlayer(NetIncomingMessage inc)
         {
             var player = new Player();
@@ -231,7 +268,12 @@ namespace Projet_ASL
             }
         }
 
-
+        /// <summary>
+        /// Ajoute les icônes d'effets spéciaux selon un certain personnage dans les Game.Components
+        /// </summary>
+        /// <param name="jeu"></param>
+        /// <param name="p">Personnage à identifier</param>
+        /// <param name="identificateur">Identificateur du personnage</param>
         private void AjouterIcôneEffet(Game jeu, Personnage p, IdentificateurPersonnage identificateur)
         {
             IdentificateurEffet icôneEffetFeu = new IdentificateurEffet(Jeu, p, ÉtatSpécial.EN_FEU, identificateur.Position, 0);
@@ -248,6 +290,11 @@ namespace Projet_ASL
             icôneEffetFrozen.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Jeu.Components.Add(icôneEffetFrozen);
             icôneEffetFrozen.Visible = false;
+
+            IdentificateurEffet icôneEffetBouclierDivin = new IdentificateurEffet(Jeu, p, ÉtatSpécial.BOUCLIER_DIVIN, identificateur.Position, 3);
+            icôneEffetBouclierDivin.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
+            Jeu.Components.Add(icôneEffetBouclierDivin);
+            icôneEffetBouclierDivin.Visible = false;
 
             if (ObtenirType(p) == TypePersonnage.VOLEUR)
             {
@@ -272,12 +319,14 @@ namespace Projet_ASL
                 Jeu.Components.Add(icôneEffetFolie);
                 icôneEffetFolie.Visible = false;
             }
-            IdentificateurEffet icôneEffetBouclierDivin = new IdentificateurEffet(Jeu, p, ÉtatSpécial.BOUCLIER_DIVIN, identificateur.Position, 3);
-            icôneEffetBouclierDivin.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
-            Jeu.Components.Add(icôneEffetBouclierDivin);
-            icôneEffetBouclierDivin.Visible = false;
         }
 
+        /// <summary>
+        /// Lis un personnage provenant du serveur
+        /// </summary>
+        /// <param name="inc">message du serveur</param>
+        /// <param name="username">Username du joueur ayant ce personnage</param>
+        /// <returns></returns>
         private Personnage ReadPersonnage(NetIncomingMessage inc, string username)
         {
             string type = inc.ReadString();
@@ -287,6 +336,15 @@ namespace Projet_ASL
             return InstancierPersonnage(type, username == Username, posX, posZ, ptsVie);
         }
 
+        /// <summary>
+        /// Instancie un personnage selon son type, sa position et sa vitalité et du joueur d'où il vient
+        /// </summary>
+        /// <param name="type">Type du personnage</param>
+        /// <param name="allié">Personnage du joueur local?</param>
+        /// <param name="posX">position en X</param>
+        /// <param name="posZ">position en Z</param>
+        /// <param name="ptsVie">Points de vie du personnage</param>
+        /// <returns>Personnage créé</returns>
         private Personnage InstancierPersonnage(string type, bool allié, float posX, float posZ, int ptsVie)
         {
             Personnage p = null;
@@ -318,6 +376,12 @@ namespace Projet_ASL
             return p;
         }
 
+        /// <summary>
+        /// Envoie du dégâts au serveur selon une liste de personnages touchées et si le personnage est local
+        /// </summary>
+        /// <param name="PersonnagesTouchés">Personnages touchés par le dégât</param>
+        /// <param name="dégât"></param>
+        /// <param name="allié">Personnage appartient au joueur local?</param>
         public void SendDégât(List<Personnage> PersonnagesTouchés, int dégât, bool allié)
         {
             if(PersonnagesTouchés.Count != 0 || dégât == 0)
@@ -335,6 +399,13 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Envoie une liste d'éffets spéciaux à appliquer sur une cible
+        /// </summary>
+        /// <param name="cible">personnage touché</param>
+        /// <param name="allié">Personnage du joueur local?</param>
+        /// <param name="nomÉtat">Nom des états à appliquer</param>
+        /// <param name="estActif">États des états à appliquer</param>
         public void SendÉtatsSpéciaux(Personnage cible, bool allié, List<string> nomÉtat, List<bool> estActif)
         {
             var outMessage = _client.CreateMessage();
@@ -350,6 +421,10 @@ namespace Projet_ASL
             _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
+        /// <summary>
+        /// Lit les états spéciaux à appliquer sur un personnage à partir d'un message du serveur
+        /// </summary>
+        /// <param name="inc">Message du serveur</param>
         private void ReadÉtatsSpéciaux(NetIncomingMessage inc)
         {
             string name = inc.ReadString();
@@ -386,15 +461,18 @@ namespace Projet_ASL
             }
         }
 
-        public void SendInput(Keys key)
-        {
-            var outmessage = _client.CreateMessage();
-            outmessage.Write((byte)PacketType.Input);
-            outmessage.Write((byte)key);
-            outmessage.Write(Username);
-            _client.SendMessage(outmessage, NetDeliveryMethod.ReliableOrdered);
-        }
+        //public void SendInput(Keys key)
+        //{
+        //    var outmessage = _client.CreateMessage();
+        //    outmessage.Write((byte)PacketType.Input);
+        //    outmessage.Write((byte)key);
+        //    outmessage.Write(Username);
+        //    _client.SendMessage(outmessage, NetDeliveryMethod.ReliableOrdered);
+        //}
 
+        /// <summary>
+        /// Envoie la fin d'un tour local au serveur
+        /// </summary>
         public void SendFinDeTour()
         {
             TourActif = false;
@@ -404,6 +482,11 @@ namespace Projet_ASL
             _client.SendMessage(outMessge, NetDeliveryMethod.ReliableOrdered);
         }
 
+        /// <summary>
+        /// Envoie la nouvelle position d'un personnage
+        /// </summary>
+        /// <param name="position">Nouvelle position</param>
+        /// <param name="indexPersonnage">Index du personnage local à déplacer</param>
         public void SendNewPosition(Vector3 position, int indexPersonnage)
         {
             var outMessage = _client.CreateMessage();
@@ -416,6 +499,10 @@ namespace Projet_ASL
 
         }
 
+        /// <summary>
+        /// Envoie l'état d'invisibilité du voleur
+        /// </summary>
+        /// <param name="visible">personnage visible?</param>
         public void SendInvisibilité(bool visible)
         {
             var outMessage = _client.CreateMessage();
@@ -425,6 +512,10 @@ namespace Projet_ASL
             _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
+        /// <summary>
+        /// Lit l'invisibilité d'un voleur selon le joueur impliqué
+        /// </summary>
+        /// <param name="inc">message du serveur</param>
         private void ReadInvisibilité(NetIncomingMessage inc)
         {
             string name = inc.ReadString();
@@ -433,10 +524,13 @@ namespace Projet_ASL
                 Personnage personnage = JoueurEnnemi.Personnages.Find(p => p is Voleur);
                 personnage.Visible = !inc.ReadBoolean();
                 (Jeu.Components.First(c => c is IdentificateurEffet && (c as IdentificateurEffet).PersonnageÀIdentifier == personnage && (c as IdentificateurEffet).NomImage == ÉtatSpécial.INVISIBLE) as DrawableGameComponent).Visible = !personnage.Visible;
-
             }
         }
 
+        /// <summary>
+        /// Envoie un message à afficher sur la console du serveur, utilisé pour le deboguage
+        /// </summary>
+        /// <param name="message">message à envoyer</param>
         public void SendMesage(string message)
         {
             NetOutgoingMessage outMessage = _client.CreateMessage();
@@ -445,6 +539,9 @@ namespace Projet_ASL
             _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
+        /// <summary>
+        /// Envoie une commande de déconnection au serveur
+        /// </summary>
         public void SendLogout()
         {
             if (Active)
@@ -456,12 +553,18 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Déconnecte le client du serveur
+        /// </summary>
         private void DéconnectionServeur()
         {
             _client.Disconnect("Bye");
             RetirerPersonnages();
         }
 
+        /// <summary>
+        /// Retire les personnages et leurs identificateurs de la liste des game components
+        /// </summary>
         private void RetirerPersonnages()
         {
             foreach (Player player in Players)
