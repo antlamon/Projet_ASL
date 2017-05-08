@@ -138,6 +138,7 @@ namespace Projet_ASL
                 }
                 else
                 {
+
                     if (JoueurLocal.Personnages[IndicePersonnage]._Frozen)
                     {
                         NetworkManager.SendÉtatsSpéciaux(JoueurLocal.Personnages[IndicePersonnage], true, new List<string>() { ÉtatSpécial.FREEZE }, new List<bool>() { false });

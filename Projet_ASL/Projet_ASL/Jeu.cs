@@ -61,6 +61,7 @@ namespace Projet_ASL
             IsFixedTimeStep = false;
             IsMouseVisible = true;
             Window.Title = "Jeu de Bataille";
+            PériphériqueGraphique.
         }
 
 
