@@ -22,6 +22,7 @@ namespace Projet_ASL
         Personnage PersonnageChoisi { get; set; }
         Vector3 PositionInitialePersonnage { get; set; }
 
+
         public InputManager(Game game, Caméra caméraJeu, ManagerNetwork managerNetwork)
            : base(game)
         {
@@ -128,11 +129,10 @@ namespace Projet_ASL
         {
             bool rep = false;
             Ray ray = CalculateCursorRay();
-            Personnage perso = _managerNetwork.JoueurLocal.Personnages[indice];
-            DistanceRayon = perso.SphèreDeCollision.Intersects(ray);
+            DistanceRayon = _managerNetwork.JoueurLocal.Personnages[indice].SphèreDeCollision.Intersects(ray);
             if (DistanceRayon != null)
             {
-                PersonnageChoisi = perso;
+                PersonnageChoisi = _managerNetwork.JoueurLocal.Personnages[indice];
                 rep = true;
             }
             return rep;
@@ -162,40 +162,37 @@ namespace Projet_ASL
 
         public Vector3 VérifierDéplacementCollisionPersonnage(Vector3 positionVouluePersonnage, int indice)
         {
-            Vector3 positionVérifiée = positionVouluePersonnage;
+            Vector3 positionVérifiéeFinale = positionVouluePersonnage;
             Vector3 positionDuPersonnageAvant = PersonnageChoisi.Position;
-                foreach (Personnage perso in _managerNetwork.JoueurLocal.Personnages)
-                {
-                    if (Vector3.Distance(PersonnageChoisi.Position, perso.Position) < 3)
-                    {
-                        PersonnageChoisi.GérerPositionObjet(positionVouluePersonnage);
-                        if (PersonnageChoisi.SphèreDeCollision.Contains(perso.SphèreDeCollision) != ContainmentType.Disjoint)
-                        {
-                            if (perso != _managerNetwork.JoueurLocal.Personnages[indice])
-                            {
-                                positionVérifiée = positionDuPersonnageAvant;
 
-                            }
+            foreach (Personnage perso in _managerNetwork.JoueurLocal.Personnages)
+            {
+                PersonnageChoisi.GérerPositionObjet(positionVouluePersonnage);
+                if (Vector3.Distance(PersonnageChoisi.Position, perso.Position) < 10)
+                {
+                    if (PersonnageChoisi.SphèreDeCollision.Intersects(perso.SphèreDeCollision))
+                    {
+                        if (perso != _managerNetwork.JoueurLocal.Personnages[indice])
+                        {
+                            positionVérifiéeFinale = positionDuPersonnageAvant;
+
                         }
                     }
                 }
-                foreach (Personnage perso in _managerNetwork.JoueurEnnemi.Personnages)
+            }
+            foreach (Personnage perso in _managerNetwork.JoueurEnnemi.Personnages)
+            {
+                PersonnageChoisi.GérerPositionObjet(positionVouluePersonnage);
+                if (Vector3.Distance(PersonnageChoisi.Position, perso.Position) < 10)
                 {
-                    if (Vector3.Distance(PersonnageChoisi.Position, perso.Position) < 3)
+                    if (PersonnageChoisi.SphèreDeCollision.Intersects(perso.SphèreDeCollision))
                     {
-                        PersonnageChoisi.GérerPositionObjet(positionVouluePersonnage);
-                        if (PersonnageChoisi.SphèreDeCollision.Contains(perso.SphèreDeCollision) != ContainmentType.Disjoint)
-                        {
-                            if (perso != _managerNetwork.JoueurLocal.Personnages[indice])
-                            {
-                                positionVérifiée = positionDuPersonnageAvant;
-
-                            }
-                        }
+                        positionVérifiéeFinale = positionDuPersonnageAvant;
                     }
                 }
+            }
             PersonnageChoisi.GérerPositionObjet(positionDuPersonnageAvant);
-            return positionVérifiée;
+            return positionVérifiéeFinale;
         }
 
         public Vector3 VérifierDéplacementMAX(Vector3 positionVoulue, Vector3 positionInitiale, float déplacementMax)
