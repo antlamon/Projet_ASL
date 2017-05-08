@@ -163,7 +163,7 @@ namespace Projet_ASL
         /// <param name="inc"></param>
         private void ChangerDeTour(NetIncomingMessage inc)
         {
-            if(inc.ReadString() != Username)
+            if (inc.ReadString() != Username)
             {
                 TourActif = !TourActif;
             }
@@ -212,7 +212,7 @@ namespace Projet_ASL
             string name = inc.ReadString();
             int count = inc.ReadInt32();
             Player player = Players.Find(p => p.Username == name);
-            for(int i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 int index = inc.ReadInt32();
                 bool ancienMort = player.Personnages[index].EstMort;
@@ -384,14 +384,14 @@ namespace Projet_ASL
         /// <param name="allié">Personnage appartient au joueur local?</param>
         public void SendDégât(List<Personnage> PersonnagesTouchés, int dégât, bool allié)
         {
-            if(PersonnagesTouchés.Count != 0 || dégât == 0)
+            if (PersonnagesTouchés.Count != 0 || dégât == 0)
             {
                 var outMessage = _client.CreateMessage();
                 outMessage.Write((byte)PacketType.Dégât);
                 outMessage.Write(allié ? Username : JoueurEnnemi.Username);
                 outMessage.Write(dégât);
                 outMessage.Write(PersonnagesTouchés.Count);
-                foreach(Personnage p in PersonnagesTouchés)
+                foreach (Personnage p in PersonnagesTouchés)
                 {
                     outMessage.Write(ObtenirType(p));
                 }
@@ -413,7 +413,7 @@ namespace Projet_ASL
             outMessage.Write(allié ? Username : JoueurEnnemi.Username);
             outMessage.Write(ObtenirType(cible));
             outMessage.Write(nomÉtat.Count);
-            for(int i = 0; i < nomÉtat.Count; ++i)
+            for (int i = 0; i < nomÉtat.Count; ++i)
             {
                 outMessage.Write(nomÉtat[i]);
                 outMessage.Write(estActif[i]);
@@ -519,7 +519,7 @@ namespace Projet_ASL
         private void ReadInvisibilité(NetIncomingMessage inc)
         {
             string name = inc.ReadString();
-            if(Username != name)
+            if (Username != name)
             {
                 Personnage personnage = JoueurEnnemi.Personnages.Find(p => p is Voleur);
                 personnage.Visible = !inc.ReadBoolean();
@@ -575,15 +575,15 @@ namespace Projet_ASL
                     IdentificateurPersonnage identificateur = Jeu.Components.First(id => id is IdentificateurPersonnage && (id as IdentificateurPersonnage).PersonnageÀIdentifier == p) as IdentificateurPersonnage;
                     Jeu.Components.Remove(identificateur);
                     Jeu.Components.Remove(identificateur.AfficheurPtsVie);
-                    
+
                 }
             }
             List<IdentificateurEffet> effetÀSupprimer = new List<IdentificateurEffet>();
-            foreach(GameComponent c in Jeu.Components)
+            foreach (GameComponent c in Jeu.Components)
             {
                 if (c is IdentificateurEffet) { effetÀSupprimer.Add(c as IdentificateurEffet); }
             }
-            foreach(IdentificateurEffet c in effetÀSupprimer)
+            foreach (IdentificateurEffet c in effetÀSupprimer)
             {
                 Jeu.Components.Remove(c);
             }

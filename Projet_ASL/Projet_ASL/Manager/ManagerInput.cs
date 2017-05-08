@@ -29,12 +29,12 @@ namespace Projet_ASL
             //CheckKeyState(Keys.Right, state);
         }
 
-        private void CheckKeyState(Keys key, KeyboardState state)
-        {
-            if (state.IsKeyDown(key))
-            {
-                _managerNetwork.SendInput(key); 
-            }
-        }
+        //private void CheckKeyState(Keys key, KeyboardState state)
+        //{
+        //    if (state.IsKeyDown(key))
+        //    {
+        //        _managerNetwork.SendInput(key); 
+        //    }
+        //}
     }
 }
