@@ -68,7 +68,7 @@ namespace Projet_ASL
             ZoneDEffet = Jeu.AOE1;
             Portée = Jeu.AOE2;
             ZoneDéplacement = Jeu.AOE3;
-            TourTerminé = false;
+            TourTerminé = true;
             base.Initialize();
         }
 
@@ -117,13 +117,13 @@ namespace Projet_ASL
                 {
                     VérifierDéplacement();
                     VérifierAttaqueEtSorts();
-                    VérifierFinDeTour(gameTime);
+                    VérifierFinDeTour();
                 }
         }
 
         void VérifierDébutDeTour(GameTime gameTime)
         {
-            if (ancienIndicePersonnage != IndicePersonnage)// && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 0.1f)
+            if (ancienIndicePersonnage != IndicePersonnage)
             {
                 PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];
                 VérifierÉtatsSpéciaux();
@@ -138,10 +138,6 @@ namespace Projet_ASL
                 }
                 else
                 {
-                    if(JoueurLocal.Personnages.FindAll(p=>!p.EstMort).Count == 1)
-                    {
-                        Game.Window.Title = "survivant";
-                    }
                     if (JoueurLocal.Personnages[IndicePersonnage]._Frozen)
                     {
                         NetworkManager.SendÉtatsSpéciaux(JoueurLocal.Personnages[IndicePersonnage], true, new List<string>() { ÉtatSpécial.FREEZE }, new List<bool>() { false });
@@ -498,12 +494,11 @@ namespace Projet_ASL
             BoutonsActions.BtnAttaquer.EstActif = PeutAttaquer;
         }
 
-        void VérifierFinDeTour(GameTime gameTime)
+        void VérifierFinDeTour()
         {
             if (TourFini())
             {
                 TerminerLeTour();
-                TempsDepuisDernierUpdate = gameTime.TotalGameTime.Seconds;
             }
         }
 
