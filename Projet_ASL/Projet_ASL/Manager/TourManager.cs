@@ -38,6 +38,7 @@ namespace Projet_ASL
         Jeu Jeu { get; set; }
         List<Personnage> Cibles { get; set; }
         bool TourTerminé { get; set; }
+        bool DernierSurvivant { get; set; }
 
         public TourManager(Jeu jeu, ManagerNetwork networkManager)
             : base(jeu)
@@ -68,7 +69,8 @@ namespace Projet_ASL
             ZoneDEffet = Jeu.AOE1;
             Portée = Jeu.AOE2;
             ZoneDéplacement = Jeu.AOE3;
-            TourTerminé = false;
+            TourTerminé = true;
+            DernierSurvivant = false;
             base.Initialize();
         }
 
@@ -112,18 +114,20 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-                VérifierDébutDeTour(gameTime);
+            Game.Window.Title = IndicePersonnage.ToString() + NetworkManager.TourActif.ToString();
+            VérifierDébutDeTour(gameTime);
                 if (!TourTerminé)
                 {
                     VérifierDéplacement();
                     VérifierAttaqueEtSorts();
                     VérifierFinDeTour(gameTime);
                 }
+            Game.Window.Title = IndicePersonnage.ToString() + NetworkManager.TourActif.ToString();
         }
 
         void VérifierDébutDeTour(GameTime gameTime)
         {
-            if (ancienIndicePersonnage != IndicePersonnage)// && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 0.1f)
+            if (ancienIndicePersonnage != IndicePersonnage || DernierSurvivant)// && gameTime.TotalGameTime.Seconds - TempsDepuisDernierUpdate > 0.1f)
             {
                 PersonnageActif = JoueurLocal.Personnages[IndicePersonnage];
                 VérifierÉtatsSpéciaux();
@@ -135,13 +139,11 @@ namespace Projet_ASL
                     ActiverAttaque();
                     ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
                     ancienIndicePersonnage = IndicePersonnage;
+                    DernierSurvivant = false;
                 }
                 else
                 {
-                    if(JoueurLocal.Personnages.FindAll(p=>!p.EstMort).Count == 1)
-                    {
-                        Game.Window.Title = "survivant";
-                    }
+                    DernierSurvivant = JoueurLocal.Personnages.FindAll(perso => !perso.EstMort).Count == 1;
                     if (JoueurLocal.Personnages[IndicePersonnage]._Frozen)
                     {
                         NetworkManager.SendÉtatsSpéciaux(JoueurLocal.Personnages[IndicePersonnage], true, new List<string>() { ÉtatSpécial.FREEZE }, new List<bool>() { false });
