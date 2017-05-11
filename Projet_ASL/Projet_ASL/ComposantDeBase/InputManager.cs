@@ -51,18 +51,6 @@ namespace Projet_ASL
             {
                 ActualiserÉtatSouris();
             }
-            //if (_managerNetwork.Players.Count != 0)
-            //{
-            //    if (!PersonnageSélectionné)
-            //    {
-            //        DéterminerSélectionPersonnage();
-            //        DéterminerMouvementPersonnageSélectionné();
-            //    }
-            //    else
-            //    {
-            //        DéterminerMouvementPersonnageSélectionné();
-            //    }
-            //}
         }
 
         public void DéterminerIntersectionPersonnageRay()

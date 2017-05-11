@@ -107,7 +107,6 @@
     <Compile Include="Items\Item.cs" />
     <Compile Include="Items\ItemsManager.cs" />
     <Compile Include="Jeu.cs" />
-    <Compile Include="Manager\ManagerInput.cs" />
     <Compile Include="Manager\ManagerNetwork.cs" />
     <Compile Include="Personnage\Archer.cs" />
     <Compile Include="Personnage\IdentificateurEffet.cs" />
