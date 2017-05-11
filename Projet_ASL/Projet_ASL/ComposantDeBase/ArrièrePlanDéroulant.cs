@@ -12,6 +12,7 @@ namespace Projet_ASL
         protected float …chelle { get; private set; }
         protected Vector2 Position…cran { get; set; }
         protected Vector2 TailleImage { get; set; }
+        protected Rectangle Taille…cran { get; set; }
 
         public ArriËrePlanDÈroulant(Game jeu, string nomImage, float intervalMAJ)
            : base(jeu, nomImage)
@@ -28,10 +29,9 @@ namespace Projet_ASL
         protected override void LoadContent()
         {
             base.LoadContent();
+            Taille…cran = Game.Window.ClientBounds;
             Position…cran = new Vector2(Game.Window.ClientBounds.Width / 2, 0);
-            …chelle = MathHelper.Max(Game.Window.ClientBounds.Width / (float)ImageDeFond.Width,
-                                     Game.Window.ClientBounds.Height / (float)ImageDeFond.Height);
-            TailleImage = new Vector2(ImageDeFond.Width * …chelle, 0);
+            DÈfinirTailleImage();
         }
         public override void Update(GameTime gameTime)
         {
@@ -44,8 +44,20 @@ namespace Projet_ASL
             }
         }
 
+        private void DÈfinirTailleImage()
+        {
+            …chelle = MathHelper.Max(Game.Window.ClientBounds.Width / (float)ImageDeFond.Width,
+                                     Game.Window.ClientBounds.Height / (float)ImageDeFond.Height);
+            TailleImage = new Vector2(ImageDeFond.Width * …chelle, 0);
+        }
+
         protected virtual void EffectuerMise¿Jour()
         {
+            if(Taille…cran != Game.Window.ClientBounds)
+            {
+                DÈfinirTailleImage();
+                Taille…cran = Game.Window.ClientBounds;
+            }
             Position…cran = new Vector2((Position…cran.X + D…PLACEMENT_HORIZONTAL) % TailleImage.X, 0);
         }
 
