@@ -6,9 +6,6 @@ using System.Collections.Generic;
 
 namespace Projet_ASL
 {
-
-    //bool A deja attaqué
-    //
     public class DialogueActions : Microsoft.Xna.Framework.GameComponent
     {
         const float INTERVALLE_MAJ_STANDARD = 1f / 60f;
@@ -358,6 +355,7 @@ namespace Projet_ASL
                     break;
                 case TypePersonnage.GUERRIER:   
                     VoirBoutonsGuerrier(true);
+                    BtnFolie.EstActif = !(PersonnageActif as Guerrier)._Folie;
                     break;
                 case TypePersonnage.MAGE:
                     VoirBoutonsMage(true);
