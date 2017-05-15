@@ -90,7 +90,7 @@ namespace Projet_ASL
             ArrièrePlanDéroulant ArrièrePlan = new ArrièrePlanDéroulant(this, "WoodForest", INTERVALLE_MAJ_STANDARD);
             ArrièrePlan.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             Components.Add(ArrièrePlan);
-            PlancheDeJeu = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(24, 16), "hexconcrete", INTERVALLE_MAJ_STANDARD);
+            PlancheDeJeu = new Carte(this, 1f, Vector3.Zero, Vector3.Zero, new Vector2(120, 60), new Vector2(10, 5), "pierregazon", INTERVALLE_MAJ_STANDARD);
             PlancheDeJeu.DrawOrder = (int)OrdreDraw.ARRIÈRE_PLAN;
             PlancheDeJeu.Visible = false;
             Components.Add(PlancheDeJeu);
