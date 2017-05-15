@@ -9,14 +9,22 @@ using Microsoft.Xna.Framework.Input;
 namespace Projet_ASL
 {
     public class ManagerNetwork
-    {
+    { 
+        #region PositionIconeEffet
+        const int PREMIÈRE_ICONE_EFFET = 0;
+        const int DEUXIÈME_ICONE_EFFET = 1;
+        const int TROISIÈME_ICONE_EFFET = 2;
+        const int QUATRIÈME_ICONE_EFFET = 3;
+        const int CINQUIÈME_ICONE_EFFET = 4;
+        #endregion
+
         private NetClient _client;
         public List<Player> Players { get; private set; }
 
         public string Username { get; private set; }
 
-        public bool Active { get; set; }
-        public bool TourActif { get; set; }
+        public bool Active { get; private set; }
+        public bool TourActif { get; private set; }
         Game Jeu { get; set; }
 
         public Player JoueurLocal
@@ -276,29 +284,29 @@ namespace Projet_ASL
         /// <param name="identificateur">Identificateur du personnage</param>
         private void AjouterIcôneEffet(Game jeu, Personnage p, IdentificateurPersonnage identificateur)
         {
-            IdentificateurEffet icôneEffetFeu = new IdentificateurEffet(Jeu, p, ÉtatSpécial.EN_FEU, identificateur.Position, 0);
+            IdentificateurEffet icôneEffetFeu = new IdentificateurEffet(Jeu, p, ÉtatSpécial.EN_FEU, identificateur.Position, PREMIÈRE_ICONE_EFFET);
             icôneEffetFeu.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Jeu.Components.Add(icôneEffetFeu);
             icôneEffetFeu.Visible = false;
 
-            IdentificateurEffet icôneEffetMort = new IdentificateurEffet(Jeu, p, ÉtatSpécial.MORT, identificateur.Position, 1);
+            IdentificateurEffet icôneEffetMort = new IdentificateurEffet(Jeu, p, ÉtatSpécial.MORT, identificateur.Position, DEUXIÈME_ICONE_EFFET);
             icôneEffetMort.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Jeu.Components.Add(icôneEffetMort);
             icôneEffetMort.Visible = false;
 
-            IdentificateurEffet icôneEffetFrozen = new IdentificateurEffet(Jeu, p, ÉtatSpécial.FREEZE, identificateur.Position, 2);
+            IdentificateurEffet icôneEffetFrozen = new IdentificateurEffet(Jeu, p, ÉtatSpécial.FREEZE, identificateur.Position, TROISIÈME_ICONE_EFFET);
             icôneEffetFrozen.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Jeu.Components.Add(icôneEffetFrozen);
             icôneEffetFrozen.Visible = false;
 
-            IdentificateurEffet icôneEffetBouclierDivin = new IdentificateurEffet(Jeu, p, ÉtatSpécial.BOUCLIER_DIVIN, identificateur.Position, 3);
+            IdentificateurEffet icôneEffetBouclierDivin = new IdentificateurEffet(Jeu, p, ÉtatSpécial.BOUCLIER_DIVIN, identificateur.Position, QUATRIÈME_ICONE_EFFET);
             icôneEffetBouclierDivin.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
             Jeu.Components.Add(icôneEffetBouclierDivin);
             icôneEffetBouclierDivin.Visible = false;
 
             if (ObtenirType(p) == TypePersonnage.VOLEUR)
             {
-                IdentificateurEffet icôneEffetInvisible = new IdentificateurEffet(Jeu, p, ÉtatSpécial.INVISIBLE, identificateur.Position, 4);
+                IdentificateurEffet icôneEffetInvisible = new IdentificateurEffet(Jeu, p, ÉtatSpécial.INVISIBLE, identificateur.Position, CINQUIÈME_ICONE_EFFET);
                 icôneEffetInvisible.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
                 Jeu.Components.Add(icôneEffetInvisible);
                 icôneEffetInvisible.Visible = false;
@@ -306,7 +314,7 @@ namespace Projet_ASL
 
             if (ObtenirType(p) == TypePersonnage.GUÉRISSEUR)
             {
-                IdentificateurEffet icôneEffetSatan = new IdentificateurEffet(Jeu, p, ÉtatSpécial.SATAN, identificateur.Position, 4);
+                IdentificateurEffet icôneEffetSatan = new IdentificateurEffet(Jeu, p, ÉtatSpécial.SATAN, identificateur.Position, CINQUIÈME_ICONE_EFFET);
                 icôneEffetSatan.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
                 Jeu.Components.Add(icôneEffetSatan);
                 icôneEffetSatan.Visible = false;
@@ -314,7 +322,7 @@ namespace Projet_ASL
 
             if (ObtenirType(p) == TypePersonnage.GUERRIER)
             {
-                IdentificateurEffet icôneEffetFolie = new IdentificateurEffet(Jeu, p, ÉtatSpécial.FOLIE, identificateur.Position, 4);
+                IdentificateurEffet icôneEffetFolie = new IdentificateurEffet(Jeu, p, ÉtatSpécial.FOLIE, identificateur.Position, CINQUIÈME_ICONE_EFFET);
                 icôneEffetFolie.DrawOrder = (int)OrdreDraw.AVANT_PLAN;
                 Jeu.Components.Add(icôneEffetFolie);
                 icôneEffetFolie.Visible = false;
@@ -461,15 +469,6 @@ namespace Projet_ASL
             }
         }
 
-        //public void SendInput(Keys key)
-        //{
-        //    var outmessage = _client.CreateMessage();
-        //    outmessage.Write((byte)PacketType.Input);
-        //    outmessage.Write((byte)key);
-        //    outmessage.Write(Username);
-        //    _client.SendMessage(outmessage, NetDeliveryMethod.ReliableOrdered);
-        //}
-
         /// <summary>
         /// Envoie la fin d'un tour local au serveur
         /// </summary>
@@ -496,7 +495,6 @@ namespace Projet_ASL
             outMessage.Write(Username);
             outMessage.Write(indexPersonnage);
             _client.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered);
-
         }
 
         /// <summary>
