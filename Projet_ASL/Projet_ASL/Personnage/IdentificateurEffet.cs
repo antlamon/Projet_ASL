@@ -27,6 +27,7 @@ namespace Projet_ASL
 
         private int NbEffets { get; set; }
         private int Multiplicateur { get; set; }
+        Rectangle DimensionFenêtre { get; set; }
 
 
         public IdentificateurEffet(Game jeu, Personnage personnage, string nomImage, Vector2 positionIdentificateur, int multiplicateur)
@@ -52,7 +53,19 @@ namespace Projet_ASL
             GestionnaireDeTextures = Game.Services.GetService(typeof(RessourcesManager<Texture2D>)) as RessourcesManager<Texture2D>;
             Image = GestionnaireDeTextures.Find(NomImage);
             RectangleSource = new Rectangle(0, 0, Image.Width, Image.Height);
+            DimensionFenêtre = Game.Window.ClientBounds;
             CalculerÉchelle();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (DimensionFenêtre != Game.Window.ClientBounds)
+            {
+                Position = new Vector2(Position.X * Game.Window.ClientBounds.Width / DimensionFenêtre.Width, Position.Y * Game.Window.ClientBounds.Height / DimensionFenêtre.Height);
+                ZoneAffichageIcôneEffet = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height / 40);
+                CalculerÉchelle();
+                DimensionFenêtre = Game.Window.ClientBounds;
+            }
         }
 
         public override void Draw(GameTime gameTime)
