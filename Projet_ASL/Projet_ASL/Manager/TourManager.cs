@@ -221,7 +221,7 @@ namespace Projet_ASL
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Archer.PORTÉE_PLUIE_DE_FLÈCHES - Archer.RAYON_PLUIE_DE_FLÈCHES);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Archer.PORTÉE_PLUIE_DE_FLÈCHES - Archer.RAYON_PLUIE_DE_FLÈCHES);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Archer.RAYON_PLUIE_DE_FLÈCHES * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_PLUIE_DE_FLÈCHES * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
@@ -237,7 +237,7 @@ namespace Projet_ASL
                             }
                             break;
                         case TypePersonnage.GUÉRISSEUR:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guérisseur.PORTÉE_SOIN_DE_ZONE - Guérisseur.RAYON_SOIN_DE_ZONE);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Guérisseur.PORTÉE_SOIN_DE_ZONE - Guérisseur.RAYON_SOIN_DE_ZONE);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guérisseur.RAYON_SOIN_DE_ZONE * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_SOIN_DE_ZONE * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
@@ -274,7 +274,7 @@ namespace Projet_ASL
                             }
                             break;
                         case TypePersonnage.MAGE:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_BRASIER - Mage.RAYON_BRASIER);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Mage.PORTÉE_BRASIER - Mage.RAYON_BRASIER);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Mage.RAYON_BRASIER * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_BRASIER * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
@@ -314,7 +314,7 @@ namespace Projet_ASL
                             }
                             break;
                         case TypePersonnage.VOLEUR:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Voleur.PORTÉE_INVISIBILITÉ);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Voleur.PORTÉE_INVISIBILITÉ);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Voleur.PORTÉE_INVISIBILITÉ * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
@@ -342,7 +342,7 @@ namespace Projet_ASL
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Archer.PORTÉE_FLÈCHE_REBONDISSANTE);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Archer.PORTÉE_FLÈCHE_REBONDISSANTE);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_FLÈCHE_REBONDISSANTE * 2), PersonnageActif.Position);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Archer.RAYON_FLÈCHE_REBONDISSANTE * 2), positionVérifiée);
                             Portée.Visible = true;
