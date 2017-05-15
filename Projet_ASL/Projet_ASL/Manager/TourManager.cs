@@ -500,6 +500,9 @@ namespace Projet_ASL
             BoutonsActions.BtnAttaquer.EstActif = PeutAttaquer;
         }
 
+        /// <summary>
+        /// Est appelé par la méthode Update pour vérifier si le tour du personnage est terminé.
+        /// </summary>
         void VérifierFinDeTour()
         {
             if (TourFini())
@@ -508,16 +511,24 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Vrai si le personnage en jeu meurt ou utilise tous ses points de déplacement et d'attaque.</returns>
         bool TourFini()
         {
             return PersonnageActif.EstMort || BoutonsActions.ÉtatPasserTour || !PeutAttaquer && (int)Math.Round(DéplacementRestant) <= 0;
         }
 
+        /// <summary>
+        /// Lorsque qu'un personnage finit son tour, en mourrant ou en utilisant tous ses points de déplacement et d'attaque,
+        /// cette méthode est appelée. Elle met fin au tour local et réinitialise les composants et les propriétés spécifiques
+        /// au personnage qui était en jeu.
+        /// </summary>
         void TerminerLeTour()
         {
-            NetworkManager.SendFinDeTour();
+            NetworkManager.SendFinDeTour(); // Envoie au serveur le message que le tour de ce client est terminé
             IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
-            // Voir avec PersonnageActif...
             BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
             Cibles.Clear();
             DéplacementRestant = DÉPLACEMENT_MAX;
