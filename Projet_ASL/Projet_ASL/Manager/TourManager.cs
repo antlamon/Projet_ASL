@@ -1,14 +1,10 @@
+// Classe créée et écrite par Simon Talbot dans le cadre du Projet d'Intégration du DEC
+// Sciences Informatiques et Mathématiques. 
+// Avec la contribution de Laugane Patry et Antoine Lamontagne.
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-
 
 namespace Projet_ASL
 {
