@@ -18,11 +18,12 @@ namespace Projet_ASL
     public class TourManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
         const int DÉPLACEMENT_MAX = 10;
-        const float INTERVALLE_MAJ_STANDARD = 1f / 60f;
+        const float INTERVALLE_MAJ_STANDARD = 1 / 60f;
 
-        public DialogueActions BoutonsActions { get; private set; }
+        Jeu Jeu { get; set; }
         ManagerNetwork NetworkManager { get; set; }
         InputManager GestionnaireInput { get; set; }
+        List<Personnage> Cibles { get; set; }
         Player JoueurLocal { get; set; }
         Player JoueurEnnemi { get; set; }
         Personnage PersonnageActif { get; set; }
@@ -30,13 +31,11 @@ namespace Projet_ASL
         int IndicePersonnage { get; set; }
         float DéplacementRestant { get; set; }
         float ancienDéplacementRestant { get; set; }
-        bool PeutAttaquer { get; set; }
-        int TempsDepuisDernierUpdate { get; set; }
         AOE ZoneDEffet { get; set; }
         AOE Portée { get; set; }
         AOE ZoneDéplacement { get; set; }
-        Jeu Jeu { get; set; }
-        List<Personnage> Cibles { get; set; }
+        public DialogueActions BoutonsActions { get; private set; }
+        bool PeutAttaquer { get; set; }
         bool TourTerminé { get; set; }
         bool DernierSurvivant { get; set; }
 
@@ -126,6 +125,10 @@ namespace Projet_ASL
                 }
         }
 
+        /// <summary>
+        /// Vérifie si un nouveau personnage est en jeu et gère les propriétés de celui-ci si c'est le cas.
+        /// </summary>
+        /// <param name="gameTime"></param>
         void VérifierDébutDeTour(GameTime gameTime)
         {
             if (ancienIndicePersonnage != IndicePersonnage || DernierSurvivant)
@@ -140,6 +143,7 @@ namespace Projet_ASL
                     ActiverAttaque();
                     ZoneDéplacement.ChangerÉtendueEtPosition(new Vector2(DéplacementRestant * 2), PersonnageActif.Position­);
                     ancienIndicePersonnage = IndicePersonnage;
+                    DéplacementRestant = DÉPLACEMENT_MAX;
                     DernierSurvivant = false;
                 }
                 else
@@ -157,6 +161,9 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Gère le compteur et le dégat des états spéciaux que peut avoir un personnage.
+        /// </summary>
         void VérifierÉtatsSpéciaux()
         {
             if (PersonnageActif._EnFeu)
@@ -184,6 +191,9 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Vérifie si le personnage en jeu se déplace.
+        /// </summary>
         void VérifierDéplacement()
         {
             if (!BoutonsActions.ÉtatSort1 && !BoutonsActions.ÉtatSort2 && !BoutonsActions.ÉtatAttaquer && DéplacementRestant >= 0.5f)
@@ -199,6 +209,9 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// S'occupe de déplacer la portée du mouvement avec le personnage et de modifier la grandeur de celle-ci selon le déplacement restant.
+        /// </summary>
         void DéplacerZoneMouvement()
         {
             if (ancienDéplacementRestant != DéplacementRestant)
@@ -208,6 +221,9 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Vérifie et gère les attaques et les sorts des personnages selon leur classe.
+        /// </summary>
         void VérifierAttaqueEtSorts()
         {
             if (PeutAttaquer)
@@ -339,7 +355,6 @@ namespace Projet_ASL
                 if (BoutonsActions.ÉtatSort2)
                 {
                     bool ciblealliée = false;
-                    //GestionnaireInput.Update(gameTime);
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
@@ -461,8 +476,6 @@ namespace Projet_ASL
                 }
                 if (BoutonsActions.ÉtatAttaquer)
                 {
-                    //GestionnaireInput.Update(gameTime);  plus nécessaire puisqu'on utilise de clic droit
-
                     bool ciblealliée = false;
                     Portée.ChangerÉtendueEtPosition(new Vector2(PersonnageActif.GetPortéeAttaque() * 2), PersonnageActif.Position);
                     Portée.Visible = true;
@@ -494,6 +507,9 @@ namespace Projet_ASL
             }
         }
 
+        /// <summary>
+        /// Rend les boutons d'attaque et de sorts disponibles ou indisponibles selon la valeur de PeutAttaquer
+        /// </summary>
         void ActiverAttaque()
         {
             BoutonsActions.BtnSorts.EstActif = PeutAttaquer;
@@ -511,9 +527,6 @@ namespace Projet_ASL
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         /// <returns>Vrai si le personnage en jeu meurt ou utilise tous ses points de déplacement et d'attaque.</returns>
         bool TourFini()
         {
@@ -531,7 +544,6 @@ namespace Projet_ASL
             IndicePersonnage = IndicePersonnage < JoueurLocal.Personnages.Count - 1 ? IndicePersonnage + 1 : 0;
             BoutonsActions.RéinitialiserDialogueActions(JoueurLocal.Personnages[IndicePersonnage]);
             Cibles.Clear();
-            DéplacementRestant = DÉPLACEMENT_MAX;
             BoutonsActions.VoirBoutonAction(false);
             ZoneDEffet.Visible = false;
             Portée.Visible = false;
