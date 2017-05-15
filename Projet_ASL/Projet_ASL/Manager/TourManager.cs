@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 namespace Projet_ASL
 {
     /// <summary>
-    /// This is a game component that implements IUpdateable.
+    /// Classe qui gère le tour du combattant actif local.
     /// </summary>
     public class TourManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -50,8 +50,8 @@ namespace Projet_ASL
         }
 
         /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
+        /// Initialise les propriétés et les composants qui doivent être assignés 
+        /// au début du jeu pour le bon fonctionnement de la classe.
         /// </summary>
         public override void Initialize()
         {
@@ -80,6 +80,9 @@ namespace Projet_ASL
             base.LoadContent();
         }
 
+        /// <summary>
+        /// Crée les boutons d'attaque pour chaque personnage inclu dans l'équipe du joueur.
+        /// </summary>
         private void CréerBtnClasses()
         {
             foreach (Personnage p in JoueurLocal.Personnages)
@@ -114,7 +117,6 @@ namespace Projet_ASL
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            Game.Window.Title = IndicePersonnage.ToString() + NetworkManager.TourActif.ToString();
             VérifierDébutDeTour(gameTime);
                 if (!TourTerminé)
                 {
@@ -217,11 +219,10 @@ namespace Projet_ASL
                 if (BoutonsActions.ÉtatSort1)
                 {
                     bool ciblealliée = false;
-                    //GestionnaireInput.Update(gameTime);
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Archer.PORTÉE_PLUIE_DE_FLÈCHES - Archer.RAYON_PLUIE_DE_FLÈCHES);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Archer.PORTÉE_PLUIE_DE_FLÈCHES - Archer.RAYON_PLUIE_DE_FLÈCHES);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Archer.RAYON_PLUIE_DE_FLÈCHES * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_PLUIE_DE_FLÈCHES * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
@@ -237,7 +238,7 @@ namespace Projet_ASL
                             }
                             break;
                         case TypePersonnage.GUÉRISSEUR:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Guérisseur.PORTÉE_SOIN_DE_ZONE - Guérisseur.RAYON_SOIN_DE_ZONE);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Guérisseur.PORTÉE_SOIN_DE_ZONE - Guérisseur.RAYON_SOIN_DE_ZONE);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Guérisseur.RAYON_SOIN_DE_ZONE * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Guérisseur.PORTÉE_SOIN_DE_ZONE * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
@@ -274,7 +275,7 @@ namespace Projet_ASL
                             }
                             break;
                         case TypePersonnage.MAGE:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Mage.PORTÉE_BRASIER - Mage.RAYON_BRASIER);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Mage.PORTÉE_BRASIER - Mage.RAYON_BRASIER);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Mage.RAYON_BRASIER * 2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Mage.PORTÉE_BRASIER * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
@@ -314,7 +315,7 @@ namespace Projet_ASL
                             }
                             break;
                         case TypePersonnage.VOLEUR:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Voleur.PORTÉE_INVISIBILITÉ);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Voleur.PORTÉE_INVISIBILITÉ);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(2), positionVérifiée);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Voleur.PORTÉE_INVISIBILITÉ * 2), PersonnageActif.Position);
                             ZoneDEffet.Visible = true;
@@ -342,7 +343,7 @@ namespace Projet_ASL
                     switch (PersonnageActif.GetType().ToString())
                     {
                         case TypePersonnage.ARCHER:
-                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), Archer.PORTÉE_FLÈCHE_REBONDISSANTE);
+                            positionVérifiée = GestionnaireInput.VérifierDéplacementMAX(GestionnaireInput.GetPositionSourisPlan(), PersonnageActif.Position, Archer.PORTÉE_FLÈCHE_REBONDISSANTE);
                             Portée.ChangerÉtendueEtPosition(new Vector2(Archer.PORTÉE_FLÈCHE_REBONDISSANTE * 2), PersonnageActif.Position);
                             ZoneDEffet.ChangerÉtendueEtPosition(new Vector2(Archer.RAYON_FLÈCHE_REBONDISSANTE * 2), positionVérifiée);
                             Portée.Visible = true;

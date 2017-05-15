@@ -158,7 +158,7 @@ namespace Projet_ASL
                 if (EstAncienClicGauche())
                 {
                     Vector3 positionVouluePersonnage = GetPositionSourisPlan();
-                    positionVouluePersonnage = VérifierDéplacementMAX(positionVouluePersonnage, déplacement_maximal);
+                    positionVouluePersonnage = VérifierDéplacementMAX(positionVouluePersonnage, PositionInitialePersonnage, déplacement_maximal);
                     positionVouluePersonnage = VérifierDéplacementCollisionPersonnage(positionVouluePersonnage, indice);
                     _managerNetwork.SendNewPosition(positionVouluePersonnage, _managerNetwork.JoueurLocal.Personnages.FindIndex(p => p.GetType() == PersonnageChoisi.GetType()));
                 }
@@ -221,16 +221,16 @@ namespace Projet_ASL
         /// <param name="positionVoulue">La position voulue du personnage</param>
         /// <param name="déplacementMax"></param>
         /// <returns>la positon du personnage qui respecte son déplacement maximal</returns>
-        public Vector3 VérifierDéplacementMAX(Vector3 positionVoulue, float déplacementMax)
+        public Vector3 VérifierDéplacementMAX(Vector3 positionVoulue, Vector3 positionInitiale, float déplacementMax)
         {
             Vector3 positionVérifiée;
-            if (Vector3.Distance(PositionInitialePersonnage, positionVoulue) <= déplacementMax)
+            if (Vector3.Distance(positionInitiale, positionVoulue) <= déplacementMax)
             {
                 positionVérifiée = positionVoulue;
             }
             else
             {
-                positionVérifiée = déplacementMax * Vector3.Normalize(positionVoulue - PositionInitialePersonnage) + PositionInitialePersonnage;
+                positionVérifiée = déplacementMax * Vector3.Normalize(positionVoulue - positionInitiale) + positionInitiale;
             }
             return positionVérifiée;
         }

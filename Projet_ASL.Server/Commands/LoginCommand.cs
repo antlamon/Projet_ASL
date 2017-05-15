@@ -15,7 +15,7 @@ namespace Projet_ASL.Server.Commands
 {
     class LoginCommand : ICommand
     {
-        const int POSITION_X_DEPART = 20;
+        const int POSITION_X_DEPART = 30;
         const int POSITION_Z_DEPART = -15;
         const int VIE_MAX = Personnage.PTS_VIE_MAX;
 
